@@ -1,35 +1,53 @@
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
   return (
-    <header className="w-full px-8 pt-8 pb-0 flex items-start justify-between">
-      {/* Left: name + title stacked vertically */}
-      <div className="flex flex-col gap-1">
-        <span className="text-[#222841] text-xs font-semibold uppercase tracking-widest">
+    <header className="flex items-center justify-between py-10">
+      {/* Left: name + title */}
+      <div className="flex flex-col gap-[5px]">
+        <span className="text-[#222841] text-[11px] font-semibold uppercase tracking-[0.14em]">
           Viktor Dopke
         </span>
-        <span className="text-[#737373] text-xs font-semibold uppercase tracking-widest">
+        <span className="text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em]">
           Product Designer
         </span>
       </div>
 
-      {/* Right: navigation links */}
-      <nav className="flex items-center gap-8">
-        <a
-          href="#work"
-          className="text-[#00a223] text-xs font-semibold uppercase tracking-widest hover:opacity-70 transition-opacity"
+      {/* Right: nav */}
+      <nav className="flex items-center gap-10">
+        <Link
+          to="/#work"
+          className="text-[#00a223] text-[11px] font-semibold uppercase tracking-[0.14em] hover:opacity-60 transition-opacity duration-200"
         >
           Work
-        </a>
-        <a
-          href="#about"
-          className="text-[#737373] text-xs font-semibold uppercase tracking-widest hover:text-[#222841] transition-colors"
+        </Link>
+        <Link
+          to="/#about"
+          className="text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em] hover:text-[#222841] transition-colors duration-200"
         >
           About
-        </a>
+        </Link>
         <a
-          href="#resume"
-          className="text-[#737373] text-xs font-semibold uppercase tracking-widest hover:text-[#222841] transition-colors"
+          href="/Viktor-Dopke-Resume.pdf"
+          download="Viktor-Dopke-Resume.pdf"
+          className="flex items-center gap-[6px] text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em] hover:text-[#222841] transition-colors duration-200"
         >
           Resume
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="11"
+            height="11"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 4v12m0 0-4-4m4 4 4-4" />
+            <path d="M4 20h16" />
+          </svg>
         </a>
       </nav>
     </header>

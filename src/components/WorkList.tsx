@@ -1,72 +1,52 @@
-interface WorkItem {
-  name: string;
-  description: string;
-}
-
-interface WorkSection {
-  label: string;
-  items: WorkItem[];
-}
-
-const sections: WorkSection[] = [
-  {
-    label: "Current Work",
-    items: [{ name: "Athos Commerce", description: "Lead Product Designer" }],
-  },
-  {
-    label: "Side Quests",
-    items: [
-      {
-        name: "Blindspot",
-        description: "A notetaking app for busy (or attention deprived) people",
-      },
-    ],
-  },
-  {
-    label: "Featured Work",
-    items: [
-      {
-        name: "Ingrid",
-        description:
-          "Agriculture surveillance map for large scale in Brazil's countryside",
-      },
-      {
-        name: "Whirl",
-        description: "A location-based community discovery app",
-      },
-      {
-        name: "Watchson",
-        description: "HR and Development resourcing gamified tool",
-      },
-    ],
-  },
-];
+import { Link } from "react-router-dom";
+import { getProjectsByCategory, projectCategories } from "../data/projects";
 
 export default function WorkList() {
   return (
-    <section id="work" className="px-8 pb-16 flex flex-col gap-8">
-      {sections.map((section) => (
-        <div key={section.label} className="flex flex-col gap-3">
-          <span className="text-[#737373] text-xs font-semibold uppercase tracking-widest">
-            {section.label}
-          </span>
-          <div className="flex flex-col gap-[26px]">
-            {section.items.map((item) => (
-              <div
-                key={item.name}
-                className="grid grid-cols-2 gap-8 group cursor-pointer"
-              >
-                <p className="text-[#222841] text-[15px] font-medium group-hover:text-[#00a223] transition-colors">
-                  {item.name}
-                </p>
-                <p className="text-[#737373] text-[12px] font-normal">
-                  {item.description}
-                </p>
+    <section id="work" className="flex flex-col gap-12">
+      {projectCategories.map((category, categoryIdx) => {
+        const items = getProjectsByCategory(category);
+
+        return (
+          <div key={category}>
+          {/* Section header */}
+          <div className="flex items-center gap-4 mb-5">
+            <span className="text-[#737373] text-[10px] font-semibold uppercase tracking-[0.16em] shrink-0">
+              {category}
+            </span>
+            <div className="flex-1 h-px bg-[#e4e8f0]" />
+          </div>
+
+          {/* Work items */}
+          <div className="flex flex-col">
+            {items.map((item, itemIdx) => (
+              <div key={item.slug}>
+                <Link
+                  to={`/work/${item.slug}`}
+                  className="grid grid-cols-[1fr_1.4fr] gap-6 py-4 group cursor-pointer"
+                >
+                  <p className="text-[#222841] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">
+                    {item.name}
+                  </p>
+                  <p className="text-[#737373] text-[13px] font-normal leading-snug">
+                    {item.tagline}
+                  </p>
+                </Link>
+                {/* Row divider — skip after the last item in each section */}
+                {itemIdx < items.length - 1 && (
+                  <div className="h-px bg-[#eef0f5]" />
+                )}
               </div>
             ))}
           </div>
-        </div>
-      ))}
+
+          {/* Add bottom border after the last section for closure */}
+          {categoryIdx === projectCategories.length - 1 && (
+            <div className="h-px bg-[#e4e8f0] mt-0" />
+          )}
+          </div>
+        );
+      })}
     </section>
   );
 }

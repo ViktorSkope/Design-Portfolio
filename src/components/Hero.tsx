@@ -1,7 +1,7 @@
 export default function Hero() {
   return (
-    <section className="px-8 pt-16 pb-12 max-w-[480px]">
-      <p className="text-[#222841] text-[32px] font-medium leading-[1.1] tracking-[-0.64px]">
+    <section id="about" className="max-w-[520px] pb-16 lg:pb-0">
+      <p className="text-[#222841] text-[28px] md:text-[32px] font-medium leading-[1.18] tracking-[-0.5px]">
         I&apos;m a{" "}
         <span className="text-[#00a223]">Brazilian</span>{" "}
         Product Designer with 10+ years working around the occasional design

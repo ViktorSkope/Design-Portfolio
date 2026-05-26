@@ -1,61 +1,42 @@
-interface Project {
-  title: string;
-  year: string;
-  image: string;
-  alt: string;
-}
-
-const projects: Project[] = [
-  {
-    title: "Whirl — Where to go next",
-    year: "2022",
-    image: "/img-whirl.png",
-    alt: "Whirl mobile app screens on yellow background",
-  },
-  {
-    title: "Ingrid — Automated Surveillance",
-    year: "2022",
-    image: "/img-ingrid.png",
-    alt: "Ingrid dashboard on a MacBook floating on dark background",
-  },
-  {
-    title: "Watchson — Resourcing Tool",
-    year: "2022",
-    image: "/img-watchson.png",
-    alt: "Blindspot app branding on purple background",
-  },
-];
+import { Link } from "react-router-dom";
+import { getProjectsByCategory } from "../data/projects";
 
 export default function FeaturedCards() {
+  const featuredProjects = getProjectsByCategory("Featured Work");
+
   return (
-    <section className="px-8 pb-20">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
-        {projects.map((project) => (
-          <article
-            key={project.title}
-            className="flex flex-col gap-2 group cursor-pointer"
+    <section className="pb-28">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-10">
+        {featuredProjects.map((project) => (
+          <Link
+            key={project.slug}
+            to={`/work/${project.slug}`}
+            className="flex flex-col gap-4 group cursor-pointer"
           >
-            <div className="w-full aspect-[4/3] bg-white shadow-[0px_4px_80px_0px_rgba(0,0,0,0.08)] overflow-hidden">
+            {/* Image card */}
+            <div className="w-full aspect-[4/3] bg-white shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] overflow-hidden">
               <img
-                src={project.image}
-                alt={project.alt}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                src={project.coverImage}
+                alt={project.coverImageAlt}
+                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
               />
             </div>
-            <div className="flex flex-col gap-1 font-medium">
-              <span className="text-[#737373] text-[11px] uppercase tracking-widest">
+
+            {/* Caption */}
+            <div className="flex flex-col gap-[6px]">
+              <span className="text-[#737373] text-[10px] font-semibold uppercase tracking-[0.16em]">
                 Featured Work
               </span>
-              <div className="flex items-center justify-between">
-                <p className="text-[#222841] text-[15px] group-hover:text-[#00a223] transition-colors">
-                  {project.title}
+              <div className="flex items-baseline justify-between gap-4">
+                <p className="text-[#222841] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">
+                  {project.name}
                 </p>
-                <p className="text-[#222841] text-[15px] shrink-0">
+                <p className="text-[#737373] text-[13px] font-normal shrink-0">
                   {project.year}
                 </p>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
