@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { getNextProject, getProjectBySlug, type CaseStudySection } from "../data/projects";
+import { getNextProject, getProjectBySlug, type CaseStudySection, type CardColumn } from "../data/projects";
 
 // ─── Placeholder image block ─────────────────────────────────────────────────
 
@@ -45,6 +45,40 @@ function PlaceholderImage({ label, aspect = "wide" }: PlaceholderProps) {
   );
 }
 
+// ─── Impact / Challenge card grid ────────────────────────────────────────────
+
+function CardGrid({ columns }: { columns: CardColumn[] }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {columns.map((col) => (
+        <div key={col.label} className="flex flex-col gap-3">
+          <span
+            className={`text-[10px] font-semibold uppercase tracking-[0.16em] ${
+              col.variant === "positive" ? "text-[#2d7a3a]" : "text-[#a63030]"
+            }`}
+          >
+            {col.label}
+          </span>
+          <div className="flex flex-col gap-2">
+            {col.items.map((item) => (
+              <div
+                key={item}
+                className={`px-4 py-3 text-[13px] leading-[1.6] ${
+                  col.variant === "positive"
+                    ? "bg-[#edf7ef] text-[#1e4d27] border border-[#c3e6cb]"
+                    : "bg-[#fdf0f0] text-[#5a1f1f] border border-[#f5c6c6]"
+                }`}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ─── Case study section block ────────────────────────────────────────────────
 
 interface SectionBlockProps {
@@ -72,13 +106,33 @@ function SectionBlock({ section, index }: SectionBlockProps) {
             {section.body}
           </p>
 
-          {section.imageLayout === "single" && (
-            <PlaceholderImage label={section.imageMeta} aspect="wide" />
+          {section.cardColumns && section.cardColumns.length > 0 && (
+            <CardGrid columns={section.cardColumns} />
           )}
 
-          {section.imageLayout === "double" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {!section.cardColumns && section.imageLayout === "single" && (
+            section.image ? (
+              <img
+                src={section.image}
+                alt={section.imageMeta ?? section.title}
+                className="w-full h-auto object-cover"
+              />
+            ) : (
               <PlaceholderImage label={section.imageMeta} aspect="wide" />
+            )
+          )}
+
+          {!section.cardColumns && section.imageLayout === "double" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {section.image ? (
+                <img
+                  src={section.image}
+                  alt={section.imageMeta ?? section.title}
+                  className="w-full h-auto object-cover"
+                />
+              ) : (
+                <PlaceholderImage label={section.imageMeta} aspect="wide" />
+              )}
               <PlaceholderImage label={section.imageMeta} aspect="wide" />
             </div>
           )}
