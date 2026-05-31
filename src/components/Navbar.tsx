@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar() {
+  const { pathname } = useLocation();
+  const isAbout = pathname === "/about";
+
+  const activeClass = "text-[#00a223] text-[11px] font-semibold uppercase tracking-[0.14em] hover:opacity-60 transition-opacity duration-200";
+  const inactiveClass = "text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em] hover:text-[#222841] transition-colors duration-200";
+
   return (
     <header className="flex items-center justify-between py-10">
       {/* Left: name + title */}
@@ -17,13 +23,13 @@ export default function Navbar() {
       <nav className="flex items-center gap-10">
         <Link
           to="/#work"
-          className="text-[#00a223] text-[11px] font-semibold uppercase tracking-[0.14em] hover:opacity-60 transition-opacity duration-200"
+          className={isAbout ? inactiveClass : activeClass}
         >
           Work
         </Link>
         <Link
-          to="/#about"
-          className="text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em] hover:text-[#222841] transition-colors duration-200"
+          to="/about"
+          className={isAbout ? activeClass : inactiveClass}
         >
           About
         </Link>
