@@ -12,6 +12,7 @@ export interface CaseStudySection {
   imageLayout?: "single" | "double";
   imageMeta?: string; // short descriptor shown inside placeholder
   image?: string; // real image path; when set, rendered instead of placeholder
+  image2?: string; // second image for double layout
   cardColumns?: CardColumn[]; // when set, renders a card grid instead of an image
 }
 
@@ -257,9 +258,9 @@ export const projects: Project[] = [
       {
         title: "Building Your Dream Team",
         body: "The main feature for team leaders was the simulation. You would pick a client project, see who was available, filter by skills and desire to work on that specific type of project, and assemble your team. Once built, you could run a simulation to see how well the team's skills matched what the project actually required. The radar chart made skill gaps visible at a glance, so there was no guessing about whether a team could realistically deliver.",
-        imageLayout: "double",
+        imageLayout: "single",
         imageMeta: "Team simulation — employee overview and skill radar",
-        image: "/watchson/simulation-1.png",
+        image: "/watchson/dream-team.png",
       },
       {
         title: "Player Scores & Skill Profiles",

@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { getNextProject, getProjectBySlug, type CaseStudySection, type CardColumn } from "../data/projects";
@@ -45,6 +46,52 @@ function PlaceholderImage({ label, aspect = "wide" }: PlaceholderProps) {
   );
 }
 
+// ─── Lightbox ────────────────────────────────────────────────────────────────
+
+function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-10"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-6 text-white/70 hover:text-white text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors"
+        aria-label="Close"
+      >
+        Close ✕
+      </button>
+      <img
+        src={src}
+        alt={alt}
+        className="max-w-full max-h-full object-contain shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      />
+    </div>
+  );
+}
+
+// ─── Clickable image ──────────────────────────────────────────────────────────
+
+function ZoomableImage({ src, alt, onOpen }: { src: string; alt: string; onOpen: (src: string, alt: string) => void }) {
+  return (
+    <div className="relative group cursor-zoom-in" onClick={() => onOpen(src, alt)}>
+      <img src={src} alt={alt} className="w-full h-auto object-cover" />
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+        <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-[10px] font-semibold uppercase tracking-[0.16em] bg-black/50 px-3 py-1.5">
+          Expand
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // ─── Impact / Challenge card grid ────────────────────────────────────────────
 
 function CardGrid({ columns }: { columns: CardColumn[] }) {
@@ -84,9 +131,10 @@ function CardGrid({ columns }: { columns: CardColumn[] }) {
 interface SectionBlockProps {
   section: CaseStudySection;
   index: number;
+  onOpenImage: (src: string, alt: string) => void;
 }
 
-function SectionBlock({ section, index }: SectionBlockProps) {
+function SectionBlock({ section, index, onOpenImage }: SectionBlockProps) {
   return (
     <div className="py-12 border-t border-[#e4e8f0]">
       <div className="flex flex-col lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
@@ -112,10 +160,10 @@ function SectionBlock({ section, index }: SectionBlockProps) {
 
           {!section.cardColumns && section.imageLayout === "single" && (
             section.image ? (
-              <img
+              <ZoomableImage
                 src={section.image}
                 alt={section.imageMeta ?? section.title}
-                className="w-full h-auto object-cover"
+                onOpen={onOpenImage}
               />
             ) : (
               <PlaceholderImage label={section.imageMeta} aspect="wide" />
@@ -125,15 +173,23 @@ function SectionBlock({ section, index }: SectionBlockProps) {
           {!section.cardColumns && section.imageLayout === "double" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {section.image ? (
-                <img
+                <ZoomableImage
                   src={section.image}
                   alt={section.imageMeta ?? section.title}
-                  className="w-full h-auto object-cover"
+                  onOpen={onOpenImage}
                 />
               ) : (
                 <PlaceholderImage label={section.imageMeta} aspect="wide" />
               )}
-              <PlaceholderImage label={section.imageMeta} aspect="wide" />
+              {section.image2 ? (
+                <ZoomableImage
+                  src={section.image2}
+                  alt={section.imageMeta ?? section.title}
+                  onOpen={onOpenImage}
+                />
+              ) : (
+                <PlaceholderImage label={section.imageMeta} aspect="wide" />
+              )}
             </div>
           )}
         </div>
@@ -146,6 +202,10 @@ function SectionBlock({ section, index }: SectionBlockProps) {
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>();
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const openImage = useCallback((src: string, alt: string) => setLightbox({ src, alt }), []);
+  const closeImage = useCallback(() => setLightbox(null), []);
+
   if (!slug) {
     return <Navigate to="/" replace />;
   }
@@ -160,6 +220,7 @@ export default function ProjectPage() {
 
   return (
     <div className="min-h-screen bg-[#f9fbff]">
+      {lightbox && <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={closeImage} />}
       <div className="max-w-[1280px] mx-auto px-10 md:px-16 pb-24">
         <Navbar />
 
@@ -293,7 +354,7 @@ export default function ProjectPage() {
                     </span>
                   </div>
                   {project.sections.map((section, i) => (
-                    <SectionBlock key={section.title} section={section} index={i} />
+                    <SectionBlock key={section.title} section={section} index={i} onOpenImage={openImage} />
                   ))}
                 </div>
               )}
