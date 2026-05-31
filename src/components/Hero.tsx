@@ -11,7 +11,7 @@ export default function Hero() {
         </p>
 
         {/* Floating avatar */}
-        <div className="absolute -right-16 top-0 animate-[float_4s_ease-in-out_infinite]">
+        <div className="absolute -top-16 left-0 animate-[float_4s_ease-in-out_infinite]">
           <img
             src="/avatar.png"
             alt="Viktor Dopke"
