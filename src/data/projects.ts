@@ -66,10 +66,19 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Blindspot explores how note-taking can feel less rigid and more human. The product helps people capture ideas quickly and revisit them with context, especially when attention is limited or fragmented.",
-    coverImage: "/img-watchson.png",
-    coverImageAlt: "Brand-forward product campaign with lilac background.",
+    coverImage: "/img-blindspot.png",
+    coverImageAlt: "Blindspot brand identity and product screens collage.",
     images: [],
     tags: ["Mobile App", "Brand", "UX Writing"],
+    sections: [
+      {
+        title: "In Motion",
+        body: "A quick look at how the core interaction feels in practice.",
+        imageLayout: "single",
+        imageMeta: "Blindspot app interaction",
+        image: "/blindspot-gifmock.png",
+      },
+    ],
   },
   {
     slug: "ingrid",
@@ -168,7 +177,7 @@ export const projects: Project[] = [
       },
     ],
     outcome:
-      "At the end of the project we presented the full product concept and styleguide to the client. Going back through the original list of challenges, we could show how each one had been addressed. Tiered warning flows replaced guesswork with clear courses of action. Onboarding went from nonexistent to structured and supported. The new visual language made the product feel credible at international level. All of it pointing toward the $7M cost reduction target the business had set at the start.",
+      "At the end of the project we presented the full product concept and styleguide to the client. Going back through the original list of challenges, we could show how each one had been addressed. Tiered warning flows replaced guesswork with clear courses of action. Onboarding went from nonexistent to structured and supported. The new visual language made the product feel credible at international level. One number stood out: the onboarding call, which normally ran over an hour and often needed a follow-up, came down to 25 minutes. New technicians were able to follow the guided steps, work through warning scenarios, and act on recommendations entirely within the mockup. All of it pointing toward the $7M cost reduction target the business had set at the start.",
     outcomeStats: [
       { value: "$7M", label: "Target subscription cost reduction" },
       { value: "75%", label: "Increase in onboarding speed" },
@@ -246,7 +255,7 @@ export const projects: Project[] = [
     overview:
       "Watchson rethinks internal team allocation with a more engaging, game-like approach. I worked on balancing playful mechanics with professional clarity so stakeholders could plan resources efficiently.",
     coverImage: "/img-watchson.png",
-    coverImageAlt: "Illustrated branding composition with product typography.",
+    coverImageAlt: "Watchson simulation interface displayed on a floating laptop against a dark background.",
     images: [],
     tags: ["HR Tech", "Gamification", "Service Design"],
     challenge:
