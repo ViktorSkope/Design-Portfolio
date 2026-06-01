@@ -33,14 +33,14 @@ const socials = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#f9fbff]">
+    <div className="min-h-screen bg-[#f9fbff] dark:bg-[#0d1017]">
       <div className="max-w-[1280px] mx-auto px-10 md:px-16 pb-24">
         <Navbar />
 
         <main className="pt-12">
           <Link
             to="/"
-            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] hover:text-[#222841] transition-colors"
+            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560] hover:text-[#222841] dark:hover:text-[#c8cfe8] transition-colors"
           >
             ← Back
           </Link>
@@ -59,29 +59,29 @@ export default function AboutPage() {
             {/* Content */}
             <div className="flex flex-col gap-10 pt-2">
               <div className="flex flex-col gap-3">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
                   About
                 </span>
-                <h1 className="text-[36px] md:text-[48px] leading-[1.05] tracking-[-0.03em] text-[#222841] font-medium">
+                <h1 className="text-[36px] md:text-[48px] leading-[1.05] tracking-[-0.03em] text-[#222841] dark:text-[#c8cfe8] font-medium">
                   Viktor Dopke
                 </h1>
-                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#adb5c8]">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#adb5c8] dark:text-[#2e3650]">
                   Product Designer · Curitiba, Brazil
                 </p>
               </div>
 
               <div className="flex flex-col gap-4 max-w-[560px]">
-                <p className="text-[15px] leading-[1.8] text-[#3a3f55]">
+                <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
                   I design digital products with a focus on clarity, usefulness, and the kind of detail that makes things feel considered. My work spans B2B platforms, consumer apps, and internal tools, usually somewhere between the mess of discovery and the satisfaction of shipping something that works.
                 </p>
-                <p className="text-[15px] leading-[1.8] text-[#3a3f55]">
+                <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
                   I care about understanding problems before solving them, working closely with engineers and product teams, and making sure the people actually using a product are never an afterthought. When I am not designing I am probably reading about things I have no practical use for, or spending too much time on a side project nobody asked for.
                 </p>
               </div>
 
               {/* Socials */}
               <div className="flex flex-col gap-3">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
                   Find me on
                 </span>
                 <div className="flex flex-wrap gap-3">
@@ -91,7 +91,7 @@ export default function AboutPage() {
                       href={s.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 border border-[#e4e8f0] text-[12px] font-medium text-[#3a3f55] hover:border-[#222841] hover:text-[#222841] transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 border border-[#e4e8f0] dark:border-[#1a1f2e] text-[12px] font-medium text-[#3a3f55] dark:text-[#6b7591] hover:border-[#222841] dark:hover:border-[#c8cfe8] hover:text-[#222841] dark:hover:text-[#c8cfe8] transition-colors"
                     >
                       {s.icon}
                       {s.label}
@@ -101,13 +101,13 @@ export default function AboutPage() {
               </div>
 
               {/* Contact */}
-              <div className="flex flex-col gap-3 pt-2 border-t border-[#e4e8f0]">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
+              <div className="flex flex-col gap-3 pt-2 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
                   Get in touch
                 </span>
                 <a
                   href="mailto:vikdopke@gmail.com"
-                  className="text-[15px] text-[#222841] font-medium hover:text-[#00a223] transition-colors"
+                  className="text-[15px] text-[#222841] dark:text-[#c8cfe8] font-medium hover:text-[#00a223] dark:hover:text-[#00a223] transition-colors"
                 >
                   vikdopke@gmail.com
                 </a>

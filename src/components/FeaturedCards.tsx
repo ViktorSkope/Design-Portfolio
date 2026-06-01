@@ -14,7 +14,7 @@ export default function FeaturedCards() {
             className="flex flex-col gap-4 group cursor-pointer"
           >
             {/* Image card */}
-            <div className="w-full aspect-[4/3] bg-white shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] overflow-hidden">
+            <div className="w-full aspect-[4/3] bg-white dark:bg-[#13172200] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.4)] overflow-hidden">
               <img
                 src={project.coverImage}
                 alt={project.coverImageAlt}
@@ -24,14 +24,14 @@ export default function FeaturedCards() {
 
             {/* Caption */}
             <div className="flex flex-col gap-[6px]">
-              <span className="text-[#737373] text-[10px] font-semibold uppercase tracking-[0.16em]">
+              <span className="text-[#737373] dark:text-[#3d4560] text-[10px] font-semibold uppercase tracking-[0.16em]">
                 Featured Work
               </span>
               <div className="flex items-baseline justify-between gap-4">
-                <p className="text-[#222841] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">
+                <p className="text-[#222841] dark:text-[#c8cfe8] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">
                   {project.name}
                 </p>
-                <p className="text-[#737373] text-[13px] font-normal shrink-0">
+                <p className="text-[#737373] dark:text-[#3d4560] text-[13px] font-normal shrink-0">
                   {project.year}
                 </p>
               </div>

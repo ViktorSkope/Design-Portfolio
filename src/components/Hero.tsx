@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section id="about" className="pb-16 lg:pb-0">
       <div className="relative inline-block max-w-[520px]">
-        <p className="text-[#222841] text-[28px] md:text-[32px] font-medium leading-[1.18] tracking-[-0.5px]">
+        <p className="text-[#222841] dark:text-[#c8cfe8] text-[28px] md:text-[32px] font-medium leading-[1.18] tracking-[-0.5px]">
           I&apos;m a{" "}
           <span className="text-[#00a223]">Brazilian</span>{" "}
           Product Designer with 10+ years working around the occasional design
@@ -15,7 +15,7 @@ export default function Hero() {
           <img
             src="/avatar.png"
             alt="Viktor Dopke"
-            className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-white"
+            className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-white dark:ring-[#0d1017]"
           />
         </div>
       </div>
