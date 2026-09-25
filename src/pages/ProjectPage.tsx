@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import ImageCarousel from "../components/ImageCarousel";
+import ImageMosaic from "../components/ImageMosaic";
 import { getNextProject, getProjectBySlug, type CaseStudySection, type CardColumn, type Project } from "../data/projects";
 
 // ─── Placeholder image block ─────────────────────────────────────────────────
@@ -189,18 +190,33 @@ function ContentRow({ label, children }: { label: string; children: React.ReactN
   );
 }
 
+// Full-width section with its label on top. Shared by the sections that sit
+// on the page's three-column grid so their edges line up.
+const threeColGrid = "grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-12";
+
+function StackedSection({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <section className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+      <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+        {label}
+      </span>
+      {children}
+    </section>
+  );
+}
+
 function MyRole({ role }: { role: NonNullable<Project["myRole"]> }) {
   return (
-    <ContentRow label="My Role">
-      <div className="flex flex-col gap-6 max-w-[680px]">
+    <StackedSection label="My Role">
+      <div className={threeColGrid}>
         <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
           {role.summary}
         </p>
-        <ul className="flex flex-col border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+        <ul className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-0 content-start">
           {role.points.map((point) => (
             <li
               key={point}
-              className="flex gap-4 py-3 border-b border-[#e4e8f0] dark:border-[#1a1f2e] text-[15px] leading-[1.6] text-[#222841] dark:text-[#c8cfe8]"
+              className="flex gap-4 py-3 border-t border-[#e4e8f0] dark:border-[#1a1f2e] text-[15px] leading-[1.6] text-[#222841] dark:text-[#c8cfe8]"
             >
               <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#00a223]" />
               {point}
@@ -208,7 +224,7 @@ function MyRole({ role }: { role: NonNullable<Project["myRole"]> }) {
           ))}
         </ul>
       </div>
-    </ContentRow>
+    </StackedSection>
   );
 }
 
@@ -295,6 +311,25 @@ export default function ProjectPage() {
               </p>
             )}
           </section>
+
+          {project.comparisons?.map((comparison) => (
+            <section key={comparison.after} className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+              <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+                {comparison.label}
+              </span>
+              <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
+                <BeforeAfterSlider
+                  before={comparison.before}
+                  after={comparison.after}
+                  beforeAlt={comparison.beforeAlt}
+                  afterAlt={comparison.afterAlt}
+                />
+              </div>
+              <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
+                {comparison.caption}
+              </p>
+            </section>
+          ))}
 
           {/* ── Case study content ─────────────────────────────────── */}
           {isCaseStudy ? (
@@ -388,15 +423,45 @@ export default function ProjectPage() {
             </>
           )}
 
+          {project.pitch && (
+            <section className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+              <div className={threeColGrid}>
+                {project.pitch.map((block, i) => (
+                  <div key={block.label} className="flex flex-col gap-4">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+                      <span className="text-[#00a223]">{String(i + 1).padStart(2, "0")}</span> · {block.label}
+                    </span>
+                    <h3 className="text-[18px] font-medium leading-[1.35] tracking-[-0.2px] text-[#222841] dark:text-[#c8cfe8] text-balance">
+                      {block.headline}
+                    </h3>
+                    <ul className="flex flex-col gap-3">
+                      {block.points.map((point) => (
+                        <li key={point} className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {project.mosaic && (
+            <StackedSection label={project.mosaic.label}>
+              <ImageMosaic items={project.mosaic.items} onOpenImage={openImage} />
+            </StackedSection>
+          )}
+
           {project.gallery && (
-            <ContentRow label={project.gallery.label}>
+            <StackedSection label={project.gallery.label}>
               <div className="flex flex-col gap-8 min-w-0">
                 <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
                   {project.gallery.description}
                 </p>
                 <ImageCarousel items={project.gallery.items} onOpenImage={openImage} />
               </div>
-            </ContentRow>
+            </StackedSection>
           )}
 
           {/* Footer: tags + next project */}

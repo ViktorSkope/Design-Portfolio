@@ -38,6 +38,26 @@ export interface Project {
     summary: string;
     points: string[];
   };
+  // Optional extra before/after sliders shown after the role section
+  comparisons?: {
+    label: string;
+    before: string;
+    after: string;
+    beforeAlt: string;
+    afterAlt: string;
+    caption: string;
+  }[];
+  // Optional challenge / approach / solution summary shown as columns
+  pitch?: {
+    label: string;
+    headline: string;
+    points: string[];
+  }[];
+  // Optional image mosaic; the first item is shown largest
+  mosaic?: {
+    label: string;
+    items: { src: string; alt: string; title: string }[];
+  };
   // Optional secondary image carousel shown at the end of the page
   gallery?: {
     label: string;
@@ -85,6 +105,67 @@ export const projects: Project[] = [
         "Defined design principles based on the product team's strategy",
         "Built and documented a design system with guidelines, tokens and variables",
         "Scaled that system through new themed features, company acquisitions and a full rebrand",
+      ],
+    },
+    comparisons: [
+      {
+        label: "Campaign Editor",
+        before: "/athos/editor-before.webp",
+        after: "/athos/editor-after.webp",
+        beforeAlt: "Original Edit Visual Merchandising Campaign page with a floating boosting rules panel over the product grid and two stacked navigation bars.",
+        afterAlt: "Redesigned Campaign Editor with a single icon navigation, a docked Product Boosting Rules panel and a compact product grid.",
+        caption:
+          "This change reflected years of customer support tickets on navigational queries made by the users, culminating in one single navigation profile solution, tested and backed by the users.",
+      },
+    ],
+    pitch: [
+      {
+        label: "The Challenge",
+        headline: "Redesign a product hundreds of companies already work in, without adding friction.",
+        points: [
+          "Every change had to improve usability for teams with years of habits in the old console.",
+        ],
+      },
+      {
+        label: "The Approach",
+        headline: "Keep navigation familiar and make setup linear.",
+        points: [
+          "Users are seasoned marketers who want to spend as little time in the platform as possible, so the navigation stayed recognizable.",
+          "Setup tasks scattered across the system became linear wizards that show what's configured and what's missing.",
+        ],
+      },
+      {
+        label: "The Solution",
+        headline: "Redesign at the component level to ship fast.",
+        points: [
+          "Instead of rebuilding screens one by one, we changed core components, so engineers knew exactly what changed and where it applied.",
+          "Matching our library to MUI gave developers a head start while we researched and mapped bottlenecks.",
+        ],
+      },
+    ],
+    mosaic: {
+      label: "Visual Results",
+      items: [
+        {
+          src: "/athos/dashboard.webp",
+          title: "Dashboard",
+          alt: "Redesigned Athos Commerce dashboard with quick links, search performance, catalog sync status and category performance.",
+        },
+        {
+          src: "/athos/manage-features.webp",
+          title: "Manage Features",
+          alt: "Manage Features settings page with grouped feature toggles for search, merchandising and personalization.",
+        },
+        {
+          src: "/athos/hybrid-search.webp",
+          title: "Hybrid Search",
+          alt: "Hybrid Search overview page explaining AI-powered keyword and vector search, with an Enable on Storefront button.",
+        },
+        {
+          src: "/athos/recommendations.webp",
+          title: "Recommendation Profile Editor",
+          alt: "Recommendation profile editor with a precision slider on the left and a live recommended products preview on the right.",
+        },
       ],
     },
     gallery: {
