@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import WorkList from "../components/WorkList";
+import FeaturedProject from "../components/FeaturedProject";
 import FeaturedCards from "../components/FeaturedCards";
 
 export default function HomePage() {
@@ -10,12 +11,12 @@ export default function HomePage() {
         <Navbar />
 
         <main>
-          <div className="flex flex-col lg:grid lg:grid-cols-[46%_54%] lg:gap-20 pt-20 pb-24">
+          <div className="flex flex-col gap-16 lg:gap-20 pt-20 pb-24">
             <Hero />
             <WorkList />
           </div>
 
-          <div className="border-t border-[#e4e8f0] dark:border-[#1a1f2e] mb-16" />
+          <FeaturedProject slug="athos-commerce" title="Athos Commerce redesign" />
           <FeaturedCards />
         </main>
       </div>

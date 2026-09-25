@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
-import { getProjectsByCategory, projectCategories } from "../data/projects";
+import { getHighlightedProject, projectCategories } from "../data/projects";
 
 export default function WorkList() {
   return (
-    <section id="work" className="flex flex-col gap-12">
-      {projectCategories.map((category, categoryIdx) => {
-        const items = getProjectsByCategory(category);
+    <section
+      id="work"
+      className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-12 items-start"
+    >
+      {projectCategories.map((category) => {
+        const item = getHighlightedProject(category);
+        if (!item) return null;
 
         return (
           <div key={category}>
@@ -17,31 +21,18 @@ export default function WorkList() {
               <div className="flex-1 h-px bg-[#e4e8f0] dark:bg-[#1a1f2e]" />
             </div>
 
-            {/* Work items */}
-            <div className="flex flex-col">
-              {items.map((item, itemIdx) => (
-                <div key={item.slug}>
-                  <Link
-                    to={`/work/${item.slug}`}
-                    className="grid grid-cols-[1fr_1.4fr] gap-6 py-4 group cursor-pointer"
-                  >
-                    <p className="text-[#222841] dark:text-[#c8cfe8] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">
-                      {item.name}
-                    </p>
-                    <p className="text-[#737373] dark:text-[#4d5570] text-[13px] font-normal leading-snug">
-                      {item.tagline}
-                    </p>
-                  </Link>
-                  {itemIdx < items.length - 1 && (
-                    <div className="h-px bg-[#eef0f5] dark:bg-[#151929]" />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {categoryIdx === projectCategories.length - 1 && (
-              <div className="h-px bg-[#e4e8f0] dark:bg-[#1a1f2e] mt-0" />
-            )}
+            {/* Work item */}
+            <Link
+              to={`/work/${item.slug}`}
+              className="flex flex-col gap-1.5 py-4 group cursor-pointer"
+            >
+              <p className="text-[#222841] dark:text-[#c8cfe8] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">
+                {item.name}
+              </p>
+              <p className="text-[#737373] dark:text-[#4d5570] text-[13px] font-normal leading-snug">
+                {item.tagline}
+              </p>
+            </Link>
           </div>
         );
       })}

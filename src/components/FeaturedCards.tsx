@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
-import { getProjectsByCategory } from "../data/projects";
+import { getMoreWorkProjects } from "../data/projects";
 
 export default function FeaturedCards() {
-  const featuredProjects = getProjectsByCategory("Featured Work");
+  const moreWork = getMoreWorkProjects();
+  if (moreWork.length === 0) return null;
 
   return (
     <section className="pb-28">
+      <div className="flex items-center gap-4 mb-8">
+        <h2 className="text-[#737373] dark:text-[#3d4560] text-[10px] font-semibold uppercase tracking-[0.16em] shrink-0">
+          More Work
+        </h2>
+        <div className="flex-1 h-px bg-[#e4e8f0] dark:bg-[#1a1f2e]" />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-10">
-        {featuredProjects.map((project) => (
+        {moreWork.map((project) => (
           <Link
             key={project.slug}
             to={`/work/${project.slug}`}
@@ -25,7 +33,7 @@ export default function FeaturedCards() {
             {/* Caption */}
             <div className="flex flex-col gap-[6px]">
               <span className="text-[#737373] dark:text-[#3d4560] text-[10px] font-semibold uppercase tracking-[0.16em]">
-                Featured Work
+                {project.category}
               </span>
               <div className="flex items-baseline justify-between gap-4">
                 <p className="text-[#222841] dark:text-[#c8cfe8] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">

@@ -313,6 +313,22 @@ export function getProjectsByCategory(category: ProjectCategory): Project[] {
   return projects.filter((project) => project.category === category);
 }
 
+// The top project of each category, shown in the home page list.
+export function getHighlightedProject(category: ProjectCategory): Project | undefined {
+  return getProjectsByCategory(category)[0];
+}
+
+// "More Work" thumbnails: every project not highlighted in the list, followed
+// by the highlighted Featured Work project so it also gets a thumbnail.
+export function getMoreWorkProjects(): Project[] {
+  const highlighted = new Set(
+    projectCategories.map((category) => getHighlightedProject(category)?.slug),
+  );
+  const featured = getHighlightedProject("Featured Work");
+  const rest = projects.filter((project) => !highlighted.has(project.slug));
+  return featured ? [...rest, featured] : rest;
+}
+
 export function getNextProject(currentSlug: string): Project {
   const index = projects.findIndex((project) => project.slug === currentSlug);
   if (index === -1 || index === projects.length - 1) {
