@@ -206,7 +206,7 @@ export const projects: Project[] = [
     slug: "blindspot",
     name: "Blindspot",
     tagline: "A personal knowledge space for busy and distracted minds.",
-    year: "2023",
+    year: "2025",
     category: "Side Quests",
     role: "Product Designer",
     overview:
