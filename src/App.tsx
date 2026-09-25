@@ -4,6 +4,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import HomePage from "./pages/HomePage";
 import ProjectPage from "./pages/ProjectPage";
 import AboutPage from "./pages/AboutPage";
+import ContactButton from "./components/ContactButton";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/work/:slug" element={<ProjectPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
+        <ContactButton />
       </BrowserRouter>
     </ThemeProvider>
   );

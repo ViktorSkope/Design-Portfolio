@@ -6,7 +6,7 @@ import FeaturedCards from "../components/FeaturedCards";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#f9fbff] dark:bg-[#0d1017]">
+    <div className="min-h-screen pb-24 md:pb-28 bg-[#f9fbff] dark:bg-[#0d1017]">
       <div className="max-w-[1280px] mx-auto px-10 md:px-16">
         <Navbar />
 

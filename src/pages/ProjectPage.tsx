@@ -244,7 +244,7 @@ export default function ProjectPage() {
   const isCaseStudy = Boolean(project.challenge || project.sections?.length);
 
   return (
-    <div className="min-h-screen bg-[#f9fbff] dark:bg-[#0d1017]">
+    <div className="min-h-screen pb-24 md:pb-28 bg-[#f9fbff] dark:bg-[#0d1017]">
       {lightbox && <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={closeImage} />}
       <div className="max-w-[1280px] mx-auto px-10 md:px-16 pb-24">
         <Navbar />
