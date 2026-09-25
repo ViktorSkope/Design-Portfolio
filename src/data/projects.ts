@@ -93,8 +93,8 @@ export const projects: Project[] = [
     role: "Lead Product Designer",
     overview:
       "Athos Commerce is currently in early access and this is where most of my time goes right now. The platform already has hundreds of shoppers using it daily, which means the design decisions I make have to respect what people already know and how they already work. My role as Lead Product Designer is to untangle the more complex interaction patterns, understand where familiarity ends and friction begins, and carry that knowledge into a new and revised console that is currently in the works. It is the kind of problem I find genuinely interesting: not starting from scratch, but making something better without losing what people already trust.",
-    coverImage: "/img-athos.png",
-    coverImageAlt: "Athos Commerce dashboard home screen showing search performance and category data.",
+    coverImage: "/athos/thumbnail.webp",
+    coverImageAlt: "Redesigned Athos Commerce dashboard in a device frame, showing quick links, search performance, catalog sync and category performance.",
     images: [],
     tags: ["Enterprise", "Product Design", "Design Systems"],
     myRole: {
