@@ -70,9 +70,9 @@ export interface Project {
     after: string;
     beforeAlt: string;
     afterAlt: string;
-    // Shown under the slider; replaces the overview paragraph when set
-    caption?: string;
   };
+  // Shown under the cover image or slider; replaces the overview paragraph when set
+  coverCaption?: string;
   // Extended case study fields
   platform?: string;
   duration?: string;
@@ -198,9 +198,9 @@ export const projects: Project[] = [
       after: "/athos/after.webp",
       beforeAlt: "Original Personalization Settings page with a dense, gray table layout and nested side navigation.",
       afterAlt: "Redesigned Personalization Settings page with tabbed rules, a cleaner Boosted Products table and Contextual Groups editor.",
-      caption:
-        "Athos Commerce is in early access, and hundreds of shoppers already use it every day. The redesign has to respect how they work: untangle complex interactions, find where familiarity turns into friction, and carry that into a new console without losing what people already trust.",
     },
+    coverCaption:
+      "Athos Commerce is in early access, and hundreds of shoppers already use it every day. The redesign has to respect how they work: untangle complex interactions, find where familiarity turns into friction, and carry that into a new console without losing what people already trust.",
   },
   {
     slug: "blindspot",
@@ -229,96 +229,107 @@ export const projects: Project[] = [
       "Ingrid builds autonomous harvesting equipment and needed a platform where field technicians could monitor and control combines from a distance. The software existed, but it was rough. I was brought in to redesign it from the ground up, making it something people could actually use without a manual in hand.",
     coverImage: "/ingrid/cover.png",
     coverImageAlt: "Ingrid platform dashboard on a tablet held by a hand.",
+    coverCaption:
+      "Ingrid builds autonomous harvesters and needed a platform for field technicians to monitor and control combines remotely. The existing software was hard to use without a manual in hand, so the product was designed again from the ground up. The product name and branding were changed under NDA.",
     images: [],
     tags: ["Product Design", "Agritech", "Dashboard", "UX Research"],
-    challenge:
-      "Most of the people using this platform were hired from rural areas with little background in software. They needed to respond fast when a machine threw a warning, but the interface gave them almost nothing to go on. There was no clear path to action, no sense of urgency in how alerts were shown, and no onboarding to speak of. When things went wrong, technicians had to call someone rather than solve it themselves. On top of that, getting new staff trained was expensive, so every rough onboarding experience had a direct cost.",
-    approach:
-      "We spent two weeks talking to stakeholders and the technical team before touching any design. Those conversations shaped two clear bets: if we made onboarding actually usable, could we bring down the cost of training new staff? And if we redesigned how warnings were shown, could we stop technicians from missing things that turn into bigger problems? Those two questions guided everything that followed.",
-    sections: [
+    myRole: {
+      summary:
+        "Ingrid had working software but no product design behind it. As Product Design Lead, I took the platform from discovery to a validated concept and styleguide in 3 months:",
+      points: [
+        "Ran a two-week discovery with stakeholders and the technical team",
+        "Mapped the core user journeys and tested wireframes with real technicians",
+        "Defined tiered warning flows and a guided onboarding",
+        "Led a one-week visual identity sprint that produced a full styleguide and UI kit",
+      ],
+    },
+    pitch: [
       {
-        title: "Discovery Workshop",
-        body: "The first two weeks were entirely about listening. We ran sessions with stakeholders and the technical team to understand what they expected from this redesign and what was making the current product painful to work with. By the end we had a clear picture of where the real problems were, and a shared sense of what success would look like.",
-        imageLayout: "single",
-        imageMeta: "Discovery workshop — stakeholder sessions",
-        image: "/ingrid/discovery-workshop.png",
-      },
-      {
-        title: "Impact & Challenges",
-        body: "The sessions surfaced things that mattered to the business and things that were making daily work harder for users. Keeping both sides visible helped us avoid designing for one while ignoring the other.",
-        cardColumns: [
-          {
-            label: "Impact",
-            variant: "positive",
-            items: [
-              "Reduce $7M in subscription costs from a competitor's product",
-              "Improve user relationship with the software and decrease training times by at least 50%",
-              "Stimulate preventive maintenance from site-level managers by giving them predictive data insights",
-              "Increase company presence and value perception in international meet-ups",
-            ],
-          },
-          {
-            label: "Challenges",
-            variant: "negative",
-            items: [
-              "Collaborators are hired from remote countryside areas and are not tech-savvy with terminal configurations",
-              "Acquisition costs to move people from city areas to the countryside to train staff is high",
-              "Users have trouble with recommended actions during warnings about the machine's health",
-              "Lack of preventive maintenance drives repair costs high",
-            ],
-          },
+        label: "The Challenge",
+        headline: "Give field workers with little software experience a tool they can use without calling for help.",
+        points: [
+          "Most technicians were hired from rural areas, and training new staff there was expensive.",
+          "Warnings gave no sense of urgency or next step, so small issues turned into costly repairs.",
         ],
       },
       {
-        title: "Main User Journeys",
-        body: "Discovery gave us the three things technicians actually needed the software to do: keep an eye on machine health, stay on top of routes and equipment, and pull production data when they needed it. Simple on paper, but the existing product made all three harder than they should have been. These became the backbone of every screen we designed.",
-        imageLayout: "single",
-        imageMeta: "Main journeys — user stories and interface overview",
-        image: "/ingrid/main-journeys.png",
+        label: "The Approach",
+        headline: "Listen first, then place two testable bets.",
+        points: [
+          "Two weeks of stakeholder and technical sessions came before any design work.",
+          "Bet one: usable onboarding lowers training costs. Bet two: clearer warnings stop technicians from missing critical failures.",
+          "Low-fidelity wireframes went in front of real technicians to find where they got stuck.",
+        ],
       },
       {
-        title: "Wireframes & Hypothesis Testing",
-        body: "Low-fidelity wireframes let us test the logic before committing to anything visual. We put them in front of real technicians and watched where they got stuck.",
-        imageLayout: "single",
-        imageMeta: "Low-fidelity wireframes — operational team testing",
-        image: "/ingrid/wireframes-testing.png",
-      },
-      {
-        title: "Design Bets",
-        body: "The tests pointed us toward two clear directions. A longer onboarding with built-in support and a FAQ helped people who had never used anything like this before actually find their footing. For warnings, we stopped treating everything as equally urgent. Different severities got different flows, so a technician facing a critical failure knew exactly what to do without having to call anyone.",
-        imageLayout: "single",
-        imageMeta: "Design bets — validated hypotheses",
-        image: "/ingrid/design-bets.png",
-      },
-      {
-        title: "User Flow & Feature Planning",
-        body: "Once we knew what worked, we mapped out every screen and how they connected. Each one was documented with the features it needed and the paths a user could take from it. Design and engineering used that map to build a shared delivery sheet, so both teams knew what was coming and in what order.",
-        imageLayout: "single",
-        imageMeta: "User flow — turning tasks into features",
-        image: "/ingrid/user-flow.png",
-      },
-      {
-        title: "Visual Identity",
-        body: "The company needed a visual identity that matched where the product was going. In one week, we ran a workshop with stakeholders, gathered visual references, aligned on a direction, and put together a full styleguide with components, typography, and a UI kit. Quick, but intentional.",
-        imageLayout: "single",
-        imageMeta: "Visual identity workshops — styleguide creation",
-        image: "/ingrid/visual-identity.png",
-      },
-      {
-        title: "Visual Design",
-        body: "The final product opens on a map with every active combine in view. Machine health and alerts read instantly at a glance. Warning states are color-coded by severity so technicians know what needs attention right now versus what can wait. It looks like a modern piece of software, because it finally is one.",
-        imageLayout: "single",
-        imageMeta: "High-fidelity visual design — Ingrid platform",
-        image: "/ingrid/visual-design.png",
+        label: "The Solution",
+        headline: "Guided onboarding and warnings tiered by severity.",
+        points: [
+          "A longer onboarding with built-in support and a FAQ helped first-time users find their way.",
+          "Each warning level got its own flow, so technicians knew what to do in a critical failure without waiting for assistance.",
+          "A map-first home screen shows every active combine and its health at a glance.",
+        ],
       },
     ],
     outcome:
-      "At the end of the project we presented the full product concept and styleguide to the client. Going back through the original list of challenges, we could show how each one had been addressed. Tiered warning flows replaced guesswork with clear courses of action. Onboarding went from nonexistent to structured and supported. The new visual language made the product feel credible at international level. One number stood out: the onboarding call, which normally ran over an hour and often needed a follow-up, came down to 25 minutes. New technicians were able to follow the guided steps, work through warning scenarios, and act on recommendations entirely within the mockup. All of it pointing toward the $7M cost reduction target the business had set at the start.",
+      "The onboarding call dropped from over an hour, often with a follow-up, to 25 minutes. New technicians followed the guided steps and worked through warning scenarios on their own, moving the business toward its $7M cost reduction target.",
     outcomeStats: [
       { value: "$7M", label: "Target subscription cost reduction" },
-      { value: "75%", label: "Increase in onboarding speed" },
+      { value: "58%", label: "Less time in onboarding calls" },
       { value: "1 week", label: "Visual identity sprint" },
     ],
+    mosaic: {
+      label: "Visual Results",
+      items: [
+        {
+          src: "/ingrid/visual-design.png",
+          title: "Map & Onboarding",
+          alt: "Ingrid platform screens: a map view with active combines and a warning card, and a home screen with a guided setup panel.",
+        },
+        {
+          src: "/ingrid/visual-identity.png",
+          title: "Visual Identity",
+          alt: "Visual identity workshop board with reference collages used to build the Ingrid styleguide.",
+        },
+      ],
+    },
+    gallery: {
+      label: "Behind the Work",
+      description:
+        "Each step narrowed the problem before any visual design started, from discovery sessions to a delivery plan shared with engineering.",
+      items: [
+        {
+          src: "/ingrid/discovery-workshop.png",
+          alt: "Discovery workshop board from stakeholder sessions.",
+          caption: "Discovery workshop. Two weeks of sessions with stakeholders and the technical team to agree on what success looked like.",
+        },
+        {
+          src: "/ingrid/impact-challenges.png",
+          alt: "Workshop takeaways on sticky notes, split into Impact and Challenges.",
+          caption: "Workshop takeaways, split into business impact and user challenges so neither was designed for at the expense of the other.",
+        },
+        {
+          src: "/ingrid/main-journeys.png",
+          alt: "Main user journeys with user stories and interface overview.",
+          caption: "Three core journeys: monitor machine health, manage routes and equipment, and pull production data.",
+        },
+        {
+          src: "/ingrid/wireframes-testing.png",
+          alt: "Low-fidelity wireframes used in tests with the operational team.",
+          caption: "Low-fidelity wireframes tested with technicians to check the logic before any visual design.",
+        },
+        {
+          src: "/ingrid/design-bets.png",
+          alt: "Design bets slide showing the onboarding and warning hypotheses with their results.",
+          caption: "The two bets that came out of testing: guided onboarding and warning flows based on severity.",
+        },
+        {
+          src: "/ingrid/user-flow.png",
+          alt: "User flow mapping every screen and its features.",
+          caption: "Screen-by-screen user flow, used by design and engineering to build a shared delivery plan.",
+        },
+      ],
+    },
   },
   {
     slug: "whirl",
@@ -333,63 +344,89 @@ export const projects: Project[] = [
       "Whirl started as a personal itch. Me and a group of friends were constantly trying to figure out what was happening around our city and always ended up defaulting to the same spots. We first sketched the idea in 2016 and properly redesigned it in 2020. The concept is an AI assistant that learns your tastes and suggests restaurants, activities, and local experiences worth trying nearby. It is also a case study for mobile UI design and some early thinking on what AI chat interaction could look like.",
     coverImage: "/img-whirl.png",
     coverImageAlt: "Two smartphone mockups showcasing Whirl interface.",
+    coverCaption:
+      "Whirl started with a group of friends who kept ending up at the same spots. It's an AI assistant that learns your tastes and suggests restaurants, activities and local experiences nearby. First sketched in 2016 and redesigned in 2020, it became a case study in mobile UI and early AI chat interaction.",
     images: [],
     tags: ["Consumer Mobile", "AI", "Interaction Design", "Passion Project"],
-    challenge:
-      "Most recommendation apps give you the same popular places everyone already knows. They feel generic because they are. We wanted something that actually reflected your tastes and where you were at that moment, not a ranked list of tourist favorites. The other side of the problem was for small and newer businesses that rarely showed up in those lists at all. A better discovery experience could mean real visibility for places that deserved attention but had no way to compete for it.",
-    approach:
-      "We focused on two things: making the recommendation feel personal from the first interaction, and making the experience of choosing something fun rather than overwhelming. Natural language was a big part of that. Instead of filtering menus and dropdowns, we explored what it would feel like to just describe what you were in the mood for and let the app figure out the rest. That shaped the whole product direction.",
-    sections: [
+    myRole: {
+      summary:
+        "A passion project with no client brief, which made it a place to experiment. As Product Designer, I:",
+      points: [
+        "Took the concept from 2016 sketches to a full 2020 redesign",
+        "Designed the conversational AI flow and the core interaction patterns",
+        "Built the mobile UI across discovery, comparison and venue screens",
+        "Created the visual identity: logo, color system and iOS presence",
+      ],
+    },
+    pitch: [
       {
-        title: "The Core Idea",
-        body: "The app uses a mix of natural language processing, location data, and machine learning to understand what a user actually wants at a given moment. You tell Whirl what you are in the mood for in plain language and it comes back with options that fit. Over time it gets better at understanding your preferences without you having to spell them out every time.",
-        imageLayout: "single",
-        imageMeta: "Core concept — AI chat and recommendation flow",
-        image: "/whirl/ai-chat.png",
+        label: "The Challenge",
+        headline: "Recommendations that reflect your taste, not a list of the usual favorites.",
+        points: [
+          "Most apps surface the same popular places everyone already knows.",
+          "Small and newer venues rarely show up at all, with no way to compete for attention.",
+        ],
       },
       {
-        title: "Sorting Cards",
-        body: "One of the features I spent the most time on was sorting cards. The idea was to let users compare options side by side in a way that felt more like flipping through possibilities than scanning a list. You see two options at once, pick the one that appeals more, and the one you dismissed disappears. It is a simple mechanic but it makes the act of choosing feel lighter and more decisive.",
-        imageLayout: "single",
-        imageMeta: "Sorting cards — comparison interaction",
-        image: "/whirl/sorting-cards.png",
+        label: "The Approach",
+        headline: "Make it personal from the first interaction, and make choosing fun.",
+        points: [
+          "Natural language replaces filters: describe what you're in the mood for and let the app figure out the rest.",
+          "Location and past behavior sharpen suggestions over time, so users don't have to repeat themselves.",
+        ],
       },
       {
-        title: "Short Video Discovery",
-        body: "We also added short video clips tied to specific dishes or activities, ordered by how relevant they were to your location and past behavior. The thinking was that a ten-second video of a meal tells you more than any description ever could. It also gave local businesses a way to show up in a format that actually attracted attention.",
-        imageLayout: "single",
-        imageMeta: "Video discovery — location-sorted feed",
-        image: "/whirl/video-discovery.png",
-      },
-      {
-        title: "Supporting Local Businesses",
-        body: "One thing we cared about from the start was giving smaller and newer venues a fair shot. Whirl is not just a tool for users. It is also a surface where a restaurant that opened six months ago can get seen by someone a few blocks away who would have never found them otherwise. The recommendation logic was designed with that in mind, not just surfacing what was already popular.",
-        imageLayout: "single",
-        imageMeta: "Business discovery — emerging venue exposure",
-        image: "/whirl/local-businesses.png",
-      },
-      {
-        title: "Mobile UI Design",
-        body: "Since this was a passion project with no client constraints, it became a space to experiment. I explored navigation patterns, card interactions, and conversational UI in ways that a typical client brief would not allow. The 2020 redesign brought the visual language together into something cohesive, building on early sketches from 2016 with a cleaner sense of structure and interaction.",
-        imageLayout: "single",
-        imageMeta: "Mobile UI — screens and interaction patterns",
-        image: "/whirl/app-screens.png",
-      },
-      {
-        title: "Visual Identity",
-        body: "The logo was designed to look handwritten and spiraling, referencing the name and the idea of wandering through a city. The color system kept things fresh and approachable: lime, sunrise yellow, mint green, and grassy green. The iOS icon and home screen presence were part of the design too, because how an app looks on your phone before you open it still matters.",
-        imageLayout: "single",
-        imageMeta: "Visual identity — logo, color system, and iOS presence",
-        image: "/whirl/brand.png",
+        label: "The Solution",
+        headline: "An AI assistant with lightweight ways to decide.",
+        points: [
+          "Sorting cards show two options at once. Pick one and the other disappears.",
+          "Short videos of dishes and activities, ordered by relevance to where you are.",
+          "Recommendation logic that gives newer local businesses a fair shot, not just the popular spots.",
+        ],
       },
     ],
     outcome:
-      "Whirl never shipped as a commercial product, and that was never really the goal. What it gave me was a long-form design problem to work through on my own terms. It pushed me to think seriously about conversational UI and AI-assisted experiences well before those became mainstream topics in product design. The sorting card mechanic and the short video feed are both ideas I still think about when working on recommendation and discovery problems.",
+      "Whirl never shipped commercially, and that wasn't the goal. It was a long-form design problem that pushed me into conversational UI and AI-assisted experiences before they were mainstream. The sorting cards and short video feed still shape how I approach recommendation and discovery problems.",
     outcomeStats: [
       { value: "2016", label: "Original concept" },
       { value: "2020", label: "Full redesign" },
       { value: "5", label: "Core interaction patterns explored" },
     ],
+    mosaic: {
+      label: "Visual Results",
+      items: [
+        {
+          src: "/whirl/app-screens.png",
+          title: "Onboarding & Discovery",
+          alt: "Three Whirl screens: onboarding, the discovery home with nearby places, and a venue page with a reservation button.",
+        },
+        {
+          src: "/whirl/ai-chat.png",
+          title: "AI Chat",
+          alt: "Whirl AI chat screens where a user asks for a pet-friendly place and gets a restaurant suggestion.",
+        },
+        {
+          src: "/whirl/sorting-cards.png",
+          title: "Sorting Cards",
+          alt: "Whirl sorting cards for categories like City Tour, Gallery, Coffee Place and Outdoors Restaurant.",
+        },
+        {
+          src: "/whirl/video-discovery.png",
+          title: "Video Discovery",
+          alt: "Whirl short video feed of dishes and activities sorted by location.",
+        },
+        {
+          src: "/whirl/local-businesses.png",
+          title: "Local Businesses",
+          alt: "Whirl screens highlighting newer local venues to nearby users.",
+        },
+        {
+          src: "/whirl/brand.png",
+          title: "Visual Identity",
+          alt: "Whirl visual identity: handwritten spiral logo, iOS app icon and a color system of lime, sunrise yellow, mint green and grassy green.",
+        },
+      ],
+    },
   },
   {
     slug: "watchson",
@@ -404,42 +441,79 @@ export const projects: Project[] = [
       "Watchson started as an internal problem we had at the agency. We needed a better way to understand how our developers and designers were being allocated across client projects, what skills each person had or was trying to build, and how to bring the HR team closer to the reality of what the dev team actually did day to day. It was also an opportunity to involve junior developers in a real product from the start, giving them a place to contribute ideas and learn what it feels like to ship something fast.",
     coverImage: "/img-watchson.png",
     coverImageAlt: "Watchson simulation interface displayed on a floating laptop against a dark background.",
+    coverCaption:
+      "Watchson started as an internal problem at a design agency: seeing how developers and designers were allocated across client projects, what skills each person had or wanted to build, and bringing HR closer to the dev team's daily work. It also gave junior developers a real product to ship.",
     images: [],
     tags: ["HR Tech", "Gamification", "Internal Tooling", "Agency"],
-    challenge:
-      "The core problem was not the allocation itself. The problem was getting people to actually open the tool. Developers and team leads would use it once, get reminded, use it again, and then forget about it entirely. No amount of Slack messages was going to fix that. We needed the platform to be something people wanted to come back to, not something they felt obligated to update.",
-    approach:
-      "Me and a lead developer started spending time with the dev team outside of work meetings. Most of those conversations happened over gaming sessions. Our developers were deep into strategy games, deckbuilders, and FIFA. That told us something. If we could bring even a fraction of what made those games compelling into Watchson, we might actually solve the engagement problem. So we asked: what if this was a football manager?",
-    sections: [
+    myRole: {
+      summary:
+        "An internal product built with the team it served. As Product Designer, working alongside a lead developer, I:",
+      points: [
+        "Ran informal research with the dev team, much of it over gaming sessions",
+        "Turned the football manager idea into team simulations and player profiles",
+        "Designed the skill scoring system and growth tracking for HR",
+        "Created the duck mascot and the product's visual tone",
+      ],
+    },
+    pitch: [
       {
-        title: "Building Your Dream Team",
-        body: "The main feature for team leaders was the simulation. You would pick a client project, see who was available, filter by skills and desire to work on that specific type of project, and assemble your team. Once built, you could run a simulation to see how well the team's skills matched what the project actually required. The radar chart made skill gaps visible at a glance, so there was no guessing about whether a team could realistically deliver.",
-        imageLayout: "single",
-        imageMeta: "Team simulation — employee overview and skill radar",
-        image: "/watchson/dream-team.png",
+        label: "The Challenge",
+        headline: "Get people to open an allocation tool without being reminded.",
+        points: [
+          "Developers and leads used it once, got reminded, used it again, then forgot about it.",
+          "More Slack reminders weren't going to fix it. The tool had to be something people wanted to come back to.",
+        ],
       },
       {
-        title: "Player Scores & Skill Profiles",
-        body: "Each person on the team had their own profile where they could edit their skills and rate themselves. Those ratings fed into an overall score, similar to a player card in a football game. You could also flag skills you were actively trying to learn, which gave the HR team visibility into where people wanted to grow rather than just where they already were. The duck mascot showed up throughout the platform as a friendly presence, keeping the tone light without making it feel like a toy.",
-        imageLayout: "single",
-        imageMeta: "Skill selection screen — player profile and scoring",
-        image: "/watchson/skills.png",
+        label: "The Approach",
+        headline: "Borrow from the games the team already loved.",
+        points: [
+          "Research happened outside meetings, mostly over strategy games, deckbuilders and FIFA.",
+          "That led to one question: what if allocation worked like a football manager?",
+        ],
       },
       {
-        title: "The Duck",
-        body: "Every good internal tool needs a mascot. Ours came from my lead developer's favourite animal: the duck. Ducks are famously versatile, calm on the surface and working hard underneath, which felt like a pretty accurate description of a good developer. The star-shaped logo represented individual skill ratings, and the duck showed up in different roles and costumes throughout the app depending on context. We spent an unreasonable amount of time designing purple ducks. No regrets.",
-        imageLayout: "single",
-        imageMeta: "Watchson mascot — illustrated duck character set",
-        image: "/watchson/ducks.png",
+        label: "The Solution",
+        headline: "Team building as a game, backed by real skill data.",
+        points: [
+          "Leads assemble a team for a client project and run a simulation. A radar chart shows skill gaps at a glance.",
+          "Everyone keeps a player card with self-rated skills and the skills they're learning, so HR can see where people want to grow.",
+          "A duck mascot keeps the tone light without making the tool feel like a toy.",
+        ],
       },
     ],
     outcome:
-      "Watchson became something the team actually talked about. The gamification angle worked because it came from the team themselves rather than being imposed on them. Junior developers shipped real features and had opinions on the product direction. Team leaders had a clearer picture of capacity and skill distribution than they had ever had before. And we finally had a reason to stop sending reminder messages about updating availability.",
+      "Watchson became something the team talked about. The game angle came from the team rather than a mandate, so it stuck. Junior developers shipped real features, team leads saw capacity and skills clearly for the first time, and the reminder messages stopped.",
     outcomeStats: [
       { value: "100%", label: "Internal adoption" },
       { value: "3", label: "Junior devs who shipped features" },
       { value: "∞", label: "Ducks illustrated" },
     ],
+    mosaic: {
+      label: "Visual Results",
+      items: [
+        {
+          src: "/watchson/dream-team.png",
+          title: "Team Simulation",
+          alt: "Watchson simulation screen with an employee list and a radar chart comparing project requirements with team skills.",
+        },
+        {
+          src: "/watchson/dream-team-1.png",
+          title: "Skill Selection",
+          alt: "Watchson new simulation step for choosing the skills a project needs, with the duck mascot in the side panel.",
+        },
+        {
+          src: "/watchson/skills.png",
+          title: "Player Profile",
+          alt: "Watchson skill selection screen where each person rates their skills to build a player score.",
+        },
+        {
+          src: "/watchson/ducks.png",
+          title: "The Duck",
+          alt: "Set of illustrated purple duck mascots in different roles and costumes.",
+        },
+      ],
+    },
   },
 ];
 

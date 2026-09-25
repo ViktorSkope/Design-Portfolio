@@ -305,9 +305,9 @@ export default function ProjectPage() {
                 <img src={project.coverImage} alt={project.coverImageAlt} className="w-full h-auto object-cover" />
               )}
             </div>
-            {project.coverComparison?.caption && (
+            {project.coverCaption && (
               <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
-                {project.coverComparison.caption}
+                {project.coverCaption}
               </p>
             )}
           </section>
@@ -398,7 +398,7 @@ export default function ProjectPage() {
           ) : (
             <>
               {/* The overview is skipped when the cover caption already introduces the project */}
-              {!project.coverComparison?.caption && (
+              {!project.coverCaption && (
                 <>
                   <div className="border-t border-[#e4e8f0] dark:border-[#1a1f2e]" />
                   <section className="py-12 max-w-[860px]">
@@ -445,6 +445,30 @@ export default function ProjectPage() {
                 ))}
               </div>
             </section>
+          )}
+
+          {!isCaseStudy && project.outcome && (
+            <StackedSection label="Outcome">
+              <div className="flex flex-col gap-10">
+                <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+                  {project.outcome}
+                </p>
+                {project.outcomeStats && project.outcomeStats.length > 0 && (
+                  <div className={threeColGrid}>
+                    {project.outcomeStats.map((stat) => (
+                      <div key={stat.label} className="flex flex-col gap-2 pt-4 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+                        <span className="text-[32px] font-medium tracking-[-0.02em] leading-none text-[#222841] dark:text-[#c8cfe8]">
+                          {stat.value}
+                        </span>
+                        <span className="text-[11px] uppercase tracking-[0.12em] text-[#737373] dark:text-[#3d4560]">
+                          {stat.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </StackedSection>
           )}
 
           {project.mosaic && (
