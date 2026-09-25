@@ -33,6 +33,26 @@ export interface Project {
   coverImageAlt: string;
   images: string[];
   tags: string[];
+  // Optional "My Role" section: a short intro followed by scannable points
+  myRole?: {
+    summary: string;
+    points: string[];
+  };
+  // Optional secondary image carousel shown at the end of the page
+  gallery?: {
+    label: string;
+    description: string;
+    items: { src: string; alt: string; caption: string }[];
+  };
+  // Optional before/after slider shown in place of the cover image
+  coverComparison?: {
+    before: string;
+    after: string;
+    beforeAlt: string;
+    afterAlt: string;
+    // Shown under the slider; replaces the overview paragraph when set
+    caption?: string;
+  };
   // Extended case study fields
   platform?: string;
   duration?: string;
@@ -57,6 +77,49 @@ export const projects: Project[] = [
     coverImageAlt: "Athos Commerce dashboard home screen showing search performance and category data.",
     images: [],
     tags: ["Enterprise", "Product Design", "Design Systems"],
+    myRole: {
+      summary:
+        "Athos had a robust but complex platform that needed a full overhaul. I was hired as Lead Designer to start the design team and lead the redesign. Over the last 3 years I have:",
+      points: [
+        "Designed the new UI end to end",
+        "Defined design principles based on the product team's strategy",
+        "Built and documented a design system with guidelines, tokens and variables",
+        "Scaled that system through new themed features, company acquisitions and a full rebrand",
+      ],
+    },
+    gallery: {
+      label: "Behind the Work",
+      description:
+        "The redesign started from zero, so the groundwork mattered as much as the screens: documented components, variables that support theming, and flows organized for handoff.",
+      items: [
+        {
+          src: "/athos/ds-notification.png",
+          alt: "Athos design system documentation for the Notification component, showing snackbar variants and actionable savebars.",
+          caption:
+            "Component documentation. Each pattern lists its variants, when to use it and how it behaves, like these snackbars and savebars.",
+        },
+        {
+          src: "/athos/variables.png",
+          alt: "Athos Design Kit variables in Figma, showing palette tokens across Athos Light and Athos FM themes.",
+          caption:
+            "Variables in the Athos Design Kit. Color, spacing, shape and type tokens with theme modes, so new brands and a full rebrand didn't mean redrawing screens.",
+        },
+        {
+          src: "/athos/flows.png",
+          alt: "Figma canvas with Context feature flows grouped by Pages, Segment and Location, marked ready for dev.",
+          caption:
+            "Feature flows grouped by context and marked ready for dev, so engineering always knew which screens were final.",
+        },
+      ],
+    },
+    coverComparison: {
+      before: "/athos/before.webp",
+      after: "/athos/after.webp",
+      beforeAlt: "Original Personalization Settings page with a dense, gray table layout and nested side navigation.",
+      afterAlt: "Redesigned Personalization Settings page with tabbed rules, a cleaner Boosted Products table and Contextual Groups editor.",
+      caption:
+        "Athos Commerce is in early access, and hundreds of shoppers already use it every day. The redesign has to respect how they work: untangle complex interactions, find where familiarity turns into friction, and carry that into a new console without losing what people already trust.",
+    },
   },
   {
     slug: "blindspot",

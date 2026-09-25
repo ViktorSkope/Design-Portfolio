@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { getNextProject, getProjectBySlug, type CaseStudySection, type CardColumn } from "../data/projects";
+import BeforeAfterSlider from "../components/BeforeAfterSlider";
+import ImageCarousel from "../components/ImageCarousel";
+import { getNextProject, getProjectBySlug, type CaseStudySection, type CardColumn, type Project } from "../data/projects";
 
 // ─── Placeholder image block ─────────────────────────────────────────────────
 
@@ -187,6 +189,29 @@ function ContentRow({ label, children }: { label: string; children: React.ReactN
   );
 }
 
+function MyRole({ role }: { role: NonNullable<Project["myRole"]> }) {
+  return (
+    <ContentRow label="My Role">
+      <div className="flex flex-col gap-6 max-w-[680px]">
+        <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
+          {role.summary}
+        </p>
+        <ul className="flex flex-col border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+          {role.points.map((point) => (
+            <li
+              key={point}
+              className="flex gap-4 py-3 border-b border-[#e4e8f0] dark:border-[#1a1f2e] text-[15px] leading-[1.6] text-[#222841] dark:text-[#c8cfe8]"
+            >
+              <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#00a223]" />
+              {point}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </ContentRow>
+  );
+}
+
 // ─── Main page ───────────────────────────────────────────────────────────────
 
 export default function ProjectPage() {
@@ -253,8 +278,22 @@ export default function ProjectPage() {
           {/* Cover image */}
           <section className="pb-12">
             <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
-              <img src={project.coverImage} alt={project.coverImageAlt} className="w-full h-auto object-cover" />
+              {project.coverComparison ? (
+                <BeforeAfterSlider
+                  before={project.coverComparison.before}
+                  after={project.coverComparison.after}
+                  beforeAlt={project.coverComparison.beforeAlt}
+                  afterAlt={project.coverComparison.afterAlt}
+                />
+              ) : (
+                <img src={project.coverImage} alt={project.coverImageAlt} className="w-full h-auto object-cover" />
+              )}
             </div>
+            {project.coverComparison?.caption && (
+              <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
+                {project.coverComparison.caption}
+              </p>
+            )}
           </section>
 
           {/* ── Case study content ─────────────────────────────────── */}
@@ -265,6 +304,8 @@ export default function ProjectPage() {
                   {project.overview}
                 </p>
               </ContentRow>
+
+              {project.myRole && <MyRole role={project.myRole} />}
 
               {project.challenge && (
                 <ContentRow label="The Challenge">
@@ -321,12 +362,18 @@ export default function ProjectPage() {
             </>
           ) : (
             <>
-              <div className="border-t border-[#e4e8f0] dark:border-[#1a1f2e]" />
-              <section className="py-12 max-w-[860px]">
-                <p className="text-[16px] leading-[1.75] text-[#222841] dark:text-[#9ba3be]">
-                  {project.overview}
-                </p>
-              </section>
+              {/* The overview is skipped when the cover caption already introduces the project */}
+              {!project.coverComparison?.caption && (
+                <>
+                  <div className="border-t border-[#e4e8f0] dark:border-[#1a1f2e]" />
+                  <section className="py-12 max-w-[860px]">
+                    <p className="text-[16px] leading-[1.75] text-[#222841] dark:text-[#9ba3be]">
+                      {project.overview}
+                    </p>
+                  </section>
+                </>
+              )}
+              {project.myRole && <MyRole role={project.myRole} />}
               {project.images.length > 0 && (
                 <section className="pb-12">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -339,6 +386,17 @@ export default function ProjectPage() {
                 </section>
               )}
             </>
+          )}
+
+          {project.gallery && (
+            <ContentRow label={project.gallery.label}>
+              <div className="flex flex-col gap-8 min-w-0">
+                <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+                  {project.gallery.description}
+                </p>
+                <ImageCarousel items={project.gallery.items} onOpenImage={openImage} />
+              </div>
+            </ContentRow>
           )}
 
           {/* Footer: tags + next project */}
