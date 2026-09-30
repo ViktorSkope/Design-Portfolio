@@ -74,8 +74,6 @@ export interface Project {
   // Shown under the cover image or slider; replaces the overview paragraph when set
   coverCaption?: string;
   // Extended case study fields
-  platform?: string;
-  duration?: string;
   challenge?: string;
   approach?: string;
   sections?: CaseStudySection[];
@@ -205,7 +203,7 @@ export const projects: Project[] = [
   {
     slug: "blindspot",
     name: "Blindspot",
-    tagline: "A personal knowledge space for busy and distracted minds.",
+    tagline: "Building an AI notetaker tool and personal knowledge space for distracted minds using Cursor.",
     year: "2025",
     category: "Side Quests",
     role: "Product Designer",
@@ -223,8 +221,6 @@ export const projects: Project[] = [
     year: "2022",
     category: "Featured Work",
     role: "Product Design Lead",
-    platform: "Software Design",
-    duration: "3 months",
     overview:
       "Ingrid builds autonomous harvesting equipment and needed a platform where field technicians could monitor and control combines from a distance. The software existed, but it was rough. I was brought in to redesign it from the ground up, making it something people could actually use without a manual in hand.",
     coverImage: "/ingrid/cover.png",
@@ -235,7 +231,7 @@ export const projects: Project[] = [
     tags: ["Product Design", "Agritech", "Dashboard", "UX Research"],
     myRole: {
       summary:
-        "Ingrid had working software but no product design behind it. As Product Design Lead, I took the platform from discovery to a validated concept and styleguide in 3 months:",
+        "Ingrid had working software but no product design behind it. As Product Design Lead, I took the platform from discovery to a validated concept and styleguide:",
       points: [
         "Ran a two-week discovery with stakeholders and the technical team",
         "Mapped the core user journeys and tested wireframes with real technicians",
@@ -338,8 +334,6 @@ export const projects: Project[] = [
     year: "2020",
     category: "Featured Work",
     role: "Product Designer",
-    platform: "iOS & Android",
-    duration: "4 months",
     overview:
       "Whirl started as a personal itch. Me and a group of friends were constantly trying to figure out what was happening around our city and always ended up defaulting to the same spots. We first sketched the idea in 2016 and properly redesigned it in 2020. The concept is an AI assistant that learns your tastes and suggests restaurants, activities, and local experiences worth trying nearby. It is also a case study for mobile UI design and some early thinking on what AI chat interaction could look like.",
     coverImage: "/img-whirl.png",
@@ -435,8 +429,6 @@ export const projects: Project[] = [
     year: "2022",
     category: "Featured Work",
     role: "Product Designer",
-    platform: "Web App",
-    duration: "5 months",
     overview:
       "Watchson started as an internal problem we had at the agency. We needed a better way to understand how our developers and designers were being allocated across client projects, what skills each person had or was trying to build, and how to bring the HR team closer to the reality of what the dev team actually did day to day. It was also an opportunity to involve junior developers in a real product from the start, giving them a place to contribute ideas and learn what it feels like to ship something fast.",
     coverImage: "/img-watchson.png",
@@ -511,6 +503,82 @@ export const projects: Project[] = [
           src: "/watchson/ducks.png",
           title: "The Duck",
           alt: "Set of illustrated purple duck mascots in different roles and costumes.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "rho-studio",
+    name: "Rho Studio",
+    tagline: "Designing how writers and AI agents build stories together, for an a16z-backed AI game engine.",
+    year: "2023",
+    category: "Featured Work",
+    role: "Sole Product Designer",
+    overview:
+      "Series AI is building Rho Engine, an AI-native platform for game development. I designed the multiplayer workspace where writers, producers and AI agents build a story together.",
+    coverImage: "/rho/thumbnail.webp",
+    coverImageAlt: "Rho Studio home screen in dark mode, framed on a warm background, with agent shortcuts and a feed of AI-generated images.",
+    coverCaption:
+      "Series AI, backed by a16z, Bitkraft and F4 Fund, is building Rho Engine: an AI-native game development platform unveiled at GDC 2024, built so small teams can create worlds that once needed a full studio. Its users are game writers, producers and directors. Great storytellers, but most weren't AI-savvy. They needed one place to shape a story together, document it, and generate assets like concept art to back up their ideas.",
+    images: [],
+    tags: ["AI Agents", "Interaction Design", "Game Development", "Prototyping"],
+    myRole: {
+      summary:
+        "I was the only product designer on this work, hired on a fractional basis. I reported to the Founder and Creative Director and worked day to day with the front-end team. I:",
+      points: [
+        "Interviewed the Founder and Creative Director on their vision, their users and what investors needed to see",
+        "Mapped the full multichat flow, from building an agent to bringing it into a shared channel",
+        "Designed the multichat, the plan/execute workflow and the output window",
+        "Validated mockups with engineering and presented the final vision as a prototyped flow",
+      ],
+    },
+    pitch: [
+      {
+        label: "The Challenge",
+        headline: "Design a workspace where writers and AI agents build a story together, before AI patterns existed.",
+        points: [
+          "Only chat models and basic agents existed, so there was no playbook for multiplayer AI collaboration.",
+          "With several humans and agents in one conversation, users needed to know who was speaking and trust what agents produced.",
+          "A story world is a web of connected facts. Change one detail and agents can quietly contradict the rest.",
+        ],
+      },
+      {
+        label: "The Approach",
+        headline: "Meet writers where they already work, and keep them in control.",
+        points: [
+          "A group chat, like a Slack channel. Agents are built and tested in a private 1:1 chat, then brought into a shared channel.",
+          "Every agent is labeled and only acts when called: @mention brings in one agent, /prt invites all of them to contribute.",
+          "Stories are organized like a wiki, and an output window shows what each agent is working on and which chapter, character or place it references.",
+        ],
+      },
+      {
+        label: "The Solution",
+        headline: "Plan before agents act, and protect the story's continuity.",
+        points: [
+          "A plan/execute split: agents plan with high effort, then run a low-effort execution once users approve the plan. LangChain benchmarks estimate this cuts token usage by 40–70%.",
+          "A continuity system based on atomic design. When a story element changes, everything that depends on it is flagged for the writer.",
+          "Per-agent progress signals, added after testing with engineers showed that waiting without feedback felt broken.",
+        ],
+      },
+    ],
+    outcome:
+      "My V1 vision shipped and gave the founders a working experience to show investors instead of an idea on a slide. The multichat, plan/execute workflow and output window were built on the platform, and the feature became a core part of the company's growth plan. The atomic worldbuilding model shaped how the Founder approached keeping AI-generated worlds consistent.",
+    outcomeStats: [
+      { value: "V1", label: "Vision shipped on the platform" },
+      { value: "40–70%", label: "Estimated token savings from plan/execute" },
+    ],
+    mosaic: {
+      label: "Visual Results",
+      items: [
+        {
+          src: "/rho/home.webp",
+          title: "Home",
+          alt: "Rho Studio home screen with quick actions for AI agents, a Following feed and an AI image generator result.",
+        },
+        {
+          src: "/rho/chapter.png",
+          title: "Chapter & Plan",
+          alt: "Rho Studio chapter view with generated farming tool images, a team conversation with an AI Director, and a plan panel listing tasks.",
         },
       ],
     },

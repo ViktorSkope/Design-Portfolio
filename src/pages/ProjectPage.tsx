@@ -275,8 +275,6 @@ export default function ProjectPage() {
               {[
                 { label: "Role", value: project.role },
                 { label: "Year", value: project.year },
-                ...(project.platform ? [{ label: "Platform", value: project.platform }] : []),
-                ...(project.duration ? [{ label: "Duration", value: project.duration }] : []),
               ].map((meta, i) => (
                 <div key={meta.label} className="flex items-center gap-8">
                   {i > 0 && <div className="w-px h-8 bg-[#e4e8f0] dark:bg-[#1a1f2e] hidden sm:block" />}

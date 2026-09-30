@@ -16,7 +16,12 @@ export default function HomePage() {
             <WorkList />
           </div>
 
-          <FeaturedProject slug="athos-commerce" title="Athos Commerce redesign" />
+          <FeaturedProject
+            items={[
+              { slug: "athos-commerce", title: "Athos Commerce redesign" },
+              { slug: "rho-studio" },
+            ]}
+          />
           <FeaturedCards />
         </main>
       </div>
