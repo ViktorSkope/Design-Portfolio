@@ -5,13 +5,15 @@ import { getProjectBySlug, type Project } from "../data/projects";
 export interface FeaturedItem {
   slug: string;
   title?: string;
+  // Optional description override; a "\n" in the text forces a line break
+  tagline?: string;
 }
 
 interface FeaturedProjectProps {
   items: FeaturedItem[];
 }
 
-function FeaturedSlide({ project, title }: { project: Project; title?: string }) {
+function FeaturedSlide({ project, title, tagline }: { project: Project; title?: string; tagline?: string }) {
   return (
     <Link
       to={`/work/${project.slug}`}
@@ -36,8 +38,8 @@ function FeaturedSlide({ project, title }: { project: Project; title?: string })
           {title ?? project.name}
         </h3>
 
-        <p className="text-[#737373] dark:text-[#4d5570] text-[15px] leading-relaxed">
-          {project.tagline}
+        <p className="text-[#737373] dark:text-[#4d5570] text-[15px] leading-relaxed whitespace-pre-line">
+          {tagline ?? project.tagline}
         </p>
 
         <dl className="flex flex-col gap-1 text-[13px]">
@@ -71,8 +73,10 @@ function FeaturedSlide({ project, title }: { project: Project; title?: string })
 
 export default function FeaturedProject({ items }: FeaturedProjectProps) {
   const slides = items
-    .map((item) => ({ project: getProjectBySlug(item.slug), title: item.title }))
-    .filter((slide): slide is { project: Project; title: string | undefined } => Boolean(slide.project));
+    .map((item) => ({ project: getProjectBySlug(item.slug), title: item.title, tagline: item.tagline }))
+    .filter((slide): slide is { project: Project; title: string | undefined; tagline: string | undefined } =>
+      Boolean(slide.project),
+    );
 
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -133,14 +137,14 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
         ref={trackRef}
         className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {slides.map(({ project, title }, i) => (
+        {slides.map(({ project, title, tagline }, i) => (
           <div
             key={project.slug}
             className="w-full shrink-0 snap-start"
             aria-roledescription={isCarousel ? "slide" : undefined}
             aria-label={isCarousel ? `${i + 1} of ${slides.length}` : undefined}
           >
-            <FeaturedSlide project={project} title={title} />
+            <FeaturedSlide project={project} title={title} tagline={tagline} />
           </div>
         ))}
       </div>

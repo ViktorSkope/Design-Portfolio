@@ -4,6 +4,148 @@ const EMAIL = "vikdopke@gmail.com";
 const WHATSAPP_DISPLAY = "+55 41 99500-6333";
 const WHATSAPP_URL = "https://wa.me/5541995006333";
 
+// Formspree form ID (the part after formspree.io/f/). Messages are emailed to
+// you and kept in the Formspree dashboard. While empty, the quick hello falls
+// back to opening the visitor's email app with the message pre-filled.
+const FORMSPREE_FORM_ID = "xdekrjdq";
+const MESSAGE_MAX = 1000;
+
+type SendStatus = "idle" | "sending" | "sent" | "error";
+
+function QuickHello() {
+  const [message, setMessage] = useState("");
+  const [replyTo, setReplyTo] = useState("");
+  const [honeypot, setHoneypot] = useState("");
+  const [status, setStatus] = useState<SendStatus>("idle");
+  const [errorText, setErrorText] = useState("");
+
+  const send = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = message.trim();
+    if (!text || status === "sending") return;
+
+    // Bots fill hidden fields; quietly pretend it worked
+    if (honeypot) {
+      setStatus("sent");
+      return;
+    }
+
+    if (!FORMSPREE_FORM_ID) {
+      const subject = encodeURIComponent("Hello from your portfolio");
+      const body = encodeURIComponent(replyTo ? `${text}\n\nReply to: ${replyTo}` : text);
+      window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          message: text,
+          ...(replyTo ? { email: replyTo } : {}),
+          page: window.location.pathname,
+          _subject: "Hello from your portfolio",
+        }),
+      });
+      if (!res.ok) {
+        // Formspree explains validation problems, e.g. an invalid email
+        const data = await res.json().catch(() => null);
+        const reason = data?.errors?.map((err: { message: string }) => err.message).join(" ");
+        setErrorText(reason || "");
+        setStatus("error");
+        return;
+      }
+      setStatus("sent");
+      setMessage("");
+      setReplyTo("");
+    } catch {
+      setErrorText("");
+      setStatus("error");
+    }
+  };
+
+  if (status === "sent") {
+    return (
+      <div className="px-3 py-4 flex flex-col gap-2" role="status">
+        <p className="text-[13px] font-medium text-[#222841] dark:text-[#c8cfe8]">Thanks, message received.</p>
+        <p className="text-[12px] leading-[1.5] text-[#737373] dark:text-[#6b7591]">
+          I read every note. If you left an email, I'll get back to you.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className="self-start text-[12px] font-medium text-[#00a223] hover:underline"
+        >
+          Send another
+        </button>
+      </div>
+    );
+  }
+
+  const fieldClass =
+    "w-full rounded-lg border border-[#e4e8f0] dark:border-[#1a1f2e] bg-[#f9fbff] dark:bg-[#0d1017] px-3 py-2 text-[13px] text-[#222841] dark:text-[#c8cfe8] placeholder:text-[#9aa1b5] dark:placeholder:text-[#4d5570] focus:outline-none focus:border-[#00a223] transition-colors";
+
+  return (
+    <form onSubmit={send} className="px-3 pt-1 pb-3 flex flex-col gap-2">
+      <label htmlFor="quick-hello" className="text-[13px] font-medium text-[#222841] dark:text-[#c8cfe8]">
+        Send a quick hello
+      </label>
+      <textarea
+        id="quick-hello"
+        value={message}
+        onChange={(e) => {
+          setMessage(e.target.value.slice(0, MESSAGE_MAX));
+          if (status === "error") setStatus("idle");
+        }}
+        rows={3}
+        required
+        placeholder="Feedback, a question, or just hi"
+        className={`${fieldClass} resize-none`}
+      />
+      <label htmlFor="quick-hello-email" className="sr-only">Your email (optional)</label>
+      <input
+        id="quick-hello-email"
+        type="email"
+        value={replyTo}
+        onChange={(e) => setReplyTo(e.target.value)}
+        placeholder="Your email (optional, for a reply)"
+        autoComplete="email"
+        className={fieldClass}
+      />
+      {/* Honeypot: hidden from people, tempting for bots */}
+      <input
+        type="text"
+        name="_gotcha"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+      />
+      {status === "error" && (
+        <p className="text-[12px] text-[#c0392b]" role="alert">
+          {errorText || "Couldn't send right now. Try again, or email me directly."}
+        </p>
+      )}
+      <div className="flex items-center justify-between gap-3 pt-1">
+        <span className="text-[11px] tabular-nums text-[#9aa1b5] dark:text-[#4d5570]">
+          {message.length}/{MESSAGE_MAX}
+        </span>
+        <button
+          type="submit"
+          disabled={!message.trim() || status === "sending"}
+          className="h-8 px-4 rounded-full bg-[#222841] dark:bg-[#c8cfe8] text-white dark:text-[#0d1017] text-[12px] font-medium hover:bg-[#00a223] dark:hover:bg-[#00a223] dark:hover:text-white disabled:opacity-40 disabled:hover:bg-[#222841] dark:disabled:hover:bg-[#c8cfe8] disabled:cursor-default transition-colors"
+        >
+          {status === "sending" ? "Sending…" : "Send"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 function MailIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -64,12 +206,13 @@ export default function ContactButton() {
 
   return (
     <div ref={rootRef} className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3">
-      {open && (
+      {/* Kept mounted while hidden so a half-written message survives closing */}
         <div
           id="contact-panel"
           role="dialog"
           aria-label="Contact Viktor"
-          className="w-[280px] rounded-xl bg-white dark:bg-[#131722] border border-[#e4e8f0] dark:border-[#1a1f2e] shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] p-2"
+          hidden={!open}
+          className="w-[min(320px,calc(100vw-40px))] rounded-xl bg-white dark:bg-[#131722] border border-[#e4e8f0] dark:border-[#1a1f2e] shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] p-2"
         >
           <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
             Get in touch
@@ -100,8 +243,10 @@ export default function ContactButton() {
               {copied ? "Copied" : "Copy"}
             </button>
           </div>
+
+          <div className="my-2 mx-3 h-px bg-[#e4e8f0] dark:bg-[#1a1f2e]" />
+          <QuickHello />
         </div>
-      )}
 
       <button
         type="button"

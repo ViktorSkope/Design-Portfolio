@@ -18,7 +18,11 @@ export default function HomePage() {
 
           <FeaturedProject
             items={[
-              { slug: "athos-commerce", title: "Athos Commerce redesign" },
+              {
+                slug: "athos-commerce",
+                title: "Athos Commerce redesign",
+                tagline: "Redesigning a commerce console built around\nthe habits of hundreds of active shoppers.",
+              },
               { slug: "rho-studio" },
             ]}
           />
