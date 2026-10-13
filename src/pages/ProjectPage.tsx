@@ -291,18 +291,22 @@ export default function ProjectPage() {
 
           {/* Cover image */}
           <section className="pb-12">
-            <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
-              {project.coverComparison ? (
-                <BeforeAfterSlider
-                  before={project.coverComparison.before}
-                  after={project.coverComparison.after}
-                  beforeAlt={project.coverComparison.beforeAlt}
-                  afterAlt={project.coverComparison.afterAlt}
-                />
-              ) : (
+            {project.coverComparison ? (
+              <div className="p-6 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
+                <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
+                  <BeforeAfterSlider
+                    before={project.coverComparison.before}
+                    after={project.coverComparison.after}
+                    beforeAlt={project.coverComparison.beforeAlt}
+                    afterAlt={project.coverComparison.afterAlt}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
                 <img src={project.coverImage} alt={project.coverImageAlt} className="w-full h-auto object-cover" />
-              )}
-            </div>
+              </div>
+            )}
             {project.coverCaption && (
               <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
                 {project.coverCaption}
@@ -315,13 +319,15 @@ export default function ProjectPage() {
               <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
                 {comparison.label}
               </span>
-              <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
-                <BeforeAfterSlider
-                  before={comparison.before}
-                  after={comparison.after}
-                  beforeAlt={comparison.beforeAlt}
-                  afterAlt={comparison.afterAlt}
-                />
+              <div className="p-6 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
+                <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
+                  <BeforeAfterSlider
+                    before={comparison.before}
+                    after={comparison.after}
+                    beforeAlt={comparison.beforeAlt}
+                    afterAlt={comparison.afterAlt}
+                  />
+                </div>
               </div>
               <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
                 {comparison.caption}
