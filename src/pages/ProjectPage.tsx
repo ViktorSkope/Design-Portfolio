@@ -424,6 +424,16 @@ export default function ProjectPage() {
               <div className={threeColGrid}>
                 {project.pitch.map((block, i) => (
                   <div key={block.label} className="flex flex-col gap-4">
+                    {block.illustration && (
+                      <div className="flex h-40 w-full items-center justify-center p-4">
+                        <img
+                          src={block.illustration.src}
+                          alt={block.illustration.alt}
+                          loading="lazy"
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
+                    )}
                     <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
                       <span className="text-[#CA2F00]">{String(i + 1).padStart(2, "0")}</span> · {block.label}
                     </span>

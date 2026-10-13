@@ -52,6 +52,8 @@ export interface Project {
     label: string;
     headline: string;
     points: string[];
+    // Optional line illustration shown above the label
+    illustration?: { src: string; alt: string };
   }[];
   // Optional image mosaic; the first item is shown largest
   mosaic?: {
@@ -119,6 +121,10 @@ export const projects: Project[] = [
     pitch: [
       {
         label: "The Challenge",
+        illustration: {
+          src: "/athos/walrus-challenge.png",
+          alt: "A confused walrus with a tangled scribble overhead, looking at a tablet marked NEW.",
+        },
         headline: "Redesign a product hundreds of companies already work in, without adding friction.",
         points: [
           "Every change had to improve usability for teams with years of habits in the old console.",
@@ -126,6 +132,10 @@ export const projects: Project[] = [
       },
       {
         label: "The Approach",
+        illustration: {
+          src: "/athos/walrus-approach.png",
+          alt: "A walrus gliding forward with a tilted arrow sign resting on its back, navigating with confidence.",
+        },
         headline: "Keep navigation familiar and make setup linear.",
         points: [
           "Users are seasoned marketers who want to spend as little time in the platform as possible, so the navigation stayed recognizable.",
@@ -134,6 +144,10 @@ export const projects: Project[] = [
       },
       {
         label: "The Solution",
+        illustration: {
+          src: "/athos/walrus-solution.png",
+          alt: "A walrus peeking over a row of packages, one marked with a thumbs up.",
+        },
         headline: "Redesign at the component level to ship fast.",
         points: [
           "Instead of rebuilding screens one by one, we changed core components, so engineers knew exactly what changed and where it applied.",
