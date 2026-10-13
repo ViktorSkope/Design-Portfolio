@@ -292,7 +292,7 @@ export default function ProjectPage() {
           {/* Cover image */}
           <section className="pb-12">
             {project.coverComparison ? (
-              <div className="p-6 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
+              <div className="px-[10%] py-10 md:py-14 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
                 <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
                   <BeforeAfterSlider
                     before={project.coverComparison.before}
@@ -319,7 +319,7 @@ export default function ProjectPage() {
               <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
                 {comparison.label}
               </span>
-              <div className="p-6 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
+              <div className="px-[10%] py-10 md:py-14 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
                 <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
                   <BeforeAfterSlider
                     before={comparison.before}
