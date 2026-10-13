@@ -20,7 +20,7 @@ export default function ImageMosaic({ items, onOpenImage }: ImageMosaicProps) {
           type="button"
           onClick={() => onOpenImage?.(item.src, item.alt)}
           aria-label={`Enlarge image: ${item.title}`}
-          className="group relative block aspect-[16/10] overflow-hidden bg-white dark:bg-[#131827] shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)] cursor-zoom-in"
+          className="group relative block aspect-[16/10] overflow-hidden bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)] cursor-zoom-in"
         >
           <img
             src={item.src}
@@ -28,7 +28,7 @@ export default function ImageMosaic({ items, onOpenImage }: ImageMosaicProps) {
             loading="lazy"
             className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           />
-          <span className="pointer-events-none absolute left-3 bottom-3 rounded-full bg-[#222841]/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0">
+          <span className="pointer-events-none absolute left-3 bottom-3 rounded-full bg-[#151515]/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0">
             {item.title}
           </span>
         </button>

@@ -48,7 +48,7 @@ export default function ImageCarousel({ items, onOpenImage }: ImageCarouselProps
   };
 
   const buttonClass =
-    "flex h-9 w-9 items-center justify-center border border-[#e4e8f0] dark:border-[#1a1f2e] text-[#222841] dark:text-[#c8cfe8] transition-colors hover:border-[#222841] dark:hover:border-[#c8cfe8] disabled:opacity-30 disabled:hover:border-[#e4e8f0] dark:disabled:hover:border-[#1a1f2e] disabled:cursor-default";
+    "flex h-9 w-9 items-center justify-center border border-[#E6E0D8] text-[#151515] transition-colors hover:border-[#151515] disabled:opacity-30 disabled:hover:border-[#E6E0D8] disabled:cursor-default";
 
   return (
     <div className="flex flex-col gap-5" aria-roledescription="carousel">
@@ -66,7 +66,7 @@ export default function ImageCarousel({ items, onOpenImage }: ImageCarouselProps
             <button
               type="button"
               onClick={() => onOpenImage?.(item.src, item.alt)}
-              className="group block w-full aspect-[16/10] overflow-hidden bg-white dark:bg-[#131827] shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)] cursor-zoom-in"
+              className="group block w-full aspect-[16/10] overflow-hidden bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.06)] cursor-zoom-in"
               aria-label={`Enlarge image: ${item.alt}`}
             >
               <img
@@ -76,7 +76,7 @@ export default function ImageCarousel({ items, onOpenImage }: ImageCarouselProps
                 className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
               />
             </button>
-            <figcaption className="text-[13px] leading-[1.6] text-[#737373] dark:text-[#4d5570] max-w-[560px]">
+            <figcaption className="text-[13px] leading-[1.6] text-[#737373] max-w-[560px]">
               {item.caption}
             </figcaption>
           </figure>
@@ -85,7 +85,7 @@ export default function ImageCarousel({ items, onOpenImage }: ImageCarouselProps
 
       {/* Controls */}
       <div className="flex items-center justify-between">
-        <span className="text-[11px] tabular-nums tracking-[0.12em] text-[#737373] dark:text-[#3d4560]">
+        <span className="text-[11px] tabular-nums tracking-[0.12em] text-[#737373]">
           {String(active + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
         </span>
         <div className="flex gap-2">

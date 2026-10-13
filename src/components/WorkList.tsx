@@ -15,10 +15,10 @@ export default function WorkList() {
           <div key={category}>
             {/* Section header */}
             <div className="flex items-center gap-4 mb-5">
-              <span className="text-[#737373] dark:text-[#3d4560] text-[10px] font-semibold uppercase tracking-[0.16em] shrink-0">
+              <span className="text-[#737373] text-[10px] font-semibold uppercase tracking-[0.16em] shrink-0">
                 {category}
               </span>
-              <div className="flex-1 h-px bg-[#e4e8f0] dark:bg-[#1a1f2e]" />
+              <div className="flex-1 h-px bg-[#E6E0D8]" />
             </div>
 
             {/* Work item */}
@@ -26,10 +26,10 @@ export default function WorkList() {
               to={`/work/${item.slug}`}
               className="flex flex-col gap-1.5 py-4 group cursor-pointer"
             >
-              <p className="text-[#222841] dark:text-[#c8cfe8] text-[14px] font-medium leading-snug group-hover:text-[#00a223] transition-colors duration-200">
+              <p className="text-[#151515] text-[14px] font-medium leading-snug group-hover:text-[#CA2F00] transition-colors duration-200">
                 {item.name}
               </p>
-              <p className="text-[#737373] dark:text-[#4d5570] text-[13px] font-normal leading-snug">
+              <p className="text-[#737373] text-[13px] font-normal leading-snug">
                 {item.tagline}
               </p>
             </Link>

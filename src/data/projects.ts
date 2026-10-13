@@ -99,10 +99,10 @@ export const projects: Project[] = [
       summary:
         "Athos had a robust but complex platform that needed a full overhaul. I was hired as Lead Designer to start the design team and lead the redesign. Over the last 3 years I have:",
       points: [
-        "Designed the new UI end to end",
-        "Defined design principles based on the product team's strategy",
-        "Built and documented a design system with guidelines, tokens and variables",
-        "Scaled that system through new themed features, company acquisitions and a full rebrand",
+        "Led the UI vision ahead of the brand, then adapted the variables to the rebrand with just one week of rework",
+        "Built and documented a design system of variables and tokens, later adopted by the design and front-end teams of two acquired companies",
+        "Defined the design principles that now guide how the team executes and what it holds as its standard of excellence",
+        "Built an AI workflow in Claude and Figma Make where teammates propose, analyze and test ideas in a vetted environment, making feature concepts four times faster",
       ],
     },
     comparisons: [
@@ -223,8 +223,8 @@ export const projects: Project[] = [
     role: "Product Design Lead",
     overview:
       "Ingrid builds autonomous harvesting equipment and needed a platform where field technicians could monitor and control combines from a distance. The software existed, but it was rough. I was brought in to redesign it from the ground up, making it something people could actually use without a manual in hand.",
-    coverImage: "/ingrid/cover.png",
-    coverImageAlt: "Ingrid platform dashboard on a tablet held by a hand.",
+    coverImage: "/ingrid/cover.webp",
+    coverImageAlt: "Ingrid production map: a list of harvesters with cargo and signal levels, a production chart, and a satellite map with a warning card for combine D10 about low rear tire pressure.",
     coverCaption:
       "Ingrid builds autonomous harvesters and needed a platform for field technicians to monitor and control combines remotely. The existing software was hard to use without a manual in hand, so the product was designed again from the ground up. The product name and branding were changed under NDA.",
     images: [],
@@ -336,8 +336,8 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Whirl started as a personal itch. Me and a group of friends were constantly trying to figure out what was happening around our city and always ended up defaulting to the same spots. We first sketched the idea in 2016 and properly redesigned it in 2020. The concept is an AI assistant that learns your tastes and suggests restaurants, activities, and local experiences worth trying nearby. It is also a case study for mobile UI design and some early thinking on what AI chat interaction could look like.",
-    coverImage: "/img-whirl.png",
-    coverImageAlt: "Two smartphone mockups showcasing Whirl interface.",
+    coverImage: "/whirl/cover.webp",
+    coverImageAlt: "Three Whirl app screens on a lime gradient: the sign-up screen, a discovery home with nearby places, and a venue page with a reservation button.",
     coverCaption:
       "Whirl started with a group of friends who kept ending up at the same spots. It's an AI assistant that learns your tastes and suggests restaurants, activities and local experiences nearby. First sketched in 2016 and redesigned in 2020, it became a case study in mobile UI and early AI chat interaction.",
     images: [],
@@ -431,8 +431,8 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Watchson started as an internal problem we had at the agency. We needed a better way to understand how our developers and designers were being allocated across client projects, what skills each person had or was trying to build, and how to bring the HR team closer to the reality of what the dev team actually did day to day. It was also an opportunity to involve junior developers in a real product from the start, giving them a place to contribute ideas and learn what it feels like to ship something fast.",
-    coverImage: "/img-watchson.png",
-    coverImageAlt: "Watchson simulation interface displayed on a floating laptop against a dark background.",
+    coverImage: "/watchson/cover.webp",
+    coverImageAlt: "Watchson new simulation screen on a pink and purple gradient, with an employee fit table and a radar chart comparing project requirements with team skills.",
     coverCaption:
       "Watchson started as an internal problem at a design agency: seeing how developers and designers were allocated across client projects, what skills each person had or wanted to build, and bringing HR closer to the dev team's daily work. It also gave junior developers a real product to ship.",
     images: [],

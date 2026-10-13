@@ -22,14 +22,14 @@ function PlaceholderImage({ label, aspect = "wide" }: PlaceholderProps) {
       : "aspect-[16/9]";
 
   return (
-    <div className={`w-full ${aspectClass} bg-[#f0f2f7] dark:bg-[#131827] border border-dashed border-[#cdd3e0] dark:border-[#1e2535] flex flex-col items-center justify-center gap-2`}>
+    <div className={`w-full ${aspectClass} bg-[#f0f2f7] border border-dashed border-[#cdd3e0] flex flex-col items-center justify-center gap-2`}>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#adb5c8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
         <polyline points="21 15 16 10 5 21" />
       </svg>
       {label && (
-        <span className="text-[10px] text-[#adb5c8] dark:text-[#2e3650] uppercase tracking-[0.12em] text-center px-4 leading-relaxed">
+        <span className="text-[10px] text-[#adb5c8] uppercase tracking-[0.12em] text-center px-4 leading-relaxed">
           {label}
         </span>
       )}
@@ -90,7 +90,7 @@ function CardGrid({ columns }: { columns: CardColumn[] }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
       {columns.map((col) => (
         <div key={col.label} className="flex flex-col gap-3">
-          <span className={`text-[10px] font-semibold uppercase tracking-[0.16em] ${col.variant === "positive" ? "text-[#2d7a3a] dark:text-[#4ade80]" : "text-[#a63030] dark:text-[#f87171]"}`}>
+          <span className={`text-[10px] font-semibold uppercase tracking-[0.16em] ${col.variant === "positive" ? "text-[#2d7a3a]" : "text-[#a63030]"}`}>
             {col.label}
           </span>
           <div className="flex flex-col gap-2">
@@ -99,8 +99,8 @@ function CardGrid({ columns }: { columns: CardColumn[] }) {
                 key={item}
                 className={`px-4 py-3 text-[13px] leading-[1.6] ${
                   col.variant === "positive"
-                    ? "bg-[#edf7ef] dark:bg-[#0d1f10] text-[#1e4d27] dark:text-[#86efac] border border-[#c3e6cb] dark:border-[#14532d]"
-                    : "bg-[#fdf0f0] dark:bg-[#1f0d0d] text-[#5a1f1f] dark:text-[#fca5a5] border border-[#f5c6c6] dark:border-[#7f1d1d]"
+                    ? "bg-[#edf7ef] text-[#1e4d27] border border-[#c3e6cb]"
+                    : "bg-[#fdf0f0] text-[#5a1f1f] border border-[#f5c6c6]"
                 }`}
               >
                 {item}
@@ -123,21 +123,21 @@ interface SectionBlockProps {
 
 function SectionBlock({ section, index, onOpenImage }: SectionBlockProps) {
   return (
-    <div className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+    <div className="py-12 border-t border-[#E6E0D8]">
       <div className="flex flex-col lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
         {/* Section label */}
         <div className="mb-6 lg:mb-0 pt-[2px]">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <p className="mt-2 text-[13px] font-medium text-[#222841] dark:text-[#c8cfe8] leading-snug">
+          <p className="mt-2 text-[13px] font-medium text-[#151515] leading-snug">
             {section.title}
           </p>
         </div>
 
         {/* Section content */}
         <div className="flex flex-col gap-8">
-          <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+          <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
             {section.body}
           </p>
 
@@ -177,10 +177,10 @@ function SectionBlock({ section, index, onOpenImage }: SectionBlockProps) {
 
 function ContentRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <section className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+    <section className="py-12 border-t border-[#E6E0D8]">
       <div className="flex flex-col lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
         <div className="mb-6 lg:mb-0 pt-[2px]">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
             {label}
           </span>
         </div>
@@ -196,8 +196,8 @@ const threeColGrid = "grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-12"
 
 function StackedSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <section className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
-      <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+    <section className="py-12 border-t border-[#E6E0D8]">
+      <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
         {label}
       </span>
       {children}
@@ -209,16 +209,16 @@ function MyRole({ role }: { role: NonNullable<Project["myRole"]> }) {
   return (
     <StackedSection label="My Role">
       <div className={threeColGrid}>
-        <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
+        <p className="text-[15px] leading-[1.8] text-[#151515]/80">
           {role.summary}
         </p>
         <ul className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-0 content-start">
           {role.points.map((point) => (
             <li
               key={point}
-              className="flex gap-4 py-3 border-t border-[#e4e8f0] dark:border-[#1a1f2e] text-[15px] leading-[1.6] text-[#222841] dark:text-[#c8cfe8]"
+              className="flex gap-4 py-3 border-t border-[#E6E0D8] text-[15px] leading-[1.6] text-[#151515]"
             >
-              <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#00a223]" />
+              <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#CA2F00]" />
               {point}
             </li>
           ))}
@@ -244,7 +244,7 @@ export default function ProjectPage() {
   const isCaseStudy = Boolean(project.challenge || project.sections?.length);
 
   return (
-    <div className="min-h-screen pb-24 md:pb-28 bg-[#f9fbff] dark:bg-[#0d1017]">
+    <div className="min-h-screen pb-24 md:pb-28 bg-[#F9F7F4]">
       {lightbox && <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={closeImage} />}
       <div className="max-w-[1280px] mx-auto px-10 md:px-16 pb-24">
         <Navbar />
@@ -253,20 +253,20 @@ export default function ProjectPage() {
           {/* Back nav */}
           <Link
             to="/#work"
-            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560] hover:text-[#222841] dark:hover:text-[#c8cfe8] transition-colors"
+            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] hover:text-[#151515] transition-colors"
           >
             ← Back to Work
           </Link>
 
           {/* Hero */}
           <section className="pt-8 pb-12">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
               {project.category}
             </p>
-            <h1 className="mt-3 text-[40px] md:text-[56px] leading-[1.02] tracking-[-0.03em] text-[#222841] dark:text-[#c8cfe8] font-medium">
+            <h1 className="mt-3 text-[40px] md:text-[56px] leading-[1.02] tracking-[-0.03em] text-[#151515] font-medium">
               {project.name}
             </h1>
-            <p className="mt-4 text-[18px] md:text-[20px] leading-[1.4] text-[#3a3f55] dark:text-[#6b7591] max-w-[640px] font-normal">
+            <p className="mt-4 text-[18px] md:text-[20px] leading-[1.4] text-[#151515]/80 max-w-[640px] font-normal">
               {project.tagline}
             </p>
 
@@ -277,12 +277,12 @@ export default function ProjectPage() {
                 { label: "Year", value: project.year },
               ].map((meta, i) => (
                 <div key={meta.label} className="flex items-center gap-8">
-                  {i > 0 && <div className="w-px h-8 bg-[#e4e8f0] dark:bg-[#1a1f2e] hidden sm:block" />}
+                  {i > 0 && <div className="w-px h-8 bg-[#E6E0D8] hidden sm:block" />}
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#adb5c8] dark:text-[#2e3650]">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#adb5c8]">
                       {meta.label}
                     </span>
-                    <span className="text-[13px] text-[#222841] dark:text-[#9ba3be]">{meta.value}</span>
+                    <span className="text-[13px] text-[#151515]">{meta.value}</span>
                   </div>
                 </div>
               ))}
@@ -299,20 +299,20 @@ export default function ProjectPage() {
                 afterAlt={project.coverComparison.afterAlt}
               />
             ) : (
-              <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
+              <div className="w-full bg-white shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] overflow-hidden">
                 <img src={project.coverImage} alt={project.coverImageAlt} className="w-full h-auto object-cover" />
               </div>
             )}
             {project.coverCaption && (
-              <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
+              <p className="mt-4 text-[14px] leading-[1.7] text-[#151515]/80">
                 {project.coverCaption}
               </p>
             )}
           </section>
 
           {project.comparisons?.map((comparison) => (
-            <section key={comparison.after} className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
-              <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+            <section key={comparison.after} className="py-12 border-t border-[#E6E0D8]">
+              <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
                 {comparison.label}
               </span>
               <SliderStage
@@ -321,7 +321,7 @@ export default function ProjectPage() {
                 beforeAlt={comparison.beforeAlt}
                 afterAlt={comparison.afterAlt}
               />
-              <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
+              <p className="mt-4 text-[14px] leading-[1.7] text-[#151515]/80">
                 {comparison.caption}
               </p>
             </section>
@@ -331,7 +331,7 @@ export default function ProjectPage() {
           {isCaseStudy ? (
             <>
               <ContentRow label="Overview">
-                <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+                <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
                   {project.overview}
                 </p>
               </ContentRow>
@@ -340,7 +340,7 @@ export default function ProjectPage() {
 
               {project.challenge && (
                 <ContentRow label="The Challenge">
-                  <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+                  <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
                     {project.challenge}
                   </p>
                 </ContentRow>
@@ -348,7 +348,7 @@ export default function ProjectPage() {
 
               {project.approach && (
                 <ContentRow label="My Approach">
-                  <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+                  <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
                     {project.approach}
                   </p>
                 </ContentRow>
@@ -356,8 +356,8 @@ export default function ProjectPage() {
 
               {project.sections && project.sections.length > 0 && (
                 <div>
-                  <div className="border-t border-[#e4e8f0] dark:border-[#1a1f2e] pt-12 pb-4">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+                  <div className="border-t border-[#E6E0D8] pt-12 pb-4">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
                       Process
                     </span>
                   </div>
@@ -370,17 +370,17 @@ export default function ProjectPage() {
               {project.outcome && (
                 <ContentRow label="Outcome">
                   <div className="flex flex-col gap-8 max-w-[680px]">
-                    <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
+                    <p className="text-[15px] leading-[1.8] text-[#151515]/80">
                       {project.outcome}
                     </p>
                     {project.outcomeStats && project.outcomeStats.length > 0 && (
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#e4e8f0] dark:bg-[#1a1f2e] border border-[#e4e8f0] dark:border-[#1a1f2e]">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E6E0D8] border border-[#E6E0D8]">
                         {project.outcomeStats.map((stat) => (
-                          <div key={stat.label} className="bg-[#f9fbff] dark:bg-[#0d1017] px-6 py-5 flex flex-col gap-1">
-                            <span className="text-[26px] font-medium tracking-[-0.02em] text-[#222841] dark:text-[#c8cfe8] leading-none">
+                          <div key={stat.label} className="bg-[#F9F7F4] px-6 py-5 flex flex-col gap-1">
+                            <span className="text-[26px] font-medium tracking-[-0.02em] text-[#151515] leading-none">
                               {stat.value}
                             </span>
-                            <span className="text-[11px] text-[#737373] dark:text-[#3d4560] uppercase tracking-[0.12em]">
+                            <span className="text-[11px] text-[#737373] uppercase tracking-[0.12em]">
                               {stat.label}
                             </span>
                           </div>
@@ -396,9 +396,9 @@ export default function ProjectPage() {
               {/* The overview is skipped when the cover caption already introduces the project */}
               {!project.coverCaption && (
                 <>
-                  <div className="border-t border-[#e4e8f0] dark:border-[#1a1f2e]" />
+                  <div className="border-t border-[#E6E0D8]" />
                   <section className="py-12 max-w-[860px]">
-                    <p className="text-[16px] leading-[1.75] text-[#222841] dark:text-[#9ba3be]">
+                    <p className="text-[16px] leading-[1.75] text-[#151515]">
                       {project.overview}
                     </p>
                   </section>
@@ -409,7 +409,7 @@ export default function ProjectPage() {
                 <section className="pb-12">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {project.images.map((imagePath) => (
-                      <div key={imagePath} className="bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] overflow-hidden">
+                      <div key={imagePath} className="bg-white shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] overflow-hidden">
                         <img src={imagePath} alt={`${project.name} project detail`} className="w-full h-full object-cover" />
                       </div>
                     ))}
@@ -420,19 +420,19 @@ export default function ProjectPage() {
           )}
 
           {project.pitch && (
-            <section className="py-12 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
+            <section className="py-12 border-t border-[#E6E0D8]">
               <div className={threeColGrid}>
                 {project.pitch.map((block, i) => (
                   <div key={block.label} className="flex flex-col gap-4">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
-                      <span className="text-[#00a223]">{String(i + 1).padStart(2, "0")}</span> · {block.label}
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
+                      <span className="text-[#CA2F00]">{String(i + 1).padStart(2, "0")}</span> · {block.label}
                     </span>
-                    <h3 className="text-[18px] font-medium leading-[1.35] tracking-[-0.2px] text-[#222841] dark:text-[#c8cfe8] text-balance">
+                    <h3 className="text-[18px] font-medium leading-[1.35] tracking-[-0.2px] text-[#151515] text-balance">
                       {block.headline}
                     </h3>
                     <ul className="flex flex-col gap-3">
                       {block.points.map((point) => (
-                        <li key={point} className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591]">
+                        <li key={point} className="text-[15px] leading-[1.8] text-[#151515]/80">
                           {point}
                         </li>
                       ))}
@@ -446,17 +446,17 @@ export default function ProjectPage() {
           {!isCaseStudy && project.outcome && (
             <StackedSection label="Outcome">
               <div className="flex flex-col gap-10">
-                <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+                <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
                   {project.outcome}
                 </p>
                 {project.outcomeStats && project.outcomeStats.length > 0 && (
                   <div className={threeColGrid}>
                     {project.outcomeStats.map((stat) => (
-                      <div key={stat.label} className="flex flex-col gap-2 pt-4 border-t border-[#e4e8f0] dark:border-[#1a1f2e]">
-                        <span className="text-[32px] font-medium tracking-[-0.02em] leading-none text-[#222841] dark:text-[#c8cfe8]">
+                      <div key={stat.label} className="flex flex-col gap-2 pt-4 border-t border-[#E6E0D8]">
+                        <span className="text-[32px] font-medium tracking-[-0.02em] leading-none text-[#151515]">
                           {stat.value}
                         </span>
-                        <span className="text-[11px] uppercase tracking-[0.12em] text-[#737373] dark:text-[#3d4560]">
+                        <span className="text-[11px] uppercase tracking-[0.12em] text-[#737373]">
                           {stat.label}
                         </span>
                       </div>
@@ -476,7 +476,7 @@ export default function ProjectPage() {
           {project.gallery && (
             <StackedSection label={project.gallery.label}>
               <div className="flex flex-col gap-8 min-w-0">
-                <p className="text-[15px] leading-[1.8] text-[#3a3f55] dark:text-[#6b7591] max-w-[680px]">
+                <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
                   {project.gallery.description}
                 </p>
                 <ImageCarousel items={project.gallery.items} onOpenImage={openImage} />
@@ -485,18 +485,18 @@ export default function ProjectPage() {
           )}
 
           {/* Footer: tags + next project */}
-          <div className="border-t border-[#e4e8f0] dark:border-[#1a1f2e]" />
+          <div className="border-t border-[#E6E0D8]" />
           <section className="py-10 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-wrap gap-3">
               {project.tags.map((tag) => (
-                <span key={tag} className="text-[11px] text-[#737373] dark:text-[#3d4560] uppercase tracking-[0.14em] px-3 py-2 border border-[#e4e8f0] dark:border-[#1a1f2e]">
+                <span key={tag} className="text-[11px] text-[#737373] uppercase tracking-[0.14em] px-3 py-2 border border-[#E6E0D8]">
                   {tag}
                 </span>
               ))}
             </div>
             <Link
               to={`/work/${nextProject.slug}`}
-              className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#222841] dark:text-[#c8cfe8] hover:text-[#00a223] dark:hover:text-[#00a223] transition-colors shrink-0"
+              className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#151515] hover:text-[#CA2F00] transition-colors shrink-0"
             >
               Next: {nextProject.name} →
             </Link>

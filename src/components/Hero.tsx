@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section id="about">
       <div className="relative inline-block max-w-[880px]">
-        <p className="text-[#222841] dark:text-[#c8cfe8] text-[28px] md:text-[36px] lg:text-[40px] font-medium leading-[1.18] tracking-[-0.5px] text-balance">
+        <p className="text-[#151515] text-[28px] md:text-[36px] lg:text-[40px] font-medium leading-[1.18] tracking-[-0.5px] text-balance">
           Creative Product Designer with 10+ years of experience driving design strategy across small businesses,{" "}
           <span className="whitespace-nowrap">VC-backed</span> startups, and
           private equity B2B SaaS platforms.
@@ -13,7 +13,7 @@ export default function Hero() {
           <img
             src="/avatar.png"
             alt="Viktor Dopke"
-            className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-white dark:ring-[#0d1017]"
+            className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-white"
           />
         </div>
       </div>

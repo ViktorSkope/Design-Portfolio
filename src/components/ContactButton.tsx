@@ -69,14 +69,14 @@ function QuickHello() {
   if (status === "sent") {
     return (
       <div className="px-3 py-4 flex flex-col gap-2" role="status">
-        <p className="text-[13px] font-medium text-[#222841] dark:text-[#c8cfe8]">Thanks, message received.</p>
-        <p className="text-[12px] leading-[1.5] text-[#737373] dark:text-[#6b7591]">
+        <p className="text-[13px] font-medium text-[#151515]">Thanks, message received.</p>
+        <p className="text-[12px] leading-[1.5] text-[#737373]">
           I read every note. If you left an email, I'll get back to you.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="self-start text-[12px] font-medium text-[#00a223] hover:underline"
+          className="self-start text-[12px] font-medium text-[#CA2F00] hover:underline"
         >
           Send another
         </button>
@@ -85,11 +85,11 @@ function QuickHello() {
   }
 
   const fieldClass =
-    "w-full rounded-lg border border-[#e4e8f0] dark:border-[#1a1f2e] bg-[#f9fbff] dark:bg-[#0d1017] px-3 py-2 text-[13px] text-[#222841] dark:text-[#c8cfe8] placeholder:text-[#9aa1b5] dark:placeholder:text-[#4d5570] focus:outline-none focus:border-[#00a223] transition-colors";
+    "w-full rounded-lg border border-[#E6E0D8] bg-[#F9F7F4] px-3 py-2 text-[13px] text-[#151515] placeholder:text-[#9aa1b5] focus:outline-none focus:border-[#CA2F00] transition-colors";
 
   return (
     <form onSubmit={send} className="px-3 pt-1 pb-3 flex flex-col gap-2">
-      <label htmlFor="quick-hello" className="text-[13px] font-medium text-[#222841] dark:text-[#c8cfe8]">
+      <label htmlFor="quick-hello" className="text-[13px] font-medium text-[#151515]">
         Send a quick hello
       </label>
       <textarea
@@ -131,13 +131,13 @@ function QuickHello() {
         </p>
       )}
       <div className="flex items-center justify-between gap-3 pt-1">
-        <span className="text-[11px] tabular-nums text-[#9aa1b5] dark:text-[#4d5570]">
+        <span className="text-[11px] tabular-nums text-[#9aa1b5]">
           {message.length}/{MESSAGE_MAX}
         </span>
         <button
           type="submit"
           disabled={!message.trim() || status === "sending"}
-          className="h-8 px-4 rounded-full bg-[#222841] dark:bg-[#c8cfe8] text-white dark:text-[#0d1017] text-[12px] font-medium hover:bg-[#00a223] dark:hover:bg-[#00a223] dark:hover:text-white disabled:opacity-40 disabled:hover:bg-[#222841] dark:disabled:hover:bg-[#c8cfe8] disabled:cursor-default transition-colors"
+          className="h-8 px-4 rounded-full bg-[#151515] text-white text-[12px] font-medium hover:bg-[#CA2F00] disabled:opacity-40 disabled:hover:bg-[#151515] disabled:cursor-default transition-colors"
         >
           {status === "sending" ? "Sending…" : "Send"}
         </button>
@@ -202,7 +202,7 @@ export default function ContactButton() {
   };
 
   const rowClass =
-    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#222841] dark:text-[#c8cfe8] hover:bg-[#f1f4fa] dark:hover:bg-[#1a1f2e] transition-colors";
+    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#151515] hover:bg-[#EFEBE5] transition-colors";
 
   return (
     <div ref={rootRef} className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3">
@@ -212,39 +212,39 @@ export default function ContactButton() {
           role="dialog"
           aria-label="Contact Viktor"
           hidden={!open}
-          className="w-[min(320px,calc(100vw-40px))] rounded-xl bg-white dark:bg-[#131722] border border-[#e4e8f0] dark:border-[#1a1f2e] shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] p-2"
+          className="w-[min(320px,calc(100vw-40px))] rounded-xl bg-white border border-[#E6E0D8] shadow-[0_12px_40px_rgba(0,0,0,0.12)] p-2"
         >
-          <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
+          <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
             Get in touch
           </p>
 
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={rowClass}>
-            <span className="text-[#00a223]"><WhatsAppIcon /></span>
+            <span className="text-[#CA2F00]"><WhatsAppIcon /></span>
             <span className="flex flex-col">
               <span className="text-[13px] font-medium">WhatsApp</span>
-              <span className="text-[12px] text-[#737373] dark:text-[#6b7591]">{WHATSAPP_DISPLAY}</span>
+              <span className="text-[12px] text-[#737373]">{WHATSAPP_DISPLAY}</span>
             </span>
           </a>
 
           <div className="flex items-center">
             <a href={`mailto:${EMAIL}`} className={`${rowClass} flex-1 min-w-0`}>
-              <span className="text-[#222841] dark:text-[#c8cfe8]"><MailIcon /></span>
+              <span className="text-[#151515]"><MailIcon /></span>
               <span className="flex flex-col min-w-0">
                 <span className="text-[13px] font-medium">Email</span>
-                <span className="text-[12px] text-[#737373] dark:text-[#6b7591] truncate">{EMAIL}</span>
+                <span className="text-[12px] text-[#737373] truncate">{EMAIL}</span>
               </span>
             </a>
             <button
               type="button"
               onClick={copyEmail}
-              className="shrink-0 px-2.5 py-1.5 mr-1 rounded-md text-[11px] font-medium text-[#737373] dark:text-[#6b7591] hover:text-[#222841] dark:hover:text-[#c8cfe8] hover:bg-[#f1f4fa] dark:hover:bg-[#1a1f2e] transition-colors"
+              className="shrink-0 px-2.5 py-1.5 mr-1 rounded-md text-[11px] font-medium text-[#737373] hover:text-[#151515] hover:bg-[#EFEBE5] transition-colors"
               aria-label="Copy email address"
             >
               {copied ? "Copied" : "Copy"}
             </button>
           </div>
 
-          <div className="my-2 mx-3 h-px bg-[#e4e8f0] dark:bg-[#1a1f2e]" />
+          <div className="my-2 mx-3 h-px bg-[#E6E0D8]" />
           <QuickHello />
         </div>
 
@@ -253,7 +253,7 @@ export default function ContactButton() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="contact-panel"
-        className="flex items-center gap-2 h-12 pl-4 pr-5 rounded-full bg-[#222841] dark:bg-[#c8cfe8] text-white dark:text-[#0d1017] text-[13px] font-medium shadow-[0_8px_24px_rgba(34,40,65,0.25)] hover:bg-[#00a223] dark:hover:bg-[#00a223] dark:hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a223] focus-visible:ring-offset-2"
+        className="flex items-center gap-2 h-12 pl-4 pr-5 rounded-full bg-[#151515] text-white text-[13px] font-medium shadow-[0_8px_24px_rgba(34,40,65,0.25)] hover:bg-[#CA2F00] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CA2F00] focus-visible:ring-offset-2"
       >
         {open ? (
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
