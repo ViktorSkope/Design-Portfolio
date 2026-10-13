@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface BeforeAfterSliderProps {
   before: string;
@@ -6,6 +6,8 @@ interface BeforeAfterSliderProps {
   beforeAlt: string;
   afterAlt: string;
   initial?: number;
+  // Called with the divider position (0 = all after, 100 = all before)
+  onPositionChange?: (position: number) => void;
 }
 
 const clamp = (value: number) => Math.min(100, Math.max(0, value));
@@ -16,10 +18,15 @@ export default function BeforeAfterSlider({
   beforeAlt,
   afterAlt,
   initial = 50,
+  onPositionChange,
 }: BeforeAfterSliderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(initial);
   const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    onPositionChange?.(position);
+  }, [position, onPositionChange]);
 
   const updateFromPointer = useCallback((clientX: number) => {
     const rect = containerRef.current?.getBoundingClientRect();

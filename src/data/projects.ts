@@ -85,8 +85,8 @@ export const projects: Project[] = [
   {
     slug: "athos-commerce",
     name: "Athos Commerce",
-    tagline: "Redesigning a commerce console built around the habits of hundreds of active shoppers.",
-    year: "2026",
+    tagline: "Helping hundreds of long-time users perform better in a new system redesign.",
+    year: "2023-2026",
     category: "Current Work",
     role: "Lead Product Designer",
     overview:
@@ -113,7 +113,7 @@ export const projects: Project[] = [
         beforeAlt: "Original Edit Visual Merchandising Campaign page with a floating boosting rules panel over the product grid and two stacked navigation bars.",
         afterAlt: "Redesigned Campaign Editor with a single icon navigation, a docked Product Boosting Rules panel and a compact product grid.",
         caption:
-          "This change reflected years of customer support tickets on navigational queries made by the users, culminating in one single navigation profile solution, tested and backed by the users.",
+          "My focus was redesigning the platform from the ground up. With a new team of engineers and front-end developers, we tackled the entire 20+ year service from the inside out, mapping journeys, documenting our new decisions and making sure we respect how people trusted our current platform.",
       },
     ],
     pitch: [
@@ -198,7 +198,7 @@ export const projects: Project[] = [
       afterAlt: "Redesigned Personalization Settings page with tabbed rules, a cleaner Boosted Products table and Contextual Groups editor.",
     },
     coverCaption:
-      "Athos Commerce is in early access, and hundreds of shoppers already use it every day. The redesign has to respect how they work: untangle complex interactions, find where familiarity turns into friction, and carry that into a new console without losing what people already trust.",
+      "Many shoppers and agencies work tirelessly to personalize their merchandising to find customers and adapt to their shopping habits. Most current SaaS in the market doesn't make it easier, also requiring extensive knowledge of code implementation from the shoppers. To make this an intuitive and configurable journey, we have to start at the day-to-day level.",
   },
   {
     slug: "blindspot",

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import BeforeAfterSlider from "../components/BeforeAfterSlider";
+import SliderStage from "../components/SliderStage";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageMosaic from "../components/ImageMosaic";
 import { getNextProject, getProjectBySlug, type CaseStudySection, type CardColumn, type Project } from "../data/projects";
@@ -292,16 +292,12 @@ export default function ProjectPage() {
           {/* Cover image */}
           <section className="pb-12">
             {project.coverComparison ? (
-              <div className="px-[10%] py-10 md:py-14 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
-                <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
-                  <BeforeAfterSlider
-                    before={project.coverComparison.before}
-                    after={project.coverComparison.after}
-                    beforeAlt={project.coverComparison.beforeAlt}
-                    afterAlt={project.coverComparison.afterAlt}
-                  />
-                </div>
-              </div>
+              <SliderStage
+                before={project.coverComparison.before}
+                after={project.coverComparison.after}
+                beforeAlt={project.coverComparison.beforeAlt}
+                afterAlt={project.coverComparison.afterAlt}
+              />
             ) : (
               <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
                 <img src={project.coverImage} alt={project.coverImageAlt} className="w-full h-auto object-cover" />
@@ -319,16 +315,12 @@ export default function ProjectPage() {
               <span className="block mb-8 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] dark:text-[#3d4560]">
                 {comparison.label}
               </span>
-              <div className="px-[10%] py-10 md:py-14 bg-[#f0f3fa] dark:bg-[#0a0e1a] rounded-lg">
-                <div className="w-full bg-white dark:bg-[#131827] shadow-[0px_4px_64px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_64px_0px_rgba(0,0,0,0.5)] overflow-hidden">
-                  <BeforeAfterSlider
-                    before={comparison.before}
-                    after={comparison.after}
-                    beforeAlt={comparison.beforeAlt}
-                    afterAlt={comparison.afterAlt}
-                  />
-                </div>
-              </div>
+              <SliderStage
+                before={comparison.before}
+                after={comparison.after}
+                beforeAlt={comparison.beforeAlt}
+                afterAlt={comparison.afterAlt}
+              />
               <p className="mt-4 text-[14px] leading-[1.7] text-[#3a3f55] dark:text-[#6b7591]">
                 {comparison.caption}
               </p>
