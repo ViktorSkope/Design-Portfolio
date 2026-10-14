@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCoverBackground, getProjectBySlug, type Project } from "../data/projects";
-import { beginExpand } from "../lib/pageTransition";
+import { arriveHome, beginExpand, peekCollapseSlug } from "../lib/pageTransition";
 
 export interface FeaturedItem {
   slug: string;
@@ -166,11 +166,21 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
     return project ? [{ project, title: item.title }] : [];
   });
   const count = slides.length;
-  const [active, setActive] = useState(0);
+  // Coming back from a project, start with that project highlighted
+  const [active, setActive] = useState(() => {
+    const returning = peekCollapseSlug();
+    const index = returning ? slides.findIndex((slide) => slide.project.slug === returning) : -1;
+    return index >= 0 ? index : 0;
+  });
 
   const stageRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const centreRef = useRef<HTMLAnchorElement>(null);
+
+  // The cover from the project page lands on the highlighted card
+  useLayoutEffect(() => {
+    arriveHome(centreRef.current, document.getElementById("home-page"));
+  }, []);
   const compact = useMediaQuery("(max-width: 767px)");
   const placements = compact ? PLACEMENT_COMPACT : PLACEMENT;
   const visible = placements.length - 1;
@@ -356,7 +366,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                 className={`${frameClass} group/piece outline-none ${isCenter ? "" : "cursor-pointer"}`}
                 style={style}
                 ref={isCenter ? centreRef : undefined}
-                data-centre={isCenter ? "" : undefined}
+                data-centre={isCenter ? p.slug : undefined}
                 tabIndex={isCenter ? 0 : -1}
                 aria-label={isCenter ? undefined : `Show ${p.name}`}
                 onClick={(e) => {

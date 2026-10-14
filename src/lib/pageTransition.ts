@@ -5,6 +5,10 @@
 //           the rest of the landing page dissolves away.
 //   slide:  the strip of covers moves by exactly one card, so the clicked
 //           neighbour becomes the centre card, while the text cross-fades.
+//   collapse: the way back, the cover shrinks into its place in the carousel.
+//
+// The page cannot be scrolled while one of them runs, so nothing drifts away from
+// the overlay.
 //
 // Reduced-motion visitors skip all of it and just navigate.
 
@@ -16,6 +20,13 @@ type Pending =
       backdrop: HTMLElement;
       tilt: string;
       home: HTMLElement | null;
+    }
+  | {
+      kind: "collapse";
+      slug: string;
+      overlay: HTMLElement;
+      backdrop: HTMLElement;
+      project: HTMLElement | null;
     }
   | {
       kind: "slide";
@@ -42,13 +53,47 @@ function discard() {
   if (pending) {
     pending.overlay.remove();
     if (pending.kind === "expand") pending.home?.remove();
+    if (pending.kind === "collapse") pending.project?.remove();
   }
   pending = null;
+}
+
+// ─── Scroll lock ─────────────────────────────────────────────────────────────
+
+let unlockTimer: number | undefined;
+let locked = false;
+const SCROLL_KEYS = [" ", "PageDown", "PageUp", "Home", "End", "ArrowUp", "ArrowDown"];
+const blockScroll = (e: Event) => e.preventDefault();
+const blockScrollKeys = (e: KeyboardEvent) => {
+  if (SCROLL_KEYS.includes(e.key)) e.preventDefault();
+};
+
+function unlockScroll() {
+  window.clearTimeout(unlockTimer);
+  if (!locked) return;
+  locked = false;
+  window.removeEventListener("wheel", blockScroll);
+  window.removeEventListener("touchmove", blockScroll);
+  window.removeEventListener("keydown", blockScrollKeys);
+}
+
+/** Stops wheel, touch and keyboard scrolling for `ms`, then gives it back. */
+export function lockScroll(ms: number) {
+  if (prefersReducedMotion()) return;
+  if (!locked) {
+    locked = true;
+    window.addEventListener("wheel", blockScroll, { passive: false });
+    window.addEventListener("touchmove", blockScroll, { passive: false });
+    window.addEventListener("keydown", blockScrollKeys);
+  }
+  window.clearTimeout(unlockTimer);
+  unlockTimer = window.setTimeout(unlockScroll, ms);
 }
 
 function arm(next: Pending) {
   discard();
   pending = next;
+  lockScroll(TRANSITION_MS + 700);
   // If the new page never claims the transition, clear the overlay anyway
   failsafe = window.setTimeout(discard, 4000);
 }
@@ -177,6 +222,148 @@ export function beginSlide(slug: string, direction: 1 | -1, source: SlideSource)
     bodyWrap,
     bodyOffset: bodyRect.top - rowRect.top,
   });
+  return true;
+}
+
+// ─── Collapse (back to the landing page) ─────────────────────────────────────
+
+/**
+ * Copies the cover as it is now, ready to shrink into its place in the carousel,
+ * and keeps a copy of the rest of the project page to dissolve underneath.
+ */
+export function beginCollapse(
+  slug: string,
+  rect: DOMRect,
+  imageSrc: string,
+  background: string,
+  radius: string,
+  page: HTMLElement | null,
+) {
+  if (prefersReducedMotion()) return false;
+
+  let project: HTMLElement | null = null;
+  if (page) {
+    project = document.createElement("div");
+    project.setAttribute("aria-hidden", "true");
+    const width = document.documentElement.clientWidth;
+    project.style.cssText = `position:fixed;left:0;top:${-window.scrollY}px;width:${width}px;z-index:89;pointer-events:none;overflow:hidden;height:${page.scrollHeight}px`;
+    const contentWidth = getComputedStyle(page).getPropertyValue("--cw");
+    if (contentWidth) project.style.setProperty("--cw", contentWidth);
+    const copy = page.cloneNode(true) as HTMLElement;
+    copy.removeAttribute("id");
+    // The shrinking card replaces this one, so do not draw it twice
+    copy.querySelectorAll<HTMLElement>("[data-cover]").forEach((el) => {
+      el.style.visibility = "hidden";
+    });
+    project.appendChild(copy);
+    document.body.appendChild(project);
+  }
+
+  const overlay = document.createElement("div");
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.style.cssText = [
+    "position:fixed",
+    `left:${rect.left}px`,
+    `top:${rect.top}px`,
+    `width:${rect.width}px`,
+    `height:${rect.height}px`,
+    "z-index:90",
+    "overflow:hidden",
+    "pointer-events:none",
+    `border-radius:${radius}`,
+    "will-change:left,top,width,height",
+  ].join(";");
+
+  const backdrop = document.createElement("div");
+  backdrop.style.cssText = `position:absolute;inset:0;background:${background};opacity:1`;
+
+  const image = document.createElement("img");
+  image.decoding = "sync";
+  image.src = imageSrc;
+  image.alt = "";
+  image.draggable = false;
+  image.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:contain";
+
+  overlay.append(backdrop, image);
+  document.body.appendChild(overlay);
+  arm({ kind: "collapse", slug, overlay, backdrop, project });
+  return true;
+}
+
+/** The project the landing page is being returned to, if it is returning to one. */
+export function peekCollapseSlug(): string | null {
+  return pending?.kind === "collapse" ? pending.slug : null;
+}
+
+/**
+ * Called by the landing page's carousel as it mounts. Brings the cover down onto
+ * the highlighted card in the carousel, and fades the page in around it.
+ */
+export function arriveHome(centre: HTMLElement | null, home: HTMLElement | null): boolean {
+  const current = pending;
+  if (!current || current.kind !== "collapse") return false;
+  pending = null;
+  window.clearTimeout(failsafe);
+
+  // Only land on the card if it is the project we came from
+  if (!centre || centre.dataset.centre !== current.slug) {
+    current.project?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" });
+    window.setTimeout(() => {
+      current.overlay.remove();
+      current.project?.remove();
+    }, 320);
+    return false;
+  }
+
+  // Make sure the landing spot is on screen before measuring it
+  const margin = 24;
+  const bottom = centre.getBoundingClientRect().bottom;
+  if (bottom > window.innerHeight - margin) window.scrollBy(0, bottom - window.innerHeight + margin * 2);
+  const to = centre.getBoundingClientRect();
+
+  const mainImage = centre.querySelector<HTMLElement>("img");
+  if (mainImage) mainImage.style.visibility = "hidden";
+
+  const shrink = current.overlay.animate(
+    [
+      {
+        left: current.overlay.style.left,
+        top: current.overlay.style.top,
+        width: current.overlay.style.width,
+        height: current.overlay.style.height,
+        borderRadius: current.overlay.style.borderRadius,
+      },
+      { left: `${to.left}px`, top: `${to.top}px`, width: `${to.width}px`, height: `${to.height}px`, borderRadius: "0px" },
+    ],
+    { duration: TRANSITION_MS, easing: EASE, fill: "forwards" },
+  );
+  // The cover's backdrop falls away as it settles back into the carousel
+  current.backdrop.animate([{ opacity: 1 }, { opacity: 0 }], {
+    duration: TRANSITION_MS * 0.7,
+    easing: "ease-in",
+    fill: "forwards",
+  });
+  // The project page dissolves while the landing page comes up behind it
+  current.project?.animate([{ opacity: 1 }, { opacity: 0 }], {
+    duration: TRANSITION_MS * 0.55,
+    easing: "ease-out",
+    fill: "forwards",
+  });
+  home?.animate([{ opacity: 0 }, { opacity: 1 }], {
+    duration: TRANSITION_MS * 0.7,
+    delay: TRANSITION_MS * 0.1,
+    easing: "ease-out",
+    fill: "backwards",
+  });
+
+  const done = () => {
+    if (mainImage) mainImage.style.visibility = "";
+    current.overlay.remove();
+    current.project?.remove();
+  };
+  shrink.onfinish = done;
+  shrink.oncancel = done;
+  window.setTimeout(done, TRANSITION_MS + 600);
   return true;
 }
 

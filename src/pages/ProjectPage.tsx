@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import SliderStage from "../components/SliderStage";
 import { getCoverBackground, getNextProject, getPreviousProject, getProjectBySlug, type Project } from "../data/projects";
 import { getProjectPage } from "../data/projectPage";
-import { arrive, beginSlide, TRANSITION_MS } from "../lib/pageTransition";
+import { arrive, beginCollapse, beginSlide, lockScroll, TRANSITION_MS } from "../lib/pageTransition";
 
 // Shared geometry of the page: one content column, a cover card of fixed
 // proportions, and two columns with a wide gutter for everything below it.
@@ -171,13 +171,35 @@ function ProjectPageContent({ project }: { project: Project }) {
       }
       navigate(`/work/${target.slug}`);
     };
-    // From further down the page (the footer link), glide back to the covers first
+    // From further down the page (the footer link), glide back to the covers first.
+    // Either way the page stays put until the slide is over.
     if (window.scrollY > 8) {
+      const wait = Math.min(600, 200 + window.scrollY * 0.25);
+      lockScroll(wait + TRANSITION_MS + 700);
       window.scrollTo({ top: 0, behavior: "smooth" });
-      window.setTimeout(go, Math.min(600, 200 + window.scrollY * 0.25));
+      window.setTimeout(go, wait);
     } else {
       go();
     }
+  };
+
+  // Back to the landing page: the cover shrinks into this project's place in the carousel
+  const backToWork = (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    const cover = coverRef.current;
+    if (cover) {
+      const card = (cover.firstElementChild as HTMLElement | null) ?? cover;
+      beginCollapse(
+        project.slug,
+        cover.getBoundingClientRect(),
+        project.coverImage,
+        getCoverBackground(project),
+        getComputedStyle(card).borderTopLeftRadius,
+        pageRef.current,
+      );
+    }
+    navigate("/");
   };
 
   return (
@@ -187,6 +209,7 @@ function ProjectPageContent({ project }: { project: Project }) {
         <Navbar />
         <Link
           to="/#work"
+          onClick={backToWork}
           className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] transition-colors hover:text-ink"
         >
           <span aria-hidden="true">←</span> Back to work
@@ -197,7 +220,7 @@ function ProjectPageContent({ project }: { project: Project }) {
       <div ref={rowRef} className="relative left-1/2 mt-[22px] w-screen -translate-x-1/2 overflow-x-clip">
         <div ref={stripRef} data-strip>
         <div className="relative mx-auto w-[var(--cw)]" style={{ aspectRatio: COVER_ASPECT }}>
-          <div ref={coverRef} className="absolute inset-0">
+          <div ref={coverRef} data-cover className="absolute inset-0">
             <CoverCard project={project} alt={project.coverImageAlt} />
           </div>
           <div ref={peeksRef} className="pointer-events-none absolute inset-0">

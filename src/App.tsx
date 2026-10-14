@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProjectPage from "./pages/ProjectPage";
@@ -7,7 +7,8 @@ import ContactButton from "./components/ContactButton";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
-  useEffect(() => {
+  // A layout effect, so the page is already at the top when a page measures itself
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
   return null;
