@@ -1,3 +1,5 @@
+import ContactButton from "./ContactButton";
+
 export default function Hero() {
   return (
     <section id="about">
@@ -7,6 +9,10 @@ export default function Hero() {
           <span className="text-alt-1">games</span>, <span className="text-tertiary">startups</span> and{" "}
           <span className="text-quaternary">b2b saas</span>.
         </p>
+
+        <div id="hero-contact" className="mt-8">
+          <ContactButton variant="inline" />
+        </div>
 
         {/* Floating avatar */}
         <div className="absolute -top-16 left-0 animate-[float_4s_ease-in-out_infinite]">

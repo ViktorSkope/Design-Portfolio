@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import WorkList from "../components/WorkList";
 import FeaturedProject from "../components/FeaturedProject";
 import FeaturedCards from "../components/FeaturedCards";
 
@@ -13,7 +12,6 @@ export default function HomePage() {
         <main>
           <div className="flex flex-col gap-16 lg:gap-20 pt-20 pb-24">
             <Hero />
-            <WorkList />
           </div>
 
           <FeaturedProject

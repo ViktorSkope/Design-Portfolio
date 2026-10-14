@@ -109,7 +109,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
     "flex h-9 w-9 items-center justify-center border border-[#E6E0D8] text-ink transition-colors hover:border-ink disabled:opacity-30 disabled:hover:border-[#E6E0D8] disabled:cursor-default";
 
   return (
-    <section className="pb-24" aria-roledescription={isCarousel ? "carousel" : undefined} aria-label="Featured projects">
+    <section id="work" className="pb-24 scroll-mt-8" aria-roledescription={isCarousel ? "carousel" : undefined} aria-label="Featured projects">
       {/* Section header */}
       <div className="flex items-center gap-4 mb-8">
         <h2 className="text-[#737373] text-[10px] font-semibold uppercase tracking-[0.16em] shrink-0">

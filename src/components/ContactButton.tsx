@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 const EMAIL = "vikdopke@gmail.com";
 const WHATSAPP_DISPLAY = "+55 41 99500-6333";
@@ -13,6 +13,9 @@ const MESSAGE_MAX = 1000;
 type SendStatus = "idle" | "sending" | "sent" | "error";
 
 function QuickHello() {
+  const uid = useId();
+  const messageId = `${uid}-message`;
+  const emailId = `${uid}-email`;
   const [message, setMessage] = useState("");
   const [replyTo, setReplyTo] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -89,11 +92,11 @@ function QuickHello() {
 
   return (
     <form onSubmit={send} className="px-3 pt-1 pb-3 flex flex-col gap-2">
-      <label htmlFor="quick-hello" className="text-[13px] font-medium text-ink">
+      <label htmlFor={messageId} className="text-[13px] font-medium text-ink">
         Send a quick hello
       </label>
       <textarea
-        id="quick-hello"
+        id={messageId}
         value={message}
         onChange={(e) => {
           setMessage(e.target.value.slice(0, MESSAGE_MAX));
@@ -104,9 +107,9 @@ function QuickHello() {
         placeholder="Feedback, a question, or just hi"
         className={`${fieldClass} resize-none`}
       />
-      <label htmlFor="quick-hello-email" className="sr-only">Your email (optional)</label>
+      <label htmlFor={emailId} className="sr-only">Your email (optional)</label>
       <input
-        id="quick-hello-email"
+        id={emailId}
         type="email"
         value={replyTo}
         onChange={(e) => setReplyTo(e.target.value)}
@@ -171,7 +174,15 @@ function ChatIcon() {
   );
 }
 
-export default function ContactButton() {
+interface ContactButtonProps {
+  // "floating" hovers in the corner; "inline" sits in the page flow and opens below
+  variant?: "floating" | "inline";
+  // Hides the widget without unmounting it, so a half-written message survives
+  hidden?: boolean;
+}
+
+export default function ContactButton({ variant = "floating", hidden = false }: ContactButtonProps) {
+  const inline = variant === "inline";
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -205,14 +216,21 @@ export default function ContactButton() {
     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-ink hover:bg-[#E7E2DE] transition-colors";
 
   return (
-    <div ref={rootRef} className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3">
+    <div
+      ref={rootRef}
+      className={
+        inline
+          ? "relative inline-block"
+          : `fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3 ${hidden ? "hidden" : ""}`
+      }
+    >
       {/* Kept mounted while hidden so a half-written message survives closing */}
         <div
-          id="contact-panel"
+          id={`contact-panel-${variant}`}
           role="dialog"
           aria-label="Contact Viktor"
           hidden={!open}
-          className="w-[min(320px,calc(100vw-40px))] rounded-xl bg-white border border-[#E6E0D8] shadow-[0_12px_40px_rgba(0,0,0,0.12)] p-2"
+          className={`${inline ? "absolute left-0 top-full mt-3 z-30" : ""} w-[min(320px,calc(100vw-40px))] rounded-xl bg-white border border-[#E6E0D8] shadow-[0_12px_40px_rgba(0,0,0,0.12)] p-2`}
         >
           <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
             Get in touch
@@ -252,7 +270,7 @@ export default function ContactButton() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        aria-controls="contact-panel"
+        aria-controls={`contact-panel-${variant}`}
         className="flex items-center gap-2 h-12 pl-4 pr-5 rounded-full bg-ink text-white text-[13px] font-medium shadow-[0_8px_24px_rgba(34,40,65,0.25)] hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         {open ? (
