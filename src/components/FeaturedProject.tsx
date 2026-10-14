@@ -29,6 +29,9 @@ const VISIBLE = PLACEMENT.length - 1;
 
 // The info bubble sits this far past the selected image's right edge
 const BUBBLE_OFFSET_X = 16;
+// Only the central part of the selected image reacts to the pointer (and opens
+// the project); the rest lets the neighbouring pieces be reached
+const HIT_INSET = 10; // percent trimmed from each side, leaving 80%
 // Hovering the selected image enlarges it a little and tilts it toward the cursor
 const TILT_SCALE = 1.04;
 const TILT_MAX_X = 7; // degrees
@@ -48,7 +51,15 @@ function circularOffset(index: number, active: number, count: number) {
 // Wraps a piece so the selected one can lean toward the cursor like a physical
 // card. The outer layer catches the pointer and never moves, so tilting cannot
 // shift the hover area under the cursor.
-function TiltLayer({ active, children }: { active: boolean; children: React.ReactNode }) {
+function TiltLayer({
+  active,
+  onHover,
+  children,
+}: {
+  active: boolean;
+  onHover: (hovering: boolean) => void;
+  children: React.ReactNode;
+}) {
   const innerRef = useRef<HTMLSpanElement>(null);
 
   const reset = useCallback((duration = 500) => {
@@ -66,6 +77,7 @@ function TiltLayer({ active, children }: { active: boolean; children: React.Reac
   const lean = (e: React.PointerEvent<HTMLSpanElement>) => {
     const el = innerRef.current;
     if (!active || !el || e.pointerType === "touch") return;
+    onHover(true);
     const rect = e.currentTarget.getBoundingClientRect();
     const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1; // -1 left … 1 right
     const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1; // -1 top … 1 bottom
@@ -74,17 +86,31 @@ function TiltLayer({ active, children }: { active: boolean; children: React.Reac
     el.style.transform = `perspective(1000px) rotateX(${(-ny * TILT_MAX_X).toFixed(2)}deg) rotateY(${(nx * TILT_MAX_Y).toFixed(2)}deg) scale(${TILT_SCALE})`;
   };
 
+  // The hit area is the central 80%; the visual layer is sized back up to the
+  // whole piece (a negative inset of 10 / 80 = 12.5% of the hit area).
+  const bleed = `${-(HIT_INSET / (100 - 2 * HIT_INSET)) * 100}%`;
+
   return (
-    <span
-      className="absolute inset-0 block"
-      onPointerEnter={lean}
-      onPointerMove={lean}
-      onPointerLeave={() => reset()}
-    >
-      <span ref={innerRef} className="absolute inset-0 block will-change-transform motion-reduce:!transition-none">
-        {children}
+    <>
+      <span
+        className={`absolute block ${active ? "pointer-events-auto cursor-pointer" : "pointer-events-none"}`}
+        style={{ inset: `${HIT_INSET}%` }}
+        onPointerEnter={lean}
+        onPointerMove={lean}
+        onPointerLeave={() => {
+          onHover(false);
+          reset();
+        }}
+      >
+        <span
+          ref={innerRef}
+          className="pointer-events-none absolute block will-change-transform motion-reduce:!transition-none"
+          style={{ inset: bleed }}
+        >
+          {children}
+        </span>
       </span>
-    </span>
+    </>
   );
 }
 
@@ -238,7 +264,8 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                 ? "transform 0s, opacity 500ms ease, filter 900ms ease"
                 : "transform 900ms cubic-bezier(0.45, 0, 0.2, 1), opacity 500ms ease, filter 900ms ease, z-index 900ms linear",
               filter: isCenter ? "none" : `brightness(${1 - distance * 0.06})`,
-              pointerEvents: hiddenPiece ? "none" : "auto",
+              // The selected piece only reacts inside its central hit area
+              pointerEvents: hiddenPiece || isCenter ? "none" : "auto",
             };
 
             const imageBase = "absolute inset-0 h-full w-full object-contain object-top";
@@ -289,12 +316,12 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                   e.preventDefault();
                   if (!dragged.current) setActive(i);
                 }}
-                onPointerEnter={isCenter ? () => setHovering(true) : undefined}
-                onPointerLeave={isCenter ? () => setHovering(false) : undefined}
                 onFocus={isCenter ? () => setHovering(true) : undefined}
                 onBlur={isCenter ? () => setHovering(false) : undefined}
               >
-                <TiltLayer active={isCenter}>{piece}</TiltLayer>
+                <TiltLayer active={isCenter} onHover={setHovering}>
+                  {piece}
+                </TiltLayer>
               </Link>
             );
           })}
