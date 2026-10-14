@@ -202,6 +202,16 @@ export default function ContactButton({ variant = "floating", hidden = false }: 
     };
   }, [open]);
 
+  // The inline button opens a modal, so the page behind it stops scrolling
+  useEffect(() => {
+    if (!(inline && open)) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [inline, open]);
+
   const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL);
@@ -211,6 +221,21 @@ export default function ContactButton({ variant = "floating", hidden = false }: 
       // Clipboard can be unavailable; the mailto link still works.
     }
   };
+
+  // The inline button shows its panel as a centred modal over a dimmed page; the
+  // floating button keeps its small popover
+  const wrapPanel = (panel: React.ReactNode) =>
+    inline ? (
+      <div
+        hidden={!open}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4"
+        onMouseDown={(e) => e.target === e.currentTarget && setOpen(false)}
+      >
+        {panel}
+      </div>
+    ) : (
+      panel
+    );
 
   const rowClass =
     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-ink hover:bg-[#E7E2DE] transition-colors";
@@ -225,13 +250,31 @@ export default function ContactButton({ variant = "floating", hidden = false }: 
       }
     >
       {/* Kept mounted while hidden so a half-written message survives closing */}
+      {wrapPanel(
         <div
           id={`contact-panel-${variant}`}
           role="dialog"
+          aria-modal={inline || undefined}
           aria-label="Contact Viktor"
-          hidden={!open}
-          className={`${inline ? "absolute left-0 top-full mt-3 z-30" : ""} w-[min(320px,calc(100vw-40px))] rounded-xl bg-white border border-[#E6E0D8] shadow-[0_12px_40px_rgba(0,0,0,0.12)] p-2`}
+          hidden={inline ? undefined : !open}
+          className={`${
+            inline
+              ? "relative text-left w-[min(420px,100%)] max-h-[calc(100vh-32px)] overflow-y-auto p-3 shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
+              : "w-[min(320px,calc(100vw-40px))] p-2 shadow-[0_12px_40px_rgba(0,0,0,0.12)]"
+          } rounded-xl bg-white border border-[#E6E0D8]`}
         >
+          {inline && (
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close contact"
+              className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-[#737373] hover:bg-[#E7E2DE] hover:text-ink transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          )}
           <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
             Get in touch
           </p>
@@ -265,6 +308,7 @@ export default function ContactButton({ variant = "floating", hidden = false }: 
           <div className="my-2 mx-3 h-px bg-[#E6E0D8]" />
           <QuickHello />
         </div>
+      )}
 
       <button
         type="button"
