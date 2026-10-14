@@ -9,7 +9,7 @@ export default function HomePage() {
         <Navbar />
 
         <main>
-          <div className="flex flex-col gap-16 lg:gap-20 pt-20 pb-24">
+          <div className="flex flex-col gap-16 lg:gap-20 pt-[72px] pb-[86px]">
             <Hero />
           </div>
 

@@ -27,10 +27,12 @@ const PLACEMENT = [
 ];
 const VISIBLE = PLACEMENT.length - 1;
 
-// Info bubble size, used to keep it beside the image
-const BUBBLE_W = 300;
-const BUBBLE_H = 230;
-const BUBBLE_GAP = 16;
+// The info bubble sits this far past the selected image's right edge
+const BUBBLE_OFFSET_X = 16;
+// Hovering the selected image enlarges it a little and tilts it toward the cursor
+const TILT_SCALE = 1.04;
+const TILT_MAX_X = 7; // degrees
+const TILT_MAX_Y = 9;
 
 // Covers are exported at 1920 x 1314
 const ASPECT = 1920 / 1314;
@@ -41,6 +43,49 @@ function circularOffset(index: number, active: number, count: number) {
   if (d > count / 2) d -= count;
   if (d < -count / 2) d += count;
   return d;
+}
+
+// Wraps a piece so the selected one can lean toward the cursor like a physical
+// card. The outer layer catches the pointer and never moves, so tilting cannot
+// shift the hover area under the cursor.
+function TiltLayer({ active, children }: { active: boolean; children: React.ReactNode }) {
+  const innerRef = useRef<HTMLSpanElement>(null);
+
+  const reset = useCallback((duration = 500) => {
+    const el = innerRef.current;
+    if (!el) return;
+    el.style.transition = `transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
+    el.style.transform = "";
+  }, []);
+
+  // A piece that stops being the selected one settles back flat
+  useEffect(() => {
+    if (!active) reset(300);
+  }, [active, reset]);
+
+  const lean = (e: React.PointerEvent<HTMLSpanElement>) => {
+    const el = innerRef.current;
+    if (!active || !el || e.pointerType === "touch") return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1; // -1 left … 1 right
+    const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1; // -1 top … 1 bottom
+    el.style.transition = "transform 140ms ease-out";
+    // The surface turns to face the cursor
+    el.style.transform = `perspective(1000px) rotateX(${(-ny * TILT_MAX_X).toFixed(2)}deg) rotateY(${(nx * TILT_MAX_Y).toFixed(2)}deg) scale(${TILT_SCALE})`;
+  };
+
+  return (
+    <span
+      className="absolute inset-0 block"
+      onPointerEnter={lean}
+      onPointerMove={lean}
+      onPointerLeave={() => reset()}
+    >
+      <span ref={innerRef} className="absolute inset-0 block will-change-transform motion-reduce:!transition-none">
+        {children}
+      </span>
+    </span>
+  );
 }
 
 function ArrowButton({ direction, onClick }: { direction: "left" | "right"; onClick: () => void }) {
@@ -79,39 +124,14 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
   const [active, setActive] = useState(0);
 
   const stageRef = useRef<HTMLDivElement>(null);
-  const previousOffsets = useRef<number[]>([]);
-  // Where the info bubble sits (px, within the stage); null = not hovering
-  const [bubble, setBubble] = useState<{ left: number; top: number } | null>(null);
-
-  // The bubble follows the cursor up and down in the gutter beside the image, on
-  // the side the cursor is on, so it never covers the project. Without room in
-  // the gutters (narrow screens) it sits centred under the image instead.
-  const trackBubble = (piece: HTMLElement, clientX: number | null, clientY: number | null) => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const sr = stage.getBoundingClientRect();
-    const pr = piece.getBoundingClientRect();
-    const pieceTop = pr.top - sr.top;
-    const pieceBottom = pr.bottom - sr.top;
-    const roomLeft = pr.left - sr.left;
-    const roomRight = sr.right - pr.right;
-    const need = BUBBLE_W + BUBBLE_GAP + 8;
-    const preferLeft = clientX !== null && clientX < pr.left + pr.width / 2;
-    const side =
-      (preferLeft ? roomLeft : roomRight) >= need ? (preferLeft ? "left" : "right")
-      : roomRight >= need ? "right"
-      : roomLeft >= need ? "left"
-      : null;
-    if (side === null) {
-      const centre = pr.left + pr.width / 2 - sr.left;
-      return setBubble({ left: centre - BUBBLE_W / 2, top: pieceBottom + 14 });
-    }
-    const y = clientY === null ? pieceTop + pr.height / 2 : clientY - sr.top;
-    setBubble({
-      left: side === "right" ? pr.right - sr.left + BUBBLE_GAP : pr.left - sr.left - BUBBLE_GAP - BUBBLE_W,
-      top: Math.min(Math.max(y - 70, pieceTop), Math.max(pieceTop, pieceBottom - BUBBLE_H)),
-    });
-  };
+  // The slide that was active on the previous render. Updated in an effect (not
+  // during render) so React double-rendering cannot hide a wrap-around.
+  const previousActive = useRef(0);
+  useEffect(() => {
+    previousActive.current = active;
+  });
+  // The bubble is pinned to the selected image and only fades in and out
+  const [hovering, setHovering] = useState(false);
 
   const step = useCallback(
     (direction: number) => setActive((a) => (a + direction + count) % count),
@@ -172,13 +192,12 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
   if (count === 0) return null;
 
   const offsets = slides.map((_, i) => circularOffset(i, active, count));
-  const lastOffsets = previousOffsets.current;
-  previousOffsets.current = offsets;
+  const lastActive = previousActive.current;
 
   return (
     <section
       id="work"
-      className="pb-24 scroll-mt-8"
+      className="pb-[86px] scroll-mt-8"
       aria-roledescription="carousel"
       aria-label="Featured projects"
     >
@@ -204,7 +223,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
             const hiddenPiece = distance > VISIBLE;
             // A piece wrapping around to the other side jumps instead of
             // sliding across the centre
-            const wrapped = lastOffsets[i] !== undefined && Math.abs(lastOffsets[i] - d) > 1;
+            const wrapped = Math.abs(circularOffset(i, lastActive, count) - d) > 1;
             const isCenter = d === 0;
 
             const style: CSSProperties = {
@@ -214,9 +233,10 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
               zIndex: 10 - distance,
               opacity: hiddenPiece ? 0 : 1,
               transform: `translateX(-50%) translateX(calc(var(--cw) * ${side * place.x})) rotateY(${-side * place.rotate}deg) scale(${place.scale})`,
+              // It fades in at its new spot rather than travelling there
               transition: wrapped
-                ? "none"
-                : "transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease, filter 600ms ease",
+                ? "transform 0s, opacity 500ms ease, filter 900ms ease"
+                : "transform 900ms cubic-bezier(0.45, 0, 0.2, 1), opacity 500ms ease, filter 900ms ease, z-index 900ms linear",
               filter: isCenter ? "none" : `brightness(${1 - distance * 0.06})`,
               pointerEvents: hiddenPiece ? "none" : "auto",
             };
@@ -251,48 +271,47 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
 
             const frameClass = "absolute left-1/2 block motion-reduce:!transition-none";
 
-            return isCenter ? (
+            // One element type for every piece, so a piece keeps its DOM node as it
+            // moves to the centre and the browser can animate the whole journey.
+            return (
               <Link
                 key={p.slug}
                 to={`/work/${p.slug}`}
-                className={`${frameClass} group/piece outline-none`}
+                className={`${frameClass} group/piece outline-none ${isCenter ? "" : "cursor-pointer"}`}
                 style={style}
-                onClick={(e) => dragged.current && e.preventDefault()}
-                onPointerEnter={(e) => trackBubble(e.currentTarget, e.clientX, e.clientY)}
-                onPointerMove={(e) => trackBubble(e.currentTarget, e.clientX, e.clientY)}
-                onPointerLeave={() => setBubble(null)}
-                onFocus={(e) => trackBubble(e.currentTarget, null, null)}
-                onBlur={() => setBubble(null)}
+                tabIndex={isCenter ? 0 : -1}
+                aria-label={isCenter ? undefined : `Show ${p.name}`}
+                onClick={(e) => {
+                  if (isCenter) {
+                    if (dragged.current) e.preventDefault();
+                    return;
+                  }
+                  e.preventDefault();
+                  if (!dragged.current) setActive(i);
+                }}
+                onPointerEnter={isCenter ? () => setHovering(true) : undefined}
+                onPointerLeave={isCenter ? () => setHovering(false) : undefined}
+                onFocus={isCenter ? () => setHovering(true) : undefined}
+                onBlur={isCenter ? () => setHovering(false) : undefined}
               >
-                {piece}
+                <TiltLayer active={isCenter}>{piece}</TiltLayer>
               </Link>
-            ) : (
-              <button
-                key={p.slug}
-                type="button"
-                className={`${frameClass} cursor-pointer`}
-                style={style}
-                tabIndex={-1}
-                aria-label={`Show ${p.name}`}
-                onClick={() => !dragged.current && setActive(i)}
-              >
-                {piece}
-              </button>
             );
           })}
 
-          {/* Info bubble: follows the cursor beside the image, never over it */}
+          {/* Info bubble: fixed beside the selected image, 16px past its right edge */}
           {(() => {
             const { project: p, title } = slides[active];
             return (
               <div
-                aria-hidden={bubble === null}
-                className={`pointer-events-none absolute z-40 flex w-[min(300px,calc(100vw-32px))] flex-col gap-2 rounded-2xl bg-white p-5 text-left shadow-[0_16px_48px_rgba(0,0,0,0.18)] transition-[top,opacity,transform] duration-300 ease-out [@media(hover:none)]:p-4 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0 ${
-                  bubble === null ? "left-1/2 -translate-x-1/2 translate-y-2 opacity-0 [@media(hover:none)]:opacity-100" : "translate-y-0 opacity-100"
+                aria-hidden={!hovering}
+                // Right of the selected image on wide screens, under it on narrower ones
+                className={`pointer-events-none absolute z-40 flex flex-col gap-2 rounded-2xl bg-white p-5 text-left shadow-[0_16px_48px_rgba(0,0,0,0.18)] transition-opacity duration-200 ease-out left-1/2 -translate-x-1/2 top-[var(--under-top)] w-[min(300px,calc(100vw-32px))] lg:left-[var(--right-left)] lg:translate-x-0 lg:top-8 lg:w-[min(300px,calc(50vw-var(--cw)/2-32px))] [@media(hover:none)]:p-4 [@media(hover:none)]:opacity-100 ${
+                  hovering ? "opacity-100" : "opacity-0"
                 }`}
                 style={{
-                  ...(bubble ?? {}),
-                  ...(bubble === null ? { top: `calc(12px + var(--cw) / ${ASPECT} + 14px)` } : {}),
+                  ["--under-top" as string]: `calc(12px + var(--cw) / ${ASPECT} + 14px)`,
+                  ["--right-left" as string]: `calc(50% + var(--cw) / 2 + ${BUBBLE_OFFSET_X}px)`,
                 }}
               >
                 <span className="text-[#737373] text-[10px] font-semibold uppercase tracking-[0.16em]">
