@@ -2,10 +2,10 @@ export default function Hero() {
   return (
     <section id="about">
       <div className="relative inline-block max-w-[880px]">
-        <p className="text-[#151515] text-[28px] md:text-[36px] lg:text-[40px] font-medium leading-[1.18] tracking-[-0.5px] text-balance">
-          Creative Product Designer with 10+ years of experience driving design strategy across small businesses,{" "}
-          <span className="whitespace-nowrap">VC-backed</span> startups, and
-          private equity B2B SaaS platforms.
+        <p className="text-ink text-[28px] md:text-[36px] lg:text-[40px] font-medium leading-[1.18] tracking-[-0.5px] text-balance">
+          <span className="text-alt-2">Creative</span> product designer with 10+ yoe driving design strategy for{" "}
+          <span className="text-alt-1">games</span>, <span className="text-tertiary">startups</span> and{" "}
+          <span className="text-quaternary">b2b saas</span>.
         </p>
 
         {/* Floating avatar */}

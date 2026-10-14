@@ -48,7 +48,7 @@ export default function ImageCarousel({ items, onOpenImage }: ImageCarouselProps
   };
 
   const buttonClass =
-    "flex h-9 w-9 items-center justify-center border border-[#E6E0D8] text-[#151515] transition-colors hover:border-[#151515] disabled:opacity-30 disabled:hover:border-[#E6E0D8] disabled:cursor-default";
+    "flex h-9 w-9 items-center justify-center border border-[#E6E0D8] text-ink transition-colors hover:border-ink disabled:opacity-30 disabled:hover:border-[#E6E0D8] disabled:cursor-default";
 
   return (
     <div className="flex flex-col gap-5" aria-roledescription="carousel">

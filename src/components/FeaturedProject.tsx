@@ -34,7 +34,7 @@ function FeaturedSlide({ project, title, tagline }: { project: Project; title?: 
           {project.category} · {project.year}
         </span>
 
-        <h3 className="text-[#151515] text-[24px] md:text-[28px] font-medium leading-[1.2] tracking-[-0.4px] text-balance group-hover:text-[#CA2F00] transition-colors duration-200">
+        <h3 className="text-ink text-[24px] md:text-[28px] font-medium leading-[1.2] tracking-[-0.4px] text-balance group-hover:text-accent transition-colors duration-200">
           {title ?? project.name}
         </h3>
 
@@ -45,7 +45,7 @@ function FeaturedSlide({ project, title, tagline }: { project: Project; title?: 
         <dl className="flex flex-col gap-1 text-[13px]">
           <div className="flex gap-2">
             <dt className="text-[#737373]">Role</dt>
-            <dd className="text-[#151515]">{project.role}</dd>
+            <dd className="text-ink">{project.role}</dd>
           </div>
         </dl>
 
@@ -60,7 +60,7 @@ function FeaturedSlide({ project, title, tagline }: { project: Project; title?: 
           ))}
         </ul>
 
-        <span className="inline-flex items-center gap-2 text-[13px] font-medium text-[#151515] group-hover:text-[#CA2F00] transition-colors duration-200">
+        <span className="inline-flex items-center gap-2 text-[13px] font-medium text-ink group-hover:text-accent transition-colors duration-200">
           View case study
           <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
             →
@@ -106,7 +106,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
   const isCarousel = slides.length > 1;
 
   const buttonClass =
-    "flex h-9 w-9 items-center justify-center border border-[#E6E0D8] text-[#151515] transition-colors hover:border-[#151515] disabled:opacity-30 disabled:hover:border-[#E6E0D8] disabled:cursor-default";
+    "flex h-9 w-9 items-center justify-center border border-[#E6E0D8] text-ink transition-colors hover:border-ink disabled:opacity-30 disabled:hover:border-[#E6E0D8] disabled:cursor-default";
 
   return (
     <section className="pb-24" aria-roledescription={isCarousel ? "carousel" : undefined} aria-label="Featured projects">

@@ -69,14 +69,14 @@ function QuickHello() {
   if (status === "sent") {
     return (
       <div className="px-3 py-4 flex flex-col gap-2" role="status">
-        <p className="text-[13px] font-medium text-[#151515]">Thanks, message received.</p>
+        <p className="text-[13px] font-medium text-ink">Thanks, message received.</p>
         <p className="text-[12px] leading-[1.5] text-[#737373]">
           I read every note. If you left an email, I'll get back to you.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="self-start text-[12px] font-medium text-[#CA2F00] hover:underline"
+          className="self-start text-[12px] font-medium text-accent hover:underline"
         >
           Send another
         </button>
@@ -85,11 +85,11 @@ function QuickHello() {
   }
 
   const fieldClass =
-    "w-full rounded-lg border border-[#E6E0D8] bg-[#F9F7F4] px-3 py-2 text-[13px] text-[#151515] placeholder:text-[#9aa1b5] focus:outline-none focus:border-[#CA2F00] transition-colors";
+    "w-full rounded-lg border border-[#E6E0D8] bg-page px-3 py-2 text-[13px] text-ink placeholder:text-[#9aa1b5] focus:outline-none focus:border-accent transition-colors";
 
   return (
     <form onSubmit={send} className="px-3 pt-1 pb-3 flex flex-col gap-2">
-      <label htmlFor="quick-hello" className="text-[13px] font-medium text-[#151515]">
+      <label htmlFor="quick-hello" className="text-[13px] font-medium text-ink">
         Send a quick hello
       </label>
       <textarea
@@ -137,7 +137,7 @@ function QuickHello() {
         <button
           type="submit"
           disabled={!message.trim() || status === "sending"}
-          className="h-8 px-4 rounded-full bg-[#151515] text-white text-[12px] font-medium hover:bg-[#CA2F00] disabled:opacity-40 disabled:hover:bg-[#151515] disabled:cursor-default transition-colors"
+          className="h-8 px-4 rounded-full bg-ink text-white text-[12px] font-medium hover:bg-accent disabled:opacity-40 disabled:hover:bg-ink disabled:cursor-default transition-colors"
         >
           {status === "sending" ? "Sending…" : "Send"}
         </button>
@@ -202,7 +202,7 @@ export default function ContactButton() {
   };
 
   const rowClass =
-    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#151515] hover:bg-[#EFEBE5] transition-colors";
+    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-ink hover:bg-[#E7E2DE] transition-colors";
 
   return (
     <div ref={rootRef} className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3">
@@ -219,7 +219,7 @@ export default function ContactButton() {
           </p>
 
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={rowClass}>
-            <span className="text-[#CA2F00]"><WhatsAppIcon /></span>
+            <span className="text-accent"><WhatsAppIcon /></span>
             <span className="flex flex-col">
               <span className="text-[13px] font-medium">WhatsApp</span>
               <span className="text-[12px] text-[#737373]">{WHATSAPP_DISPLAY}</span>
@@ -228,7 +228,7 @@ export default function ContactButton() {
 
           <div className="flex items-center">
             <a href={`mailto:${EMAIL}`} className={`${rowClass} flex-1 min-w-0`}>
-              <span className="text-[#151515]"><MailIcon /></span>
+              <span className="text-ink"><MailIcon /></span>
               <span className="flex flex-col min-w-0">
                 <span className="text-[13px] font-medium">Email</span>
                 <span className="text-[12px] text-[#737373] truncate">{EMAIL}</span>
@@ -237,7 +237,7 @@ export default function ContactButton() {
             <button
               type="button"
               onClick={copyEmail}
-              className="shrink-0 px-2.5 py-1.5 mr-1 rounded-md text-[11px] font-medium text-[#737373] hover:text-[#151515] hover:bg-[#EFEBE5] transition-colors"
+              className="shrink-0 px-2.5 py-1.5 mr-1 rounded-md text-[11px] font-medium text-[#737373] hover:text-ink hover:bg-[#E7E2DE] transition-colors"
               aria-label="Copy email address"
             >
               {copied ? "Copied" : "Copy"}
@@ -253,7 +253,7 @@ export default function ContactButton() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="contact-panel"
-        className="flex items-center gap-2 h-12 pl-4 pr-5 rounded-full bg-[#151515] text-white text-[13px] font-medium shadow-[0_8px_24px_rgba(34,40,65,0.25)] hover:bg-[#CA2F00] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CA2F00] focus-visible:ring-offset-2"
+        className="flex items-center gap-2 h-12 pl-4 pr-5 rounded-full bg-ink text-white text-[13px] font-medium shadow-[0_8px_24px_rgba(34,40,65,0.25)] hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         {open ? (
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">

@@ -33,14 +33,14 @@ const socials = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen pb-24 md:pb-28 bg-[#F9F7F4]">
+    <div className="min-h-screen pb-24 md:pb-28 bg-page">
       <div className="max-w-[1280px] mx-auto px-10 md:px-16 pb-24">
         <Navbar />
 
         <main className="pt-12">
           <Link
             to="/"
-            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] hover:text-[#151515] transition-colors"
+            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] hover:text-ink transition-colors"
           >
             ← Back
           </Link>
@@ -62,7 +62,7 @@ export default function AboutPage() {
                 <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
                   About
                 </span>
-                <h1 className="text-[36px] md:text-[48px] leading-[1.05] tracking-[-0.03em] text-[#151515] font-medium">
+                <h1 className="text-[36px] md:text-[48px] leading-[1.05] tracking-[-0.03em] text-ink font-medium">
                   Viktor Dopke
                 </h1>
                 <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#adb5c8]">
@@ -71,10 +71,10 @@ export default function AboutPage() {
               </div>
 
               <div className="flex flex-col gap-4 max-w-[560px]">
-                <p className="text-[15px] leading-[1.8] text-[#151515]/80">
+                <p className="text-[15px] leading-[1.8] text-ink/80">
                   I design digital products with a focus on clarity, usefulness, and the kind of detail that makes things feel considered. My work spans B2B platforms, consumer apps, and internal tools, usually somewhere between the mess of discovery and the satisfaction of shipping something that works.
                 </p>
-                <p className="text-[15px] leading-[1.8] text-[#151515]/80">
+                <p className="text-[15px] leading-[1.8] text-ink/80">
                   I care about understanding problems before solving them, working closely with engineers and product teams, and making sure the people actually using a product are never an afterthought. When I am not designing I am probably reading about things I have no practical use for, or spending too much time on a side project nobody asked for.
                 </p>
               </div>
@@ -91,7 +91,7 @@ export default function AboutPage() {
                       href={s.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 border border-[#E6E0D8] text-[12px] font-medium text-[#151515]/80 hover:border-[#151515] hover:text-[#151515] transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 border border-[#E6E0D8] text-[12px] font-medium text-ink/80 hover:border-ink hover:text-ink transition-colors"
                     >
                       {s.icon}
                       {s.label}
@@ -107,7 +107,7 @@ export default function AboutPage() {
                 </span>
                 <a
                   href="mailto:vikdopke@gmail.com"
-                  className="text-[15px] text-[#151515] font-medium hover:text-[#CA2F00] transition-colors"
+                  className="text-[15px] text-ink font-medium hover:text-accent transition-colors"
                 >
                   vikdopke@gmail.com
                 </a>

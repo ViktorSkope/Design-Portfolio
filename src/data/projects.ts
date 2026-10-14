@@ -122,7 +122,7 @@ export const projects: Project[] = [
       {
         label: "The Challenge",
         illustration: {
-          src: "/athos/walrus-challenge.png",
+          src: "/athos/walrus-challenge.svg",
           alt: "A confused walrus with a tangled scribble overhead, looking at a tablet marked NEW.",
         },
         headline: "Redesign a product hundreds of companies already work in, without adding friction.",
@@ -133,8 +133,8 @@ export const projects: Project[] = [
       {
         label: "The Approach",
         illustration: {
-          src: "/athos/walrus-approach.png",
-          alt: "A walrus gliding forward with a tilted arrow sign resting on its back, navigating with confidence.",
+          src: "/athos/walrus-approach.svg",
+          alt: "A walrus with an arrow floating above, moving forward with confidence.",
         },
         headline: "Keep navigation familiar and make setup linear.",
         points: [
@@ -145,7 +145,7 @@ export const projects: Project[] = [
       {
         label: "The Solution",
         illustration: {
-          src: "/athos/walrus-solution.png",
+          src: "/athos/walrus-solution.svg",
           alt: "A walrus peeking over a row of packages, one marked with a thumbs up.",
         },
         headline: "Redesign at the component level to ship fast.",

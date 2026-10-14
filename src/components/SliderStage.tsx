@@ -42,18 +42,18 @@ export default function SliderStage({ before, after, beforeAlt, afterAlt }: Slid
 
   return (
     <div
-      className="relative px-[10%] py-12 md:py-16 rounded-lg [--from:#EFEBE5]"
+      className="relative px-[10%] py-12 md:py-16 rounded-lg [--from:#E7E2DE]"
       style={style}
     >
       {/* Labels sit in the padding, outside the slider image */}
       <span
-        className="pointer-events-none absolute top-4 left-[10%] rounded-full bg-[#151515] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white transition-opacity duration-200"
+        className="pointer-events-none absolute top-4 left-[10%] rounded-full bg-ink px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white transition-opacity duration-200"
         style={{ opacity: position > 12 ? 1 : 0 }}
       >
         Before
       </span>
       <span
-        className="pointer-events-none absolute top-4 right-[10%] rounded-full bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#151515] border border-[#E6E0D8] shadow-[0_1px_6px_rgba(0,0,0,0.12)] transition-opacity duration-200"
+        className="pointer-events-none absolute top-4 right-[10%] rounded-full bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink border border-[#E6E0D8] shadow-[0_1px_6px_rgba(0,0,0,0.12)] transition-opacity duration-200"
         style={{ opacity: position < 88 ? 1 : 0 }}
       >
         After

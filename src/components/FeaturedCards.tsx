@@ -36,7 +36,7 @@ export default function FeaturedCards() {
                 {project.category}
               </span>
               <div className="flex items-baseline justify-between gap-4">
-                <p className="text-[#151515] text-[14px] font-medium leading-snug group-hover:text-[#CA2F00] transition-colors duration-200">
+                <p className="text-ink text-[14px] font-medium leading-snug group-hover:text-accent transition-colors duration-200">
                   {project.name}
                 </p>
                 <p className="text-[#737373] text-[13px] font-normal shrink-0">

@@ -26,7 +26,7 @@ export default function WorkList() {
               to={`/work/${item.slug}`}
               className="flex flex-col gap-1.5 py-4 group cursor-pointer"
             >
-              <p className="text-[#151515] text-[14px] font-medium leading-snug group-hover:text-[#CA2F00] transition-colors duration-200">
+              <p className="text-ink text-[14px] font-medium leading-snug group-hover:text-accent transition-colors duration-200">
                 {item.name}
               </p>
               <p className="text-[#737373] text-[13px] font-normal leading-snug">

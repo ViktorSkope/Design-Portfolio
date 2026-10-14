@@ -28,7 +28,7 @@ export default function ImageMosaic({ items, onOpenImage }: ImageMosaicProps) {
             loading="lazy"
             className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           />
-          <span className="pointer-events-none absolute left-3 bottom-3 rounded-full bg-[#151515]/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0">
+          <span className="pointer-events-none absolute left-3 bottom-3 rounded-full bg-ink/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0">
             {item.title}
           </span>
         </button>

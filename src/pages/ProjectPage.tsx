@@ -130,14 +130,14 @@ function SectionBlock({ section, index, onOpenImage }: SectionBlockProps) {
           <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <p className="mt-2 text-[13px] font-medium text-[#151515] leading-snug">
+          <p className="mt-2 text-[13px] font-medium text-ink leading-snug">
             {section.title}
           </p>
         </div>
 
         {/* Section content */}
         <div className="flex flex-col gap-8">
-          <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
+          <p className="text-[15px] leading-[1.8] text-ink/80 max-w-[680px]">
             {section.body}
           </p>
 
@@ -209,16 +209,16 @@ function MyRole({ role }: { role: NonNullable<Project["myRole"]> }) {
   return (
     <StackedSection label="My Role">
       <div className={threeColGrid}>
-        <p className="text-[15px] leading-[1.8] text-[#151515]/80">
+        <p className="text-[15px] leading-[1.8] text-ink/80">
           {role.summary}
         </p>
         <ul className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-0 content-start">
           {role.points.map((point) => (
             <li
               key={point}
-              className="flex gap-4 py-3 border-t border-[#E6E0D8] text-[15px] leading-[1.6] text-[#151515]"
+              className="flex gap-4 py-3 border-t border-[#E6E0D8] text-[15px] leading-[1.6] text-ink"
             >
-              <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#CA2F00]" />
+              <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
               {point}
             </li>
           ))}
@@ -244,7 +244,7 @@ export default function ProjectPage() {
   const isCaseStudy = Boolean(project.challenge || project.sections?.length);
 
   return (
-    <div className="min-h-screen pb-24 md:pb-28 bg-[#F9F7F4]">
+    <div className="min-h-screen pb-24 md:pb-28 bg-page">
       {lightbox && <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={closeImage} />}
       <div className="max-w-[1280px] mx-auto px-10 md:px-16 pb-24">
         <Navbar />
@@ -253,7 +253,7 @@ export default function ProjectPage() {
           {/* Back nav */}
           <Link
             to="/#work"
-            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] hover:text-[#151515] transition-colors"
+            className="inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] hover:text-ink transition-colors"
           >
             ← Back to Work
           </Link>
@@ -263,10 +263,10 @@ export default function ProjectPage() {
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
               {project.category}
             </p>
-            <h1 className="mt-3 text-[40px] md:text-[56px] leading-[1.02] tracking-[-0.03em] text-[#151515] font-medium">
+            <h1 className="mt-3 text-[40px] md:text-[56px] leading-[1.02] tracking-[-0.03em] text-ink font-medium">
               {project.name}
             </h1>
-            <p className="mt-4 text-[18px] md:text-[20px] leading-[1.4] text-[#151515]/80 max-w-[640px] font-normal">
+            <p className="mt-4 text-[18px] md:text-[20px] leading-[1.4] text-ink/80 max-w-[640px] font-normal">
               {project.tagline}
             </p>
 
@@ -282,7 +282,7 @@ export default function ProjectPage() {
                     <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#adb5c8]">
                       {meta.label}
                     </span>
-                    <span className="text-[13px] text-[#151515]">{meta.value}</span>
+                    <span className="text-[13px] text-ink">{meta.value}</span>
                   </div>
                 </div>
               ))}
@@ -304,7 +304,7 @@ export default function ProjectPage() {
               </div>
             )}
             {project.coverCaption && (
-              <p className="mt-4 text-[14px] leading-[1.7] text-[#151515]/80">
+              <p className="mt-4 text-[14px] leading-[1.7] text-ink/80">
                 {project.coverCaption}
               </p>
             )}
@@ -321,7 +321,7 @@ export default function ProjectPage() {
                 beforeAlt={comparison.beforeAlt}
                 afterAlt={comparison.afterAlt}
               />
-              <p className="mt-4 text-[14px] leading-[1.7] text-[#151515]/80">
+              <p className="mt-4 text-[14px] leading-[1.7] text-ink/80">
                 {comparison.caption}
               </p>
             </section>
@@ -331,7 +331,7 @@ export default function ProjectPage() {
           {isCaseStudy ? (
             <>
               <ContentRow label="Overview">
-                <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
+                <p className="text-[15px] leading-[1.8] text-ink/80 max-w-[680px]">
                   {project.overview}
                 </p>
               </ContentRow>
@@ -340,7 +340,7 @@ export default function ProjectPage() {
 
               {project.challenge && (
                 <ContentRow label="The Challenge">
-                  <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
+                  <p className="text-[15px] leading-[1.8] text-ink/80 max-w-[680px]">
                     {project.challenge}
                   </p>
                 </ContentRow>
@@ -348,7 +348,7 @@ export default function ProjectPage() {
 
               {project.approach && (
                 <ContentRow label="My Approach">
-                  <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
+                  <p className="text-[15px] leading-[1.8] text-ink/80 max-w-[680px]">
                     {project.approach}
                   </p>
                 </ContentRow>
@@ -370,14 +370,14 @@ export default function ProjectPage() {
               {project.outcome && (
                 <ContentRow label="Outcome">
                   <div className="flex flex-col gap-8 max-w-[680px]">
-                    <p className="text-[15px] leading-[1.8] text-[#151515]/80">
+                    <p className="text-[15px] leading-[1.8] text-ink/80">
                       {project.outcome}
                     </p>
                     {project.outcomeStats && project.outcomeStats.length > 0 && (
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E6E0D8] border border-[#E6E0D8]">
                         {project.outcomeStats.map((stat) => (
-                          <div key={stat.label} className="bg-[#F9F7F4] px-6 py-5 flex flex-col gap-1">
-                            <span className="text-[26px] font-medium tracking-[-0.02em] text-[#151515] leading-none">
+                          <div key={stat.label} className="bg-page px-6 py-5 flex flex-col gap-1">
+                            <span className="text-[26px] font-medium tracking-[-0.02em] text-ink leading-none">
                               {stat.value}
                             </span>
                             <span className="text-[11px] text-[#737373] uppercase tracking-[0.12em]">
@@ -398,7 +398,7 @@ export default function ProjectPage() {
                 <>
                   <div className="border-t border-[#E6E0D8]" />
                   <section className="py-12 max-w-[860px]">
-                    <p className="text-[16px] leading-[1.75] text-[#151515]">
+                    <p className="text-[16px] leading-[1.75] text-ink">
                       {project.overview}
                     </p>
                   </section>
@@ -435,14 +435,14 @@ export default function ProjectPage() {
                       </div>
                     )}
                     <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]">
-                      <span className="text-[#CA2F00]">{String(i + 1).padStart(2, "0")}</span> · {block.label}
+                      <span className="text-accent">{String(i + 1).padStart(2, "0")}</span> · {block.label}
                     </span>
-                    <h3 className="text-[18px] font-medium leading-[1.35] tracking-[-0.2px] text-[#151515] text-balance">
+                    <h3 className="text-[18px] font-medium leading-[1.35] tracking-[-0.2px] text-ink text-balance">
                       {block.headline}
                     </h3>
                     <ul className="flex flex-col gap-3">
                       {block.points.map((point) => (
-                        <li key={point} className="text-[15px] leading-[1.8] text-[#151515]/80">
+                        <li key={point} className="text-[15px] leading-[1.8] text-ink/80">
                           {point}
                         </li>
                       ))}
@@ -456,14 +456,14 @@ export default function ProjectPage() {
           {!isCaseStudy && project.outcome && (
             <StackedSection label="Outcome">
               <div className="flex flex-col gap-10">
-                <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
+                <p className="text-[15px] leading-[1.8] text-ink/80 max-w-[680px]">
                   {project.outcome}
                 </p>
                 {project.outcomeStats && project.outcomeStats.length > 0 && (
                   <div className={threeColGrid}>
                     {project.outcomeStats.map((stat) => (
                       <div key={stat.label} className="flex flex-col gap-2 pt-4 border-t border-[#E6E0D8]">
-                        <span className="text-[32px] font-medium tracking-[-0.02em] leading-none text-[#151515]">
+                        <span className="text-[32px] font-medium tracking-[-0.02em] leading-none text-ink">
                           {stat.value}
                         </span>
                         <span className="text-[11px] uppercase tracking-[0.12em] text-[#737373]">
@@ -486,7 +486,7 @@ export default function ProjectPage() {
           {project.gallery && (
             <StackedSection label={project.gallery.label}>
               <div className="flex flex-col gap-8 min-w-0">
-                <p className="text-[15px] leading-[1.8] text-[#151515]/80 max-w-[680px]">
+                <p className="text-[15px] leading-[1.8] text-ink/80 max-w-[680px]">
                   {project.gallery.description}
                 </p>
                 <ImageCarousel items={project.gallery.items} onOpenImage={openImage} />
@@ -506,7 +506,7 @@ export default function ProjectPage() {
             </div>
             <Link
               to={`/work/${nextProject.slug}`}
-              className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#151515] hover:text-[#CA2F00] transition-colors shrink-0"
+              className="text-[12px] font-medium uppercase tracking-[0.14em] text-ink hover:text-accent transition-colors shrink-0"
             >
               Next: {nextProject.name} →
             </Link>

@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+/* Style kit */
+@theme {
+  --color-page: #F0EDEB;      /* page background */
+  --color-ink: #151515;       /* dark type tone */
+  --color-accent: #0279D5;    /* accent: buttons, links, highlights */
+  --color-tertiary: #235A61;
+  --color-alt-1: #742331;
+  --color-alt-2: #483869;
+  --color-quaternary: #384C69;
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-8px); }
@@ -18,6 +29,6 @@
 
   body {
     margin: 0;
-    background-color: #F9F7F4;
+    background-color: var(--color-page);
   }
 }

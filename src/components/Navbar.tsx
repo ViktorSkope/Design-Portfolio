@@ -28,9 +28,9 @@ export default function Navbar() {
   const isAbout = pathname === "/about";
 
   const activeClass =
-    "text-[#CA2F00] text-[11px] font-semibold uppercase tracking-[0.14em] hover:opacity-60 transition-opacity duration-200";
+    "text-accent text-[11px] font-semibold uppercase tracking-[0.14em] hover:opacity-60 transition-opacity duration-200";
   const inactiveClass =
-    "text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em] hover:text-[#151515] transition-colors duration-200";
+    "text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em] hover:text-ink transition-colors duration-200";
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -40,7 +40,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between">
         {/* Left: name + title */}
         <div className="flex flex-col gap-[5px]">
-          <span className="text-[#151515] text-[11px] font-semibold uppercase tracking-[0.14em]">
+          <span className="text-ink text-[11px] font-semibold uppercase tracking-[0.14em]">
             Viktor Dopke
           </span>
           <span className="text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em]">
@@ -75,7 +75,7 @@ export default function Navbar() {
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
-            className="flex items-center justify-center w-8 h-8 text-[#737373] hover:text-[#151515] transition-colors duration-200"
+            className="flex items-center justify-center w-8 h-8 text-[#737373] hover:text-ink transition-colors duration-200"
           >
             <HamburgerIcon open={menuOpen} />
           </button>
@@ -84,7 +84,7 @@ export default function Navbar() {
 
       {/* ── Mobile drawer ────────────────────────────────────────────────── */}
       {menuOpen && (
-        <nav className="md:hidden absolute left-0 right-0 top-full z-40 bg-[#F9F7F4] border-t border-[#E6E0D8] shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
+        <nav className="md:hidden absolute left-0 right-0 top-full z-40 bg-page border-t border-[#E6E0D8] shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
           <div className="flex flex-col py-2">
             <Link
               to="/#work"
