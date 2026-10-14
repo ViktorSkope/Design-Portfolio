@@ -125,6 +125,8 @@ function ProjectPageContent({ project }: { project: Project }) {
   const headRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const peeksRef = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
 
   const content = getProjectPage(project);
   const previous = getPreviousProject(project.slug);
@@ -133,12 +135,12 @@ function ProjectPageContent({ project }: { project: Project }) {
   // Finish whichever transition brought us here, before the first paint
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
-    const arrival = arrive(project.slug, coverRef.current, pageRef.current);
-    const fade = (el: HTMLElement | null, delay: number, rise = 16) =>
+    const arrival = arrive(project.slug, { cover: coverRef.current, row: rowRef.current, strip: stripRef.current });
+    const fade = (el: HTMLElement | null, delay: number, rise = 16, shift = 0) =>
       el?.animate(
         [
-          { opacity: 0, transform: `translateY(${rise}px)` },
-          { opacity: 1, transform: "translateY(0)" },
+          { opacity: 0, transform: `translate(${shift}px, ${rise}px)` },
+          { opacity: 1, transform: "translate(0, 0)" },
         ],
         { duration: 600, delay, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" },
       );
@@ -147,6 +149,9 @@ function ProjectPageContent({ project }: { project: Project }) {
       fade(headRef.current, 150, 8);
       fade(peeksRef.current, TRANSITION_MS * 0.7, 0);
       fade(bodyRef.current, TRANSITION_MS * 0.55);
+    } else if (arrival.kind === "slide") {
+      // The covers travel as one strip; the text below arrives once the old text has gone
+      fade(bodyRef.current, TRANSITION_MS * 0.35, 0, arrival.direction * 60);
     } else if (arrival.kind === "none") {
       fade(headRef.current, 0, 8);
       fade(peeksRef.current, 150, 0);
@@ -156,8 +161,23 @@ function ProjectPageContent({ project }: { project: Project }) {
 
   // Neighbouring projects slide in sideways, like turning a carousel
   const slideTo = (target: Project, direction: 1 | -1) => {
-    if (pageRef.current) beginSlide(target.slug, direction, pageRef.current);
-    navigate(`/work/${target.slug}`);
+    const go = () => {
+      if (rowRef.current && bodyRef.current && coverRef.current) {
+        beginSlide(target.slug, direction, {
+          row: rowRef.current,
+          body: bodyRef.current,
+          pitch: coverRef.current.getBoundingClientRect().width + 32,
+        });
+      }
+      navigate(`/work/${target.slug}`);
+    };
+    // From further down the page (the footer link), glide back to the covers first
+    if (window.scrollY > 8) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.setTimeout(go, Math.min(600, 200 + window.scrollY * 0.25));
+    } else {
+      go();
+    }
   };
 
   return (
@@ -174,7 +194,8 @@ function ProjectPageContent({ project }: { project: Project }) {
       </div>
 
       {/* Cover, with the neighbouring projects peeking in from both sides */}
-      <div className="relative left-1/2 mt-[22px] w-screen -translate-x-1/2 overflow-x-clip">
+      <div ref={rowRef} className="relative left-1/2 mt-[22px] w-screen -translate-x-1/2 overflow-x-clip">
+        <div ref={stripRef} data-strip>
         <div className="relative mx-auto w-[var(--cw)]" style={{ aspectRatio: COVER_ASPECT }}>
           <div ref={coverRef} className="absolute inset-0">
             <CoverCard project={project} alt={project.coverImageAlt} />
@@ -183,6 +204,7 @@ function ProjectPageContent({ project }: { project: Project }) {
             <Peek project={previous} side="left" onGo={() => slideTo(previous, -1)} />
             <Peek project={next} side="right" onGo={() => slideTo(next, 1)} />
           </div>
+        </div>
         </div>
       </div>
 

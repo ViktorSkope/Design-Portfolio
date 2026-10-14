@@ -122,6 +122,7 @@ function TiltLayer({
       >
         <span
           ref={innerRef}
+          data-tilt
           className="pointer-events-none absolute block will-change-transform motion-reduce:!transition-none"
           style={{ inset: bleed }}
         >
@@ -240,8 +241,19 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
 
   // Opening a project: its card grows into the project page's cover
   const openProject = (project: Project) => {
-    const rect = centreRef.current?.getBoundingClientRect();
-    if (rect) beginExpand(project.slug, rect, project.coverImage, getCoverBackground(project));
+    const centre = centreRef.current;
+    if (centre) {
+      // Hand over the card exactly as it looks now, hover tilt included
+      const tilt = centre.querySelector<HTMLElement>("[data-tilt]");
+      beginExpand(
+        project.slug,
+        centre.getBoundingClientRect(),
+        project.coverImage,
+        getCoverBackground(project),
+        tilt ? getComputedStyle(tilt).transform : "none",
+        document.getElementById("home-page"),
+      );
+    }
     navigate(`/work/${project.slug}`);
   };
 
@@ -344,6 +356,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                 className={`${frameClass} group/piece outline-none ${isCenter ? "" : "cursor-pointer"}`}
                 style={style}
                 ref={isCenter ? centreRef : undefined}
+                data-centre={isCenter ? "" : undefined}
                 tabIndex={isCenter ? 0 : -1}
                 aria-label={isCenter ? undefined : `Show ${p.name}`}
                 onClick={(e) => {

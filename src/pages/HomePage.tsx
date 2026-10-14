@@ -4,7 +4,7 @@ import FeaturedProject from "../components/FeaturedProject";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen pb-24 md:pb-28 bg-page">
+    <div id="home-page" className="min-h-screen pb-24 md:pb-28 bg-page">
       <div className="max-w-[1280px] mx-auto px-10 md:px-16">
         <Navbar />
 
