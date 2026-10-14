@@ -93,7 +93,7 @@ export const projects: Project[] = [
     role: "Lead Product Designer",
     overview:
       "Athos Commerce is currently in early access and this is where most of my time goes right now. The platform already has hundreds of shoppers using it daily, which means the design decisions I make have to respect what people already know and how they already work. My role as Lead Product Designer is to untangle the more complex interaction patterns, understand where familiarity ends and friction begins, and carry that knowledge into a new and revised console that is currently in the works. It is the kind of problem I find genuinely interesting: not starting from scratch, but making something better without losing what people already trust.",
-    coverImage: "/athos/cover-3.png",
+    coverImage: "/athos/cover-4.png",
     coverImageAlt: "Redesigned Athos Commerce dashboard in a device frame, showing quick links, search performance, catalog sync and category performance.",
     images: [],
     tags: ["Enterprise", "Product Design", "Design Systems"],
@@ -237,7 +237,7 @@ export const projects: Project[] = [
     role: "Product Design Lead",
     overview:
       "Ingrid builds autonomous harvesting equipment and needed a platform where field technicians could monitor and control combines from a distance. The software existed, but it was rough. I was brought in to redesign it from the ground up, making it something people could actually use without a manual in hand.",
-    coverImage: "/ingrid/cover-3.webp",
+    coverImage: "/ingrid/cover-4.webp",
     coverImageAlt: "Ingrid production map: a list of harvesters with cargo and signal levels, a production chart, and a satellite map with a warning card for combine D10 about low rear tire pressure.",
     coverCaption:
       "Ingrid builds autonomous harvesters and needed a platform for field technicians to monitor and control combines remotely. The existing software was hard to use without a manual in hand, so the product was designed again from the ground up. The product name and branding were changed under NDA.",
@@ -350,7 +350,7 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Whirl started as a personal itch. Me and a group of friends were constantly trying to figure out what was happening around our city and always ended up defaulting to the same spots. We first sketched the idea in 2016 and properly redesigned it in 2020. The concept is an AI assistant that learns your tastes and suggests restaurants, activities, and local experiences worth trying nearby. It is also a case study for mobile UI design and some early thinking on what AI chat interaction could look like.",
-    coverImage: "/whirl/cover-3.webp",
+    coverImage: "/whirl/cover-4.webp",
     coverImageAlt: "Three Whirl app screens on a lime gradient: the sign-up screen, a discovery home with nearby places, and a venue page with a reservation button.",
     coverCaption:
       "Whirl started with a group of friends who kept ending up at the same spots. It's an AI assistant that learns your tastes and suggests restaurants, activities and local experiences nearby. First sketched in 2016 and redesigned in 2020, it became a case study in mobile UI and early AI chat interaction.",
@@ -445,7 +445,7 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Watchson started as an internal problem we had at the agency. We needed a better way to understand how our developers and designers were being allocated across client projects, what skills each person had or was trying to build, and how to bring the HR team closer to the reality of what the dev team actually did day to day. It was also an opportunity to involve junior developers in a real product from the start, giving them a place to contribute ideas and learn what it feels like to ship something fast.",
-    coverImage: "/watchson/cover-3.png",
+    coverImage: "/watchson/cover-4.png",
     coverImageAlt: "Watchson new simulation screen on a pink and purple gradient, with an employee fit table and a radar chart comparing project requirements with team skills.",
     coverCaption:
       "Watchson started as an internal problem at a design agency: seeing how developers and designers were allocated across client projects, what skills each person had or wanted to build, and bringing HR closer to the dev team's daily work. It also gave junior developers a real product to ship.",
@@ -530,7 +530,7 @@ export const projects: Project[] = [
     role: "Sole Product Designer",
     overview:
       "Series AI is building Rho Engine, an AI-native platform for game development. I designed the multiplayer workspace where writers, producers and AI agents build a story together.",
-    coverImage: "/rho/cover-3.webp",
+    coverImage: "/rho/cover-4.webp",
     coverImageAlt: "Rho Studio home screen in dark mode, framed on a warm background, with agent shortcuts and a feed of AI-generated images.",
     coverCaption:
       "Series AI, backed by a16z, Bitkraft and F4 Fund, is building Rho Engine: an AI-native game development platform unveiled at GDC 2024, built so small teams can create worlds that once needed a full studio. Its users are game writers, producers and directors. Great storytellers, but most weren't AI-savvy. They needed one place to shape a story together, document it, and generate assets like concept art to back up their ideas.",
@@ -606,7 +606,7 @@ export const projects: Project[] = [
     category: "Featured Work",
     role: "Game Concept Designer, Product Designer",
     overview: "A cozy educational game for kids and parents to learn about nutrition.",
-    coverImage: "/liliworld/cover-3.webp",
+    coverImage: "/liliworld/cover-4.webp",
     coverImageAlt: "The LiliWorld game screen: a top-down village with shops, a pond and a dock, with a coin counter and a star counter in the corners.",
     coverCaption: "A cozy educational game for kids and parents to learn about nutrition.",
     images: [],
@@ -621,7 +621,7 @@ export const projects: Project[] = [
     category: "Featured Work",
     role: "Illustrator and Product Designer",
     overview: "A diary for nurses to connect with hospital kids about their digestive health.",
-    coverImage: "/pewee/cover-3.png",
+    coverImage: "/pewee/cover-4.png",
     coverImageAlt: "Three Pewee Diary screens on a soft pink background: tracking pee color and volume, three character guides, and a story screen with a play button.",
     coverCaption: "A diary for nurses to connect with hospital kids about their digestive health.",
     images: [],
@@ -636,7 +636,7 @@ export const projects: Project[] = [
     category: "Featured Work",
     role: "Web Designer",
     overview: "A webmarket for sustainable construction products.",
-    coverImage: "/plywood/cover-3.png",
+    coverImage: "/plywood/cover-4.png",
     coverImageAlt: "Plywood menu on a dark screen: product links, a news card, and an isometric house map with numbered product hotspots.",
     coverCaption: "A webmarket for sustainable construction products.",
     images: [],
@@ -656,22 +656,6 @@ export function getProjectBySlug(slug: string): Project | undefined {
 
 export function getProjectsByCategory(category: ProjectCategory): Project[] {
   return projects.filter((project) => project.category === category);
-}
-
-// The top project of each category, shown in the home page list.
-export function getHighlightedProject(category: ProjectCategory): Project | undefined {
-  return getProjectsByCategory(category)[0];
-}
-
-// "More Work" thumbnails: every project not highlighted in the list, followed
-// by the highlighted Featured Work project so it also gets a thumbnail.
-export function getMoreWorkProjects(): Project[] {
-  const highlighted = new Set(
-    projectCategories.map((category) => getHighlightedProject(category)?.slug),
-  );
-  const featured = getHighlightedProject("Featured Work");
-  const rest = projects.filter((project) => !highlighted.has(project.slug));
-  return featured ? [...rest, featured] : rest;
 }
 
 export function getNextProject(currentSlug: string): Project {

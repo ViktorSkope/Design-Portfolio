@@ -1,7 +1,6 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import FeaturedProject from "../components/FeaturedProject";
-import FeaturedCards from "../components/FeaturedCards";
 
 export default function HomePage() {
   return (
@@ -14,17 +13,19 @@ export default function HomePage() {
             <Hero />
           </div>
 
+          {/* Newest first */}
           <FeaturedProject
             items={[
-              {
-                slug: "athos-commerce",
-                title: "Athos Commerce redesign",
-                tagline: "Redesigning a commerce console built around\nthe habits of hundreds of active shoppers.",
-              },
+              { slug: "athos-commerce", title: "Athos Commerce redesign" },
               { slug: "rho-studio" },
+              { slug: "watchson" },
+              { slug: "liliworld" },
+              { slug: "ingrid" },
+              { slug: "pewee-diary" },
+              { slug: "whirl" },
+              { slug: "plywood" },
             ]}
           />
-          <FeaturedCards />
         </main>
       </div>
     </div>

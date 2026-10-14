@@ -11,6 +11,11 @@
   --color-quaternary: #384C69;
 }
 
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-8px); }
@@ -22,6 +27,8 @@
   }
 
   html {
+    /* Lets full-bleed sections span the viewport without a sideways scrollbar */
+    overflow-x: clip;
     font-family: "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
