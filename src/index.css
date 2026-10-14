@@ -5,10 +5,31 @@
   --color-page: #F0EDEB;      /* page background */
   --color-ink: #151515;       /* dark type tone */
   --color-accent: #0279D5;    /* accent: buttons, links, highlights */
-  --color-tertiary: #235A61;
-  --color-alt-1: #742331;
-  --color-alt-2: #483869;
-  --color-quaternary: #384C69;
+  /* Highlight colours for the headline, each at least 4.5:1 on the page and on white */
+  --color-tertiary: #157683;
+  --color-alt-1: #D21939;
+  --color-alt-2: #7A52CD;
+  --color-quaternary: #356BB9;
+}
+
+/* Project bubbles: the outer layer drifts toward (--dx, --dy) from the very first
+   frame, the inner layer pops in, swells and bursts, and a ring flashes as it goes */
+@keyframes bubble-drift {
+  from { transform: translate(-50%, -50%); }
+  to   { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))); }
+}
+
+@keyframes bubble-life {
+  0%   { opacity: 0; transform: scale(0.4); }
+  6%   { opacity: 1; transform: scale(1); }
+  91%  { opacity: 1; transform: scale(1); }
+  96%  { opacity: 1; transform: scale(1.22); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+@keyframes bubble-burst {
+  from { opacity: 0.8; transform: scale(1); }
+  to   { opacity: 0;   transform: scale(2.2); }
 }
 
 @keyframes fade-up {
