@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { Link } from "react-router-dom";
-import { getProjectBySlug, type Project } from "../data/projects";
+import { Link, useNavigate } from "react-router-dom";
+import { getCoverBackground, getProjectBySlug, type Project } from "../data/projects";
+import { beginExpand } from "../lib/pageTransition";
 
 export interface FeaturedItem {
   slug: string;
@@ -167,6 +168,8 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
   const [active, setActive] = useState(0);
 
   const stageRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const centreRef = useRef<HTMLAnchorElement>(null);
   const compact = useMediaQuery("(max-width: 767px)");
   const placements = compact ? PLACEMENT_COMPACT : PLACEMENT;
   const visible = placements.length - 1;
@@ -233,6 +236,13 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
       e.preventDefault();
       step(-1);
     }
+  };
+
+  // Opening a project: its card grows into the project page's cover
+  const openProject = (project: Project) => {
+    const rect = centreRef.current?.getBoundingClientRect();
+    if (rect) beginExpand(project.slug, rect, project.coverImage, getCoverBackground(project));
+    navigate(`/work/${project.slug}`);
   };
 
   if (count === 0) return null;
@@ -333,11 +343,18 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                 to={`/work/${p.slug}`}
                 className={`${frameClass} group/piece outline-none ${isCenter ? "" : "cursor-pointer"}`}
                 style={style}
+                ref={isCenter ? centreRef : undefined}
                 tabIndex={isCenter ? 0 : -1}
                 aria-label={isCenter ? undefined : `Show ${p.name}`}
                 onClick={(e) => {
                   if (isCenter) {
-                    if (dragged.current) e.preventDefault();
+                    if (dragged.current) {
+                      e.preventDefault();
+                      return;
+                    }
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                    e.preventDefault();
+                    openProject(p);
                     return;
                   }
                   e.preventDefault();
@@ -363,6 +380,11 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
           return (
             <Link
               to={`/work/${p.slug}`}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                e.preventDefault();
+                openProject(p);
+              }}
               tabIndex={-1}
               className={`relative mx-auto mt-2 flex w-[calc(100vw-32px)] max-w-[560px] flex-col gap-2.5 rounded-2xl bg-white p-5 text-left shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-opacity duration-200 ease-out lg:pointer-events-none lg:absolute lg:z-40 lg:mx-0 lg:mt-0 lg:left-[var(--right-left)] lg:top-8 lg:w-[min(300px,calc(50vw-var(--cw)/2-32px))] lg:gap-2 lg:[@media(hover:none)]:opacity-100 ${
                 hovering ? "lg:opacity-100" : "lg:opacity-0"

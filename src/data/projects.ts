@@ -21,7 +21,43 @@ export interface OutcomeStat {
   label: string;
 }
 
+// ─── Project page (the shared case study template) ───────────────────────────
+
+export interface PageImage {
+  src: string;
+  alt: string;
+}
+
+export interface PageItem {
+  // Left out until the real image arrives; a placeholder is shown instead
+  image?: PageImage;
+  caption: string;
+}
+
+export interface PageSection {
+  label: string;
+  items: PageItem[];
+}
+
+export interface ProjectPage {
+  problem: string;
+  myRole: string;
+  sections: PageSection[];
+  // Only the Athos page has a before / after slider
+  beforeAfter?: {
+    before: string;
+    after: string;
+    beforeAlt: string;
+    afterAlt: string;
+  };
+}
+
 export interface Project {
+  // Backdrop of the cover card on the project page and in its side previews
+  coverBackground?: string;
+  // Case study content in the shared page template; derived from the older
+  // fields below when it is not set
+  page?: ProjectPage;
   slug: string;
   name: string;
   tagline: string;
@@ -95,124 +131,78 @@ export const projects: Project[] = [
       "Athos Commerce is currently in early access and this is where most of my time goes right now. The platform already has hundreds of shoppers using it daily, which means the design decisions I make have to respect what people already know and how they already work. My role as Lead Product Designer is to untangle the more complex interaction patterns, understand where familiarity ends and friction begins, and carry that knowledge into a new and revised console that is currently in the works. It is the kind of problem I find genuinely interesting: not starting from scratch, but making something better without losing what people already trust.",
     coverImage: "/athos/cover-4.png",
     coverImageAlt: "Redesigned Athos Commerce dashboard in a device frame, showing quick links, search performance, catalog sync and category performance.",
+    coverBackground: "linear-gradient(180deg, #eef2fb 0%, #c7ccd8 100%)",
     images: [],
     tags: ["Enterprise", "Product Design", "Design Systems"],
-    myRole: {
-      summary:
-        "Athos had a robust but complex platform that needed a full overhaul. I was hired as Lead Designer to start the design team and lead the redesign. Over the last 3 years I have:",
-      points: [
-        "Led the UI vision ahead of the brand, then adapted the variables to the rebrand with just one week of rework",
-        "Built and documented a design system of variables and tokens, later adopted by the design and front-end teams of two acquired companies",
-        "Defined the design principles that now guide how the team executes and what it holds as its standard of excellence",
-        "Built an AI workflow in Claude and Figma Make where teammates propose, analyze and test ideas in a vetted environment, making feature concepts four times faster",
+    page: {
+      problem:
+        "Many shoppers and agencies work tirelessly to personalize their merchandising to their shopper’s habits. Most current SaaS in the market doesn’t make it easier, also requiring extensive knowledge of code implementation from the shoppers. To make this an intuitive and configurable journey, I had to approach the day-to-day level.",
+      myRole:
+        "My focus was leading the design efforts of the platform from the ground up contributing individually and with an assistant. Along with a team of engineers and front-end developers, we reshaped the entire 20+ year service from the inside out, mapping journeys, documenting old and new decisions while keeping up to speed with the stakeholders roadmap.",
+      sections: [
+        {
+          label: "Approach",
+          items: [
+            {
+              image: {
+                src: "/athos/flows.png",
+                alt: "Sitemap of the Athos console mapping every menu, feature and flow.",
+              },
+              caption:
+                "At the start of the project most of the information was scattered across teams. I mapped the entire structure so I could build a wiki of each feature. I partnered with one of the company’s Product manager and a good friend of mine now, to explore how each feature was being used and why.",
+            },
+            {
+              image: {
+                src: "/athos/variables.png",
+                alt: "Variables in the Athos design kit, showing collections, names and the Athos Light mode values.",
+              },
+              caption:
+                "Before reshaping new and old features, the product team had to keep up to speed to secure the initial board approval for the work, as they had issues in the past with technical debt and bottlenecks. Thats why I latched our framework to MUI’s framework to ensure design and development were speaking the same language, only then it was possible to work with custom variables and components by changing thwe MUI’s base configuration.",
+            },
+          ],
+        },
+        {
+          label: "Process and long term vision",
+          items: [
+            {
+              image: {
+                src: "/athos/manage-features.webp",
+                alt: "Manage Features settings page with grouped feature toggles.",
+              },
+              caption:
+                "Once we were at full speed, the product team and I prioritized the work that could provide significant impact while dealing with the least ammount of changes. It felt like repairing a moving car, we couldnt go for the wheel until we’re sure the windows were working.",
+            },
+            {
+              image: {
+                src: "/athos/recommendations.webp",
+                alt: "Recommendations profile editor with a live preview of recommended products.",
+              },
+              caption:
+                "After components were being used thorougly, developers and managers had more freedom of experimentation with our custom material, is when we started tackling the big features that were crucial for our users. For that we engaged with beta customers, and went trough countless recordings of our customer sucess team, looking for opportunities.",
+            },
+          ],
+        },
+        {
+          label: "Findings",
+          items: [
+            {
+              caption:
+                "While our beta testers were performing better in the new platform according to our interviews and recorded sessions, a lot of traditional customers were still complaining about having to relearn to use the platform. We had to weight in our decisions based on our solid revenue base, creating somewhat redundant actions that were ignored by new customers, while attending to the clients who were already doing quick work in the old platform.",
+            },
+            {
+              caption:
+                "we are currently shaping the focus of the platform, from having more and more features, to making sure our customer journey is well round across features they already know and trust. As Athos adquired other companies, we were able to communicate our design system seamlessly across different teams, enabling designers, marketers and product managers to experiment and build with safety.",
+            },
+          ],
+        },
       ],
-    },
-    comparisons: [
-      {
-        label: "Campaign Editor",
+      beforeAfter: {
         before: "/athos/editor-before.webp",
         after: "/athos/editor-after.webp",
         beforeAlt: "Original Edit Visual Merchandising Campaign page with a floating boosting rules panel over the product grid and two stacked navigation bars.",
         afterAlt: "Redesigned Campaign Editor with a single icon navigation, a docked Product Boosting Rules panel and a compact product grid.",
-        caption:
-          "My focus was redesigning the platform from the ground up. With a new team of engineers and front-end developers, we tackled the entire 20+ year service from the inside out, mapping journeys, documenting our new decisions and making sure we respect how people trusted our current platform.",
       },
-    ],
-    pitch: [
-      {
-        label: "The Challenge",
-        illustration: {
-          src: "/athos/walrus-challenge.svg",
-          alt: "A confused walrus with a tangled scribble overhead, looking at a tablet marked NEW.",
-        },
-        headline: "Redesign a product hundreds of companies already work in, without adding friction.",
-        points: [
-          "Every change had to improve usability for teams with years of habits in the old console.",
-        ],
-      },
-      {
-        label: "The Approach",
-        illustration: {
-          src: "/athos/walrus-approach.svg",
-          alt: "A walrus with an arrow floating above, moving forward with confidence.",
-        },
-        headline: "Keep navigation familiar and make setup linear.",
-        points: [
-          "Users are seasoned marketers who want to spend as little time in the platform as possible, so the navigation stayed recognizable.",
-          "Setup tasks scattered across the system became linear wizards that show what's configured and what's missing.",
-        ],
-      },
-      {
-        label: "The Solution",
-        illustration: {
-          src: "/athos/walrus-solution.svg",
-          alt: "A walrus peeking over a row of packages, one marked with a thumbs up.",
-        },
-        headline: "Redesign at the component level to ship fast.",
-        points: [
-          "Instead of rebuilding screens one by one, we changed core components, so engineers knew exactly what changed and where it applied.",
-          "Matching our library to MUI gave developers a head start while we researched and mapped bottlenecks.",
-        ],
-      },
-    ],
-    mosaic: {
-      label: "Visual Results",
-      items: [
-        {
-          src: "/athos/dashboard.webp",
-          title: "Dashboard",
-          alt: "Redesigned Athos Commerce dashboard with quick links, search performance, catalog sync status and category performance.",
-        },
-        {
-          src: "/athos/manage-features.webp",
-          title: "Manage Features",
-          alt: "Manage Features settings page with grouped feature toggles for search, merchandising and personalization.",
-        },
-        {
-          src: "/athos/hybrid-search.webp",
-          title: "Hybrid Search",
-          alt: "Hybrid Search overview page explaining AI-powered keyword and vector search, with an Enable on Storefront button.",
-        },
-        {
-          src: "/athos/recommendations.webp",
-          title: "Recommendation Profile Editor",
-          alt: "Recommendation profile editor with a precision slider on the left and a live recommended products preview on the right.",
-        },
-      ],
     },
-    gallery: {
-      label: "Behind the Work",
-      description:
-        "The redesign started from zero, so the groundwork mattered as much as the screens: documented components, variables that support theming, and flows organized for handoff.",
-      items: [
-        {
-          src: "/athos/ds-notification.png",
-          alt: "Athos design system documentation for the Notification component, showing snackbar variants and actionable savebars.",
-          caption:
-            "Component documentation. Each pattern lists its variants, when to use it and how it behaves, like these snackbars and savebars.",
-        },
-        {
-          src: "/athos/variables.png",
-          alt: "Athos Design Kit variables in Figma, showing palette tokens across Athos Light and Athos FM themes.",
-          caption:
-            "Variables in the Athos Design Kit. Color, spacing, shape and type tokens with theme modes, so new brands and a full rebrand didn't mean redrawing screens.",
-        },
-        {
-          src: "/athos/flows.png",
-          alt: "Figma canvas with Context feature flows grouped by Pages, Segment and Location, marked ready for dev.",
-          caption:
-            "Feature flows grouped by context and marked ready for dev, so engineering always knew which screens were final.",
-        },
-      ],
-    },
-    coverComparison: {
-      before: "/athos/before.webp",
-      after: "/athos/after.webp",
-      beforeAlt: "Original Personalization Settings page with a dense, gray table layout and nested side navigation.",
-      afterAlt: "Redesigned Personalization Settings page with tabbed rules, a cleaner Boosted Products table and Contextual Groups editor.",
-    },
-    coverCaption:
-      "Many shoppers and agencies work tirelessly to personalize their merchandising to find customers and adapt to their shopping habits. Most current SaaS in the market doesn't make it easier, also requiring extensive knowledge of code implementation from the shoppers. To make this an intuitive and configurable journey, we have to start at the day-to-day level.",
   },
   {
     slug: "blindspot",
@@ -223,6 +213,7 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Blindspot explores how note-taking can feel less rigid and more human. The product helps people capture ideas quickly and revisit them with context, especially when attention is limited or fragmented.",
+    coverBackground: "linear-gradient(180deg, #f1ece4 0%, #d9d0c3 100%)",
     coverImage: "/img-blindspot.png",
     coverImageAlt: "Blindspot brand identity and product screens collage.",
     images: [],
@@ -237,6 +228,7 @@ export const projects: Project[] = [
     role: "Product Design Lead",
     overview:
       "Ingrid builds autonomous harvesting equipment and needed a platform where field technicians could monitor and control combines from a distance. The software existed, but it was rough. I was brought in to redesign it from the ground up, making it something people could actually use without a manual in hand.",
+    coverBackground: "linear-gradient(180deg, #dfe0e4 0%, #bcbec6 100%)",
     coverImage: "/ingrid/cover-4.webp",
     coverImageAlt: "Ingrid production map: a list of harvesters with cargo and signal levels, a production chart, and a satellite map with a warning card for combine D10 about low rear tire pressure.",
     coverCaption:
@@ -350,6 +342,7 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Whirl started as a personal itch. Me and a group of friends were constantly trying to figure out what was happening around our city and always ended up defaulting to the same spots. We first sketched the idea in 2016 and properly redesigned it in 2020. The concept is an AI assistant that learns your tastes and suggests restaurants, activities, and local experiences worth trying nearby. It is also a case study for mobile UI design and some early thinking on what AI chat interaction could look like.",
+    coverBackground: "linear-gradient(180deg, #f3f8cf 0%, #dceaae 100%)",
     coverImage: "/whirl/cover-4.webp",
     coverImageAlt: "Three Whirl app screens on a lime gradient: the sign-up screen, a discovery home with nearby places, and a venue page with a reservation button.",
     coverCaption:
@@ -445,6 +438,7 @@ export const projects: Project[] = [
     role: "Product Designer",
     overview:
       "Watchson started as an internal problem we had at the agency. We needed a better way to understand how our developers and designers were being allocated across client projects, what skills each person had or was trying to build, and how to bring the HR team closer to the reality of what the dev team actually did day to day. It was also an opportunity to involve junior developers in a real product from the start, giving them a place to contribute ideas and learn what it feels like to ship something fast.",
+    coverBackground: "linear-gradient(180deg, #ece4f7 0%, #d3c4ec 100%)",
     coverImage: "/watchson/cover-4.png",
     coverImageAlt: "Watchson new simulation screen on a pink and purple gradient, with an employee fit table and a radar chart comparing project requirements with team skills.",
     coverCaption:
@@ -530,6 +524,7 @@ export const projects: Project[] = [
     role: "Sole Product Designer",
     overview:
       "Series AI is building Rho Engine, an AI-native platform for game development. I designed the multiplayer workspace where writers, producers and AI agents build a story together.",
+    coverBackground: "linear-gradient(180deg, #dcd7dc 0%, #b9b2ba 100%)",
     coverImage: "/rho/cover-4.webp",
     coverImageAlt: "Rho Studio home screen in dark mode, framed on a warm background, with agent shortcuts and a feed of AI-generated images.",
     coverCaption:
@@ -606,6 +601,7 @@ export const projects: Project[] = [
     category: "Featured Work",
     role: "Game Concept Designer, Product Designer",
     overview: "A cozy educational game for kids and parents to learn about nutrition.",
+    coverBackground: "linear-gradient(180deg, #fdeaf1 0%, #f4cfe0 100%)",
     coverImage: "/liliworld/cover-4.webp",
     coverImageAlt: "The LiliWorld game screen: a top-down village with shops, a pond and a dock, with a coin counter and a star counter in the corners.",
     coverCaption: "A cozy educational game for kids and parents to learn about nutrition.",
@@ -621,6 +617,7 @@ export const projects: Project[] = [
     category: "Featured Work",
     role: "Illustrator and Product Designer",
     overview: "A diary for nurses to connect with hospital kids about their digestive health.",
+    coverBackground: "linear-gradient(180deg, #f8e9ef 0%, #efcdda 100%)",
     coverImage: "/pewee/cover-4.png",
     coverImageAlt: "Three Pewee Diary screens on a soft pink background: tracking pee color and volume, three character guides, and a story screen with a play button.",
     coverCaption: "A diary for nurses to connect with hospital kids about their digestive health.",
@@ -636,6 +633,7 @@ export const projects: Project[] = [
     category: "Featured Work",
     role: "Web Designer",
     overview: "A webmarket for sustainable construction products.",
+    coverBackground: "linear-gradient(180deg, #46463f 0%, #26261f 100%)",
     coverImage: "/plywood/cover-4.png",
     coverImageAlt: "Plywood menu on a dark screen: product links, a news card, and an isometric house map with numbered product hotspots.",
     coverCaption: "A webmarket for sustainable construction products.",
@@ -664,4 +662,19 @@ export function getNextProject(currentSlug: string): Project {
     return projects[0];
   }
   return projects[index + 1];
+}
+
+export function getPreviousProject(currentSlug: string): Project {
+  const index = projects.findIndex((project) => project.slug === currentSlug);
+  if (index <= 0) {
+    return projects[projects.length - 1];
+  }
+  return projects[index - 1];
+}
+
+// Backdrop behind a project's cover image, on its page and in the previews
+export const DEFAULT_COVER_BACKGROUND = "linear-gradient(180deg, #eeeae6 0%, #d3cdc6 100%)";
+
+export function getCoverBackground(project: Project): string {
+  return project.coverBackground ?? DEFAULT_COVER_BACKGROUND;
 }
