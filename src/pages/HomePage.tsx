@@ -17,6 +17,7 @@ export default function HomePage() {
           <FeaturedProject
             items={[
               { slug: "athos-commerce", title: "Athos Commerce redesign" },
+              { slug: "blindspot" },
               { slug: "rho-studio" },
               { slug: "watchson" },
               { slug: "liliworld" },

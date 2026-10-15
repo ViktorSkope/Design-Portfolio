@@ -54,7 +54,7 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
   );
 }
 
-function ZoomableImage({ src, alt, onOpen }: { src: string; alt: string; onOpen: (src: string, alt: string) => void }) {
+function ZoomableImage({ src, alt, position = "top", onOpen }: { src: string; alt: string; position?: "top" | "center"; onOpen: (src: string, alt: string) => void }) {
   return (
     <button
       type="button"
@@ -62,7 +62,7 @@ function ZoomableImage({ src, alt, onOpen }: { src: string; alt: string; onOpen:
       aria-label={`Enlarge image: ${alt}`}
       className="group relative block aspect-[5/3] w-full cursor-zoom-in overflow-hidden rounded-[14px] bg-white shadow-[0_4px_32px_rgba(0,0,0,0.06)]"
     >
-      <img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]" />
+      <img src={src} alt={alt} loading="lazy" className={`h-full w-full object-cover ${position === "center" ? "object-center" : "object-top"} transition-transform duration-500 ease-out group-hover:scale-[1.02]`} />
     </button>
   );
 }
@@ -72,7 +72,7 @@ function ZoomableImage({ src, alt, onOpen }: { src: string; alt: string; onOpen:
 function CoverCard({ project, alt }: { project: Project; alt: string }) {
   return (
     <div className="absolute inset-0 overflow-hidden rounded-[24px]" style={{ background: getCoverBackground(project) }}>
-      <img src={project.coverImage} alt={alt} draggable={false} className="h-full w-full object-contain p-[1.5%]" />
+      <img src={project.coverImage} alt={alt} draggable={false} className={`h-full w-full ${project.coverFill ? "object-cover" : "object-contain p-[1.5%]"}`} />
     </div>
   );
 }
@@ -193,7 +193,7 @@ function ProjectPageContent({ project }: { project: Project }) {
       beginCollapse(
         project.slug,
         cover.getBoundingClientRect(),
-        project.coverImage,
+        project.carouselImage ?? project.coverImage,
         getCoverBackground(project),
         getComputedStyle(card).borderTopLeftRadius,
         pageRef.current,
@@ -265,7 +265,7 @@ function ProjectPageContent({ project }: { project: Project }) {
               {section.items.map((item, i) => (
                 <figure key={i}>
                   {item.image ? (
-                    <ZoomableImage src={item.image.src} alt={item.image.alt} onOpen={(src, alt) => setLightbox({ src, alt })} />
+                    <ZoomableImage src={item.image.src} alt={item.image.alt} position={item.image.position} onOpen={(src, alt) => setLightbox({ src, alt })} />
                   ) : (
                     <PlaceholderImage />
                   )}

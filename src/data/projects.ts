@@ -1,4 +1,4 @@
-export type ProjectCategory = "Current Work" | "Side Quests" | "Featured Work";
+export type ProjectCategory = "Current Work" | "Hackathon Project" | "Featured Work";
 
 export interface CardColumn {
   label: string;
@@ -26,6 +26,8 @@ export interface OutcomeStat {
 export interface PageImage {
   src: string;
   alt: string;
+  // Which part of the image stays in view when it is cropped to the frame
+  position?: "top" | "center";
 }
 
 export interface PageItem {
@@ -55,6 +57,11 @@ export interface ProjectPage {
 export interface Project {
   // Backdrop of the cover card on the project page and in its side previews
   coverBackground?: string;
+  // A transparent version of the cover used on the landing page carousel, when it
+  // differs from the cover shown on the project page
+  carouselImage?: string;
+  // Fill the whole cover card (cropping a little) instead of fitting inside it
+  coverFill?: boolean;
   // Case study content in the shared page template; derived from the older
   // fields below when it is not set
   page?: ProjectPage;
@@ -207,17 +214,70 @@ export const projects: Project[] = [
   {
     slug: "blindspot",
     name: "Blindspot",
-    tagline: "Building an AI notetaker tool and personal knowledge space for distracted minds using Cursor.",
+    tagline: "An AI notetaker app for quick memory snapshots.",
     year: "2025",
-    category: "Side Quests",
-    role: "Product Designer",
+    category: "Hackathon Project",
+    role: "Founder",
     overview:
-      "Blindspot explores how note-taking can feel less rigid and more human. The product helps people capture ideas quickly and revisit them with context, especially when attention is limited or fragmented.",
-    coverBackground: "linear-gradient(180deg, #f1ece4 0%, #d9d0c3 100%)",
-    coverImage: "/img-blindspot.png",
-    coverImageAlt: "Blindspot brand identity and product screens collage.",
+      "Blindspot used your personal notes to create a wikipedia about you, so you could retrieve the context behind an idea quickly, before a meeting for example.",
+    coverBackground: "linear-gradient(180deg, #f4ffd0 0%, #eaf9b8 100%)",
+    coverFill: true,
+    carouselImage: "/blindspot/carousel-3.webp",
+    coverImage: "/blindspot/cover.webp",
+    coverImageAlt: "Blindspot on the desktop: a notes window behind a search and chat panel that recalls context with @ for people and / for projects.",
     images: [],
-    tags: ["Mobile App", "Brand", "UX Writing"],
+    tags: ["Founder", "Mobile App", "Brand", "AI Tools"],
+    page: {
+      problem:
+        "The problem was context in notetaking apps. It was easy to add notes but always hard to retrieve them under their correct context. Blindspot used your personal notes to create a wikipedia about you, so you could later retrieve specific details or the general context of an idea quickly, before a meeting for example.",
+      myRole:
+        "I was the founder, working with an engineer to design, market and gather user insights for the product’s development.",
+      sections: [
+        {
+          label: "Approach",
+          items: [
+            {
+              image: {
+                src: "/blindspot/popup-notes.webp",
+                alt: "Blindspot’s quick note pop-up on the desktop, opened over a notes window with a search and a chat for recalling context using @ for people and / for projects.",
+              },
+              caption:
+                "I had my own notes app that I’d integrated with ChatGPT, but it failed to retrieve context after a long session, and it had issues interpreting similar names, projects and ambiguity. That’s why I sat down and drew Blindspot as the simplest notetaker I could. You don’t need to organize your thoughts or write down a list: you can pick it up at any time and start writing. The only two tools you need are the mention @ and the project mention /.",
+            },
+            {
+              image: {
+                src: "/blindspot/website.png",
+                alt: "Blindspot’s website: “Out of sight, but never #out of mind” with a Get the Demo button and hand-drawn mascots.",
+              },
+              caption:
+                "My approach was to experiment with AI tools and try building something in a weekend, to see how that would play out. At the same time I started a waitlist with friends in the area, demoed a prototype and gathered pivoting insights about usage across multiple channels, integration with messaging apps and import and export features.",
+            },
+          ],
+        },
+        {
+          label: "Visual identity and outcome",
+          items: [
+            {
+              image: {
+                src: "/blindspot/mascots.webp",
+                alt: "Four Blindspot mascots on lilac, dark, white and lime backgrounds next to the logo.",
+                position: "center",
+              },
+              caption:
+                "I designed the mascots, the branding and the visual experience, wanting it to feel like doodles on an empty white sheet.",
+            },
+            {
+              image: {
+                src: "/blindspot/expanded-view.webp",
+                alt: "Blindspot’s expanded view: a sidebar with the account and My Network, and a clean page for writing context notes.",
+              },
+              caption:
+                "We later sold the product to an insurance company, which made it their internal tool for prospecting clients.",
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     slug: "ingrid",
@@ -329,6 +389,77 @@ export const projects: Project[] = [
           src: "/ingrid/user-flow.png",
           alt: "User flow mapping every screen and its features.",
           caption: "Screen-by-screen user flow, used by design and engineering to build a shared delivery plan.",
+        },
+      ],
+    },
+    page: {
+      problem:
+        "We were asked to build software on top of existing proprietary hardware for autonomous machinery. The current solution was highly technical and demanded programming expertise, which cost field technicians development time and left error handling far from ideal.",
+      myRole:
+        "As the product designer responsible for the project, I partnered with a researcher and two field technicians to understand how they were onboarded and what they did day to day to monitor the machines. I also led a two-week visual identity sprint that gave the team a styleguide and UI kit, so the tool could be presented at conferences and expositions under an established brand.",
+      sections: [
+        {
+          label: "Approach",
+          items: [
+            {
+              image: {
+                src: "/ingrid/workshop-board.webp",
+                alt: "The discovery workshop board: an agenda and the business impacts and blockers mapped on sticky notes, then the user journey drawn as a map.",
+              },
+              caption:
+                "We mapped the user journeys in a four-week discovery process, wanting to understand the challenges the team faced and how those challenges affected the company.",
+            },
+            {
+              image: {
+                src: "/ingrid/flows.webp",
+                alt: "Wireframe flows for the platform, from login and home through the interactive map to equipment data, action warnings and the emergency stop.",
+              },
+              caption:
+                "We then tested our prototypes with the technical team, checking the flows against the decisions they make in real work.",
+            },
+          ],
+        },
+        {
+          label: "Insights and reframing",
+          items: [
+            {
+              image: {
+                src: "/ingrid/time-to-reaction.png",
+                alt: "Time to reaction: a code log splits into error, monitoring and health signals, which lead to danger, warning and position states.",
+              },
+              caption:
+                "Technicians had to read the signals from the autonomous machinery and decide, in seconds, whether to shut down the operation or fix the issue after the machine returned. To understand a problem they had to read the full log. Errors arrived as codes that operators had to memorize or look up on a cheat sheet, and sometimes an error was only a signal issue with no real situation behind it.",
+            },
+            {
+              image: {
+                src: "/ingrid/danger-warning.webp",
+                alt: "A danger warning over the production map for combine D10: low rear tire pressure, shutting down in 45 seconds, with a Cancel Shutdown button.",
+              },
+              caption:
+                "Instead of only improving the onboarding, we asked what if technicians approached the product through reaction rather than action. Rather than reading an error code and deciding whether to shut down, emergency and high-alert warnings would start a countdown to shutoff, and the user would turn the warning off to keep operating. Simple recurring errors stay on screen, while major errors, flagged as auto-shutdown, let users postpone the shutdown until they have more information, or follow the automatic response.",
+            },
+          ],
+        },
+        {
+          label: "Impact",
+          items: [
+            {
+              image: {
+                src: "/ingrid/vehicles-equipment.webp",
+                alt: "The Vehicles and Equipment screen, with a guided panel on how to proceed with warning or emergency signs.",
+              },
+              caption:
+                "We cut onboarding from an hour-long code workshop to an eight-minute prototype covering every warning case. Controlled studies showed 100% adoption within two onboarding sessions at most, and in most cases after just one. Thanks to our MVP, the company saved 1.5 million USD a year in licensing fees for other training and monitoring software.",
+            },
+            {
+              image: {
+                src: "/ingrid/identity-board.webp",
+                alt: "The visual identity workshop board: style direction, reference photography and brand marks gathered for the Ingrid styleguide.",
+              },
+              caption:
+                "The two-week visual identity sprint produced a styleguide and UI kit, giving the product an established brand for conferences and expositions.",
+            },
+          ],
         },
       ],
     },
@@ -644,7 +775,7 @@ export const projects: Project[] = [
 
 export const projectCategories: ProjectCategory[] = [
   "Current Work",
-  "Side Quests",
+  "Hackathon Project",
   "Featured Work",
 ];
 

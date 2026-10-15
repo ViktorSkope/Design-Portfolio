@@ -258,7 +258,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
       beginExpand(
         project.slug,
         centre.getBoundingClientRect(),
-        project.coverImage,
+        project.carouselImage ?? project.coverImage,
         getCoverBackground(project),
         tilt ? getComputedStyle(tilt).transform : "none",
         document.getElementById("home-page"),
@@ -331,7 +331,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
             const piece = (
               <>
                 <img
-                  src={p.coverImage}
+                  src={p.carouselImage ?? p.coverImage}
                   alt={isCenter ? p.coverImageAlt : ""}
                   draggable={false}
                   loading={distance <= 1 ? "eager" : "lazy"}
@@ -339,7 +339,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                 />
                 {/* Reflection: a flipped copy that fades out below the piece */}
                 <img
-                  src={p.coverImage}
+                  src={p.carouselImage ?? p.coverImage}
                   alt=""
                   aria-hidden="true"
                   draggable={false}
