@@ -135,7 +135,7 @@ export const projects: Project[] = [
     category: "Current Work",
     role: "Lead Product Designer",
     overview:
-      "Athos Commerce is currently in early access and this is where most of my time goes right now. The platform already has hundreds of shoppers using it daily, which means the design decisions I make have to respect what people already know and how they already work. My role as Lead Product Designer is to untangle the more complex interaction patterns, understand where familiarity ends and friction begins, and carry that knowledge into a new and revised console that is currently in the works. It is the kind of problem I find genuinely interesting: not starting from scratch, but making something better without losing what people already trust.",
+      "Athos Commerce is in early access, and it is where most of my time goes right now. Hundreds of shoppers already use the platform daily, so every design decision has to respect what they know and how they work. As Lead Product Designer, I untangle the more complex interaction patterns, find where familiarity ends and friction begins, and carry that into a new console. I like this kind of problem: not starting from scratch, but making something better without losing what people already trust.",
     coverImage: "/athos/cover-4.png",
     coverImageAlt: "Redesigned Athos Commerce dashboard in a device frame, showing quick links, search performance, catalog sync and category performance.",
     coverBackground: "linear-gradient(180deg, #eef2fb 0%, #c7ccd8 100%)",
@@ -143,9 +143,9 @@ export const projects: Project[] = [
     tags: ["Enterprise", "Product Design", "Design Systems"],
     page: {
       problem:
-        "Many shoppers and agencies work tirelessly to personalize their merchandising to their shopper’s habits. Most current SaaS in the market doesn’t make it easier, also requiring extensive knowledge of code implementation from the shoppers. To make this an intuitive and configurable journey, I had to approach the day-to-day level.",
+        "Shoppers and agencies work hard to personalize their merchandising to their own customers’ habits. Most SaaS on the market makes that harder, often requiring deep knowledge of code implementation. To make it intuitive and configurable, I had to start from the day-to-day.",
       myRole:
-        "My focus was leading the design efforts of the platform from the ground up contributing individually and with an assistant. Along with a team of engineers and front-end developers, we reshaped the entire 20+ year service from the inside out, mapping journeys, documenting old and new decisions while keeping up to speed with the stakeholders roadmap.",
+        "I led the platform’s design from the ground up, contributing individually and with an assistant. Together with engineers and front-end developers, we reshaped a 20+ year old service from the inside out: mapping journeys, documenting old and new decisions, and keeping pace with the stakeholders’ roadmap.",
       sections: [
         {
           label: "Approach",
@@ -156,7 +156,7 @@ export const projects: Project[] = [
                 alt: "Sitemap of the Athos console mapping every menu, feature and flow.",
               },
               caption:
-                "At the start of the project most of the information was scattered across teams. I mapped the entire structure so I could build a wiki of each feature. I partnered with one of the company’s Product manager and a good friend of mine now, to explore how each feature was being used and why.",
+                "At the start, most of the information was scattered across teams. I mapped the entire structure to build a wiki of each feature, and partnered with a Product Manager (now a good friend) to explore how each feature was used and why.",
             },
             {
               image: {
@@ -164,7 +164,7 @@ export const projects: Project[] = [
                 alt: "Variables in the Athos design kit, showing collections, names and the Athos Light mode values.",
               },
               caption:
-                "Before reshaping new and old features, the product team had to keep up to speed to secure the initial board approval for the work, as they had issues in the past with technical debt and bottlenecks. Thats why I latched our framework to MUI’s framework to ensure design and development were speaking the same language, only then it was possible to work with custom variables and components by changing thwe MUI’s base configuration.",
+                "To secure initial board approval, we had to show we could avoid the technical debt and bottlenecks of the past. So I built our framework on top of MUI’s, keeping design and development speaking the same language. From there, custom variables and components came from changing MUI’s base configuration.",
             },
           ],
         },
@@ -177,7 +177,7 @@ export const projects: Project[] = [
                 alt: "Manage Features settings page with grouped feature toggles.",
               },
               caption:
-                "Once we were at full speed, the product team and I prioritized the work that could provide significant impact while dealing with the least ammount of changes. It felt like repairing a moving car, we couldnt go for the wheel until we’re sure the windows were working.",
+                "Once at full speed, the product team and I prioritized the work with the most impact and the fewest changes. It felt like repairing a moving car: we couldn’t go for the wheel until we were sure the windows worked.",
             },
             {
               image: {
@@ -185,7 +185,7 @@ export const projects: Project[] = [
                 alt: "Recommendations profile editor with a live preview of recommended products.",
               },
               caption:
-                "After components were being used thorougly, developers and managers had more freedom of experimentation with our custom material, is when we started tackling the big features that were crucial for our users. For that we engaged with beta customers, and went trough countless recordings of our customer sucess team, looking for opportunities.",
+                "Once components were in thorough use, developers and managers had more freedom to experiment, and we started tackling the big features our users relied on. We engaged beta customers and went through countless recordings from our customer success team, looking for opportunities.",
             },
           ],
         },
@@ -193,12 +193,20 @@ export const projects: Project[] = [
           label: "Findings",
           items: [
             {
+              image: {
+                src: "/athos/create-synonym.png",
+                alt: "The Create Synonym modal, with Grouped and One-Way synonym types and the searching-for and also-returns fields.",
+              },
               caption:
-                "While our beta testers were performing better in the new platform according to our interviews and recorded sessions, a lot of traditional customers were still complaining about having to relearn to use the platform. We had to weight in our decisions based on our solid revenue base, creating somewhat redundant actions that were ignored by new customers, while attending to the clients who were already doing quick work in the old platform.",
+                "Interviews and recorded sessions showed beta testers performing better on the new platform, but many traditional customers complained about relearning it. We weighed our decisions against our solid revenue base, creating some redundant actions that new customers ignored, to serve clients already working quickly in the old platform.",
             },
             {
+              image: {
+                src: "/athos/color-aliases.png",
+                alt: "Colour mapping boards comparing Athos and IR palettes and proposing aliases for background, stroke and text colours.",
+              },
               caption:
-                "we are currently shaping the focus of the platform, from having more and more features, to making sure our customer journey is well round across features they already know and trust. As Athos adquired other companies, we were able to communicate our design system seamlessly across different teams, enabling designers, marketers and product managers to experiment and build with safety.",
+                "We are now shifting the platform’s focus from adding features to making the customer journey well rounded across the features people already know and trust. As Athos acquired other companies, the design system let us communicate seamlessly across teams, so designers, marketers and product managers could experiment and build safely.",
             },
           ],
         },
@@ -219,7 +227,7 @@ export const projects: Project[] = [
     category: "Hackathon Project",
     role: "Founder",
     overview:
-      "Blindspot used your personal notes to create a wikipedia about you, so you could retrieve the context behind an idea quickly, before a meeting for example.",
+      "Blindspot turned your personal notes into a wikipedia about you, so you could quickly retrieve the context behind an idea, before a meeting for example.",
     coverBackground: "linear-gradient(180deg, #f4ffd0 0%, #eaf9b8 100%)",
     coverFill: true,
     carouselImage: "/blindspot/carousel-3.webp",
@@ -229,9 +237,9 @@ export const projects: Project[] = [
     tags: ["Founder", "Mobile App", "Brand", "AI Tools"],
     page: {
       problem:
-        "The problem was context in notetaking apps. It was easy to add notes but always hard to retrieve them under their correct context. Blindspot used your personal notes to create a wikipedia about you, so you could later retrieve specific details or the general context of an idea quickly, before a meeting for example.",
+        "The problem was context. Adding notes was easy, but retrieving them in the right context was hard. Blindspot turned your personal notes into a wikipedia about you, so you could quickly pull up a specific detail or the general context of an idea, before a meeting for example.",
       myRole:
-        "I was the founder, working with an engineer to design, market and gather user insights for the product’s development.",
+        "I was the founder, working with an engineer to design, market and gather user insights for the product.",
       sections: [
         {
           label: "Approach",
@@ -242,7 +250,7 @@ export const projects: Project[] = [
                 alt: "Blindspot’s quick note pop-up on the desktop, opened over a notes window with a search and a chat for recalling context using @ for people and / for projects.",
               },
               caption:
-                "I had my own notes app that I’d integrated with ChatGPT, but it failed to retrieve context after a long session, and it had issues interpreting similar names, projects and ambiguity. That’s why I sat down and drew Blindspot as the simplest notetaker I could. You don’t need to organize your thoughts or write down a list: you can pick it up at any time and start writing. The only two tools you need are the mention @ and the project mention /.",
+                "I had my own notes app integrated with ChatGPT, but it lost context after a long session and struggled with similar names, projects and ambiguity. So I drew Blindspot as the simplest notetaker I could: no organizing, no lists, just pick it up and write. You only need two tools: @ to mention and / to mention a project.",
             },
             {
               image: {
@@ -250,7 +258,7 @@ export const projects: Project[] = [
                 alt: "Blindspot’s website: “Out of sight, but never #out of mind” with a Get the Demo button and hand-drawn mascots.",
               },
               caption:
-                "My approach was to experiment with AI tools and try building something in a weekend, to see how that would play out. At the same time I started a waitlist with friends in the area, demoed a prototype and gathered pivoting insights about usage across multiple channels, integration with messaging apps and import and export features.",
+                "I experimented with AI tools to see if I could build something in a weekend. At the same time I started a waitlist with friends in the area, demoed a prototype and gathered pivoting insights on usage across channels, messaging app integrations, and import and export.",
             },
           ],
         },
@@ -264,7 +272,7 @@ export const projects: Project[] = [
                 position: "center",
               },
               caption:
-                "I designed the mascots, the branding and the visual experience, wanting it to feel like doodles on an empty white sheet.",
+                "I designed the mascots, the branding and the visual experience to feel like doodles on an empty white sheet.",
             },
             {
               image: {
@@ -287,7 +295,7 @@ export const projects: Project[] = [
     category: "Featured Work",
     role: "Product Design Lead",
     overview:
-      "Ingrid builds autonomous harvesting equipment and needed a platform where field technicians could monitor and control combines from a distance. The software existed, but it was rough. I was brought in to redesign it from the ground up, making it something people could actually use without a manual in hand.",
+      "Ingrid builds autonomous harvesting equipment and needed a platform for field technicians to monitor and control combines remotely. The software existed, but it was rough. I was brought in to redesign it from the ground up, so people could use it without a manual in hand.",
     coverBackground: "linear-gradient(180deg, #dfe0e4 0%, #bcbec6 100%)",
     coverImage: "/ingrid/cover-4.webp",
     coverImageAlt: "Ingrid production map: a list of harvesters with cargo and signal levels, a production chart, and a satellite map with a warning card for combine D10 about low rear tire pressure.",
@@ -396,7 +404,7 @@ export const projects: Project[] = [
       problem:
         "We were asked to build software on top of existing proprietary hardware for autonomous machinery. The current solution was highly technical and demanded programming expertise, which cost field technicians development time and left error handling far from ideal.",
       myRole:
-        "As the product designer responsible for the project, I partnered with a researcher and two field technicians to understand how they were onboarded and what they did day to day to monitor the machines. I also led a two-week visual identity sprint that gave the team a styleguide and UI kit, so the tool could be presented at conferences and expositions under an established brand.",
+        "As the product designer responsible, I partnered with a researcher and two field technicians to understand how they were onboarded and how they monitored the machines day to day. I also led a two-week visual identity sprint that gave the team a styleguide and UI kit, so the tool could be shown at conferences and expositions under an established brand.",
       sections: [
         {
           label: "Approach",
@@ -407,7 +415,7 @@ export const projects: Project[] = [
                 alt: "The discovery workshop board: an agenda and the business impacts and blockers mapped on sticky notes, then the user journey drawn as a map.",
               },
               caption:
-                "We mapped the user journeys in a four-week discovery process, wanting to understand the challenges the team faced and how those challenges affected the company.",
+                "We mapped the user journeys in a four-week discovery, to understand the team’s challenges and how they affected the company.",
             },
             {
               image: {
@@ -415,7 +423,7 @@ export const projects: Project[] = [
                 alt: "Wireframe flows for the platform, from login and home through the interactive map to equipment data, action warnings and the emergency stop.",
               },
               caption:
-                "We then tested our prototypes with the technical team, checking the flows against the decisions they make in real work.",
+                "We then tested prototypes with the technical team, checking the flows against the decisions they make in real work.",
             },
           ],
         },
@@ -428,7 +436,7 @@ export const projects: Project[] = [
                 alt: "Time to reaction: a code log splits into error, monitoring and health signals, which lead to danger, warning and position states.",
               },
               caption:
-                "Technicians had to read the signals from the autonomous machinery and decide, in seconds, whether to shut down the operation or fix the issue after the machine returned. To understand a problem they had to read the full log. Errors arrived as codes that operators had to memorize or look up on a cheat sheet, and sometimes an error was only a signal issue with no real situation behind it.",
+                "Technicians read signals from the machinery and had seconds to decide whether to shut down the operation or fix the issue once the machine returned. Understanding a problem meant reading the full log. Errors arrived as codes to memorize or look up on a cheat sheet, and sometimes an error was just a signal issue with no real situation behind it.",
             },
             {
               image: {
@@ -436,7 +444,7 @@ export const projects: Project[] = [
                 alt: "A danger warning over the production map for combine D10: low rear tire pressure, shutting down in 45 seconds, with a Cancel Shutdown button.",
               },
               caption:
-                "Instead of only improving the onboarding, we asked what if technicians approached the product through reaction rather than action. Rather than reading an error code and deciding whether to shut down, emergency and high-alert warnings would start a countdown to shutoff, and the user would turn the warning off to keep operating. Simple recurring errors stay on screen, while major errors, flagged as auto-shutdown, let users postpone the shutdown until they have more information, or follow the automatic response.",
+                "Instead of only improving onboarding, we asked: what if technicians approached the product through reaction rather than action? Emergency and high-alert warnings now start a countdown to shutoff, and the user dismisses the warning to keep operating, instead of decoding an error and deciding whether to shut down. Simple recurring errors stay on screen, while major errors flagged as auto-shutdown let users postpone the shutdown until they know more, or follow the automatic response.",
             },
           ],
         },
@@ -449,7 +457,7 @@ export const projects: Project[] = [
                 alt: "The Vehicles and Equipment screen, with a guided panel on how to proceed with warning or emergency signs.",
               },
               caption:
-                "We cut onboarding from an hour-long code workshop to an eight-minute prototype covering every warning case. Controlled studies showed 100% adoption within two onboarding sessions at most, and in most cases after just one. Thanks to our MVP, the company saved 1.5 million USD a year in licensing fees for other training and monitoring software.",
+                "We cut onboarding from an hour-long code workshop to an eight-minute prototype covering every warning case. Controlled studies showed 100% adoption within two sessions at most, and usually after one. Thanks to our MVP, the company saves 1.5 million USD a year in licensing fees for other training and monitoring software.",
             },
             {
               image: {
@@ -479,6 +487,57 @@ export const projects: Project[] = [
     coverCaption:
       "Whirl started with a group of friends who kept ending up at the same spots. It's an AI assistant that learns your tastes and suggests restaurants, activities and local experiences nearby. First sketched in 2016 and redesigned in 2020, it became a case study in mobile UI and early AI chat interaction.",
     images: [],
+    page: {
+      problem:
+        "Star Sales wanted to bridge the gap between new restaurants and the people of their city. Their idea was a coupon partner program that connects the two through discounts.",
+      myRole:
+        "I created Whirl as a concept for a company case study, to show how AI could improve a customer journey through conversational patterns. I did the discovery work, the visual identity and the visual design.",
+      sections: [
+        {
+          label: "Approach",
+          items: [
+            {
+              image: {
+                src: "/whirl/sorting-home.webp",
+                alt: "Whirl home screen with an Around you carousel and card sorting categories, surrounded by tilted City Tour, Gallery, Coffee Place and Outdoors Restaurant cards.",
+              },
+              caption:
+                "I used a simple card sorting model to help people choose where to eat: they eliminate the places they don’t want, and the app learns their preferences from what is left.",
+            },
+            {
+              image: {
+                src: "/whirl/logo-identity.webp",
+                alt: "Whirl logo construction, with a handwritten spiral sketch and proportions, shown as an app icon in the App Store and on an iPhone home screen.",
+                position: "center",
+              },
+              caption:
+                "For the identity, I handwrote the Whirl logo to look like it is spiraling, and carried it into an app icon that sits naturally in the App Store and on the home screen.",
+            },
+          ],
+        },
+        {
+          label: "AI assistant",
+          items: [
+            {
+              image: {
+                src: "/whirl/chat-screens.webp",
+                alt: "Two Whirl chat screens: suggested prompts, and a pet-friendly restaurant recommendation with a reservation prompt.",
+              },
+              caption:
+                "I also designed an AI assistant concept with live information on dietary restrictions, pet-friendly places and other personal requests. The app also features short videos of places to go and things to see, so restaurant owners can upload their own content there.",
+            },
+            {
+              image: {
+                src: "/whirl/coffee-chat.webp",
+                alt: "A Whirl chat suggesting a nearby coffee shop, with pet friendly and parking tags and a prompt to see the online menu.",
+              },
+              caption:
+                "Asking in plain language replaces filters: the assistant suggests a place that matches your preferences and offers a useful next step, like seeing the menu before you go.",
+            },
+          ],
+        },
+      ],
+    },
     tags: ["Consumer Mobile", "AI", "Interaction Design", "Passion Project"],
     myRole: {
       summary:
@@ -575,6 +634,92 @@ export const projects: Project[] = [
     coverCaption:
       "Watchson started as an internal problem at a design agency: seeing how developers and designers were allocated across client projects, what skills each person had or wanted to build, and bringing HR closer to the dev team's daily work. It also gave junior developers a real product to ship.",
     images: [],
+    page: {
+      problem:
+        "Our developers had to fill in a form every six months with their skills, areas of focus and project mood. They never did, so managers lacked the allocation information they needed for agency projects. The company CTO and I had an idea.",
+      myRole:
+        "I was the sole Product Designer, working with the CTO and a lead developer. I ran interviews and insight gathering, and designed the concept around a gamified skill scoring system.",
+      sections: [
+        {
+          label: "Approach",
+          items: [
+            {
+              image: {
+                src: "/watchson/skills-flow.png",
+                alt: "An early flow draft that asks how skilled you are in English, Front End and Back End, with a sleepy emoji beside it.",
+              },
+              caption:
+                "I ran gaming sessions with our developers, mostly card games, and brainstormed ideas with them. A few of them had already gamified many aspects of their work and life, which gave me the insight I needed.",
+            },
+            {
+              image: {
+                src: "/watchson/welcome-email.webp",
+                alt: "The Welcome to Watchson email, with a space-duck illustration and a Vamos começar button.",
+                position: "top",
+              },
+              caption:
+                "The first touchpoint is a welcome email that invites each developer to create an account, whether to log their skills, track them, or get a nudge to improve them.",
+            },
+          ],
+        },
+        {
+          label: "Concept",
+          items: [
+            {
+              image: {
+                src: "/watchson/new-simulation.webp",
+                alt: "The New Simulation screen, a table ranking employees by level and fit for a project, next to a radar chart of project requirements against team skills.",
+              },
+              caption:
+                "The concept borrows from football manager games, where chemistry, skill level and motivation drive the player cards you build before a match. Here, a match is a client’s project, and each person gets a fit score for it.",
+            },
+            {
+              image: {
+                src: "/watchson/people-dashboard.webp",
+                alt: "The Watchson People dashboard, with total, billable and surplus hours, an employee list with skills, and a panel with an employee’s mood and notes.",
+              },
+              caption:
+                "Managers get a live view of their workforce: hours, projects, skills and each person’s mood in one place, so allocation stops being guesswork.",
+            },
+          ],
+        },
+        {
+          label: "Findings",
+          items: [
+            {
+              image: {
+                src: "/watchson/simulation-employee.webp",
+                alt: "Two side panels: a project simulation with a skills radar chart, and an employee profile with skill ratings, a mood selector and notes.",
+              },
+              caption:
+                "If we gamified skills and turned the form’s data into a team-building card game, managers could better see their workforce move, and developers would be driven to adjust their skills to fit a team in a ranking-style system.",
+            },
+            {
+              image: {
+                src: "/watchson/choose-skills.webp",
+                alt: "The Choose Skills step of a new simulation, with skill tags grouped into Front End, Back End and Other, and a purple duck illustration.",
+              },
+              caption:
+                "By bringing different team leaders in as peers on this project, we also set clear expectations for how the product would succeed. That depended on their ability to manage, update and help developers find their matching skills.",
+            },
+          ],
+        },
+        {
+          label: "Gamification ideas",
+          items: [
+            {
+              image: {
+                src: "/watchson/ducks.webp",
+                alt: "A flock of purple duck mascots, including a builder duck and a wizard duck with a star on its hat.",
+                position: "center",
+              },
+              caption:
+                "We played with many gamification concepts that made sense for the people using the platform: achievements, avatars, improvements, and the addition of ducks. Too many ducks…",
+            },
+          ],
+        },
+      ],
+    },
     tags: ["HR Tech", "Gamification", "Internal Tooling", "Agency"],
     myRole: {
       summary:
