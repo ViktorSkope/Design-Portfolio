@@ -804,35 +804,80 @@ export const projects: Project[] = [
     coverImage: "/rho/cover-4.webp",
     coverImageAlt: "Rho Studio home screen in dark mode, framed on a warm background, with agent shortcuts and a feed of AI-generated images.",
     coverCaption:
-      "Series AI, backed by a16z, Bitkraft and F4 Fund, is building Rho Engine: an AI-native game development platform unveiled at GDC 2024, built so small teams can create worlds that once needed a full studio. Its users are game writers, producers and directors. Great storytellers, but most weren't AI-savvy. They needed one place to shape a story together, document it, and generate assets like concept art to back up their ideas.",
+      "Series AI, backed by a16z, Bitkraft and F4 Fund, is building Rho Engine, an AI-native game development platform unveiled at GDC 2024 so small teams can create worlds that once needed a full studio. Its users are game writers, producers and directors: great storytellers, but mostly not AI-savvy. They needed one place to shape a story together, document it, and generate assets like concept art to back up their ideas.",
     images: [],
+    page: {
+      problem:
+        "Design a workspace where writers and AI agents build stories together, before AI patterns existed. Only chat models and basic agents existed: no playbook for multiplayer AI collaboration. With humans and agents in one conversation, users had to know who was speaking and trust what agents produced. A story world is a web of connected facts, and changing one detail can leave agents quietly contradicting the rest.",
+      myRole:
+        "I was the only product designer, hired on a fractional basis, reporting to the Founder and Creative Director and working daily with the front-end team. I interviewed them on their vision, users and what investors needed to see, mapped the multichat flow from building an agent to bringing it into a shared channel, designed the multichat, the plan/execute workflow and the output window, then validated mockups with engineering and presented the final vision as a prototype.",
+      sections: [
+        {
+          label: "Work",
+          items: [
+            {
+              image: {
+                src: "/rho/home-agents.webp",
+                alt: "Rho Studio home screen in dark mode with agent shortcuts and a Following feed showing an AI-generated image.",
+              },
+              caption:
+                "Meet writers where they already work, and keep them in control. The workspace is a group chat, like a Slack channel: agents are built and tested in a private 1:1 chat, then brought into a shared one.",
+            },
+            {
+              image: {
+                src: "/rho/thread.png",
+                alt: "A Cozy Farm thread beside the home screen, showing messages from the team, an AI Director’s plan and an AI Image Generator result.",
+              },
+              caption:
+                "Every agent is labeled and acts only when called: @mention brings in one, /prt invites all. Stories are organized like a wiki, and an output window shows what each agent is working on and which chapter, character or place it references.",
+            },
+            {
+              image: {
+                src: "/rho/chapter-plan.png",
+                alt: "A Cozy Farm chapter with generated farming tool images, a team conversation with an AI Director, and a plan panel listing running tasks.",
+              },
+              caption:
+                "Agents plan before they act: a high-effort plan, then a low-effort execution once users approve it, which LangChain benchmarks estimate cuts token usage by 40–70%. Per-agent progress signals came after testing with engineers showed that waiting without feedback felt broken. A continuity system based on atomic design flags everything that depends on a story element whenever it changes.",
+            },
+            {
+              image: {
+                src: "/rho/export.webp",
+                alt: "An export dialog for 24 selected files, with Game File, File type and Export destination fields.",
+              },
+              caption:
+                "My V1 vision shipped, giving the founders a working experience to show investors instead of an idea on a slide. The multichat, plan/execute workflow and output window were built on the platform, and the feature became core to the company’s growth plan. Generated assets can also be exported in bulk to game files, and the atomic worldbuilding model shaped how the Founder approached keeping AI-generated worlds consistent.",
+            },
+          ],
+        },
+      ],
+    },
     tags: ["AI Agents", "Interaction Design", "Game Development", "Prototyping"],
     myRole: {
       summary:
-        "I was the only product designer on this work, hired on a fractional basis. I reported to the Founder and Creative Director and worked day to day with the front-end team. I:",
+        "I was the only product designer, hired on a fractional basis, reporting to the Founder and Creative Director and working daily with the front-end team. I:",
       points: [
-        "Interviewed the Founder and Creative Director on their vision, their users and what investors needed to see",
-        "Mapped the full multichat flow, from building an agent to bringing it into a shared channel",
+        "Interviewed the Founder and Creative Director on their vision, users and what investors needed to see",
+        "Mapped the multichat flow, from building an agent to bringing it into a shared channel",
         "Designed the multichat, the plan/execute workflow and the output window",
-        "Validated mockups with engineering and presented the final vision as a prototyped flow",
+        "Validated mockups with engineering and presented the final vision as a prototype",
       ],
     },
     pitch: [
       {
         label: "The Challenge",
-        headline: "Design a workspace where writers and AI agents build a story together, before AI patterns existed.",
+        headline: "Design a workspace where writers and AI agents build stories together, before AI patterns existed.",
         points: [
-          "Only chat models and basic agents existed, so there was no playbook for multiplayer AI collaboration.",
-          "With several humans and agents in one conversation, users needed to know who was speaking and trust what agents produced.",
-          "A story world is a web of connected facts. Change one detail and agents can quietly contradict the rest.",
+          "Only chat models and basic agents existed: no playbook for multiplayer AI collaboration.",
+          "With humans and agents in one conversation, users had to know who was speaking and trust what agents produced.",
+          "A story world is a web of connected facts, and changing one detail can leave agents quietly contradicting the rest.",
         ],
       },
       {
         label: "The Approach",
         headline: "Meet writers where they already work, and keep them in control.",
         points: [
-          "A group chat, like a Slack channel. Agents are built and tested in a private 1:1 chat, then brought into a shared channel.",
-          "Every agent is labeled and only acts when called: @mention brings in one agent, /prt invites all of them to contribute.",
+          "A group chat, like a Slack channel. Agents are built and tested in a private 1:1 chat, then brought into a shared one.",
+          "Every agent is labeled and acts only when called: @mention brings in one, /prt invites all.",
           "Stories are organized like a wiki, and an output window shows what each agent is working on and which chapter, character or place it references.",
         ],
       },
@@ -840,14 +885,14 @@ export const projects: Project[] = [
         label: "The Solution",
         headline: "Plan before agents act, and protect the story's continuity.",
         points: [
-          "A plan/execute split: agents plan with high effort, then run a low-effort execution once users approve the plan. LangChain benchmarks estimate this cuts token usage by 40–70%.",
-          "A continuity system based on atomic design. When a story element changes, everything that depends on it is flagged for the writer.",
+          "A plan/execute split: agents plan at high effort, then execute at low effort once users approve. LangChain benchmarks estimate this cuts token usage by 40–70%.",
+          "A continuity system based on atomic design: when a story element changes, everything that depends on it is flagged for the writer.",
           "Per-agent progress signals, added after testing with engineers showed that waiting without feedback felt broken.",
         ],
       },
     ],
     outcome:
-      "My V1 vision shipped and gave the founders a working experience to show investors instead of an idea on a slide. The multichat, plan/execute workflow and output window were built on the platform, and the feature became a core part of the company's growth plan. The atomic worldbuilding model shaped how the Founder approached keeping AI-generated worlds consistent.",
+      "My V1 vision shipped, giving the founders a working experience to show investors instead of an idea on a slide. The multichat, plan/execute workflow and output window were built on the platform, and the feature became core to the company's growth plan. The atomic worldbuilding model also shaped how the Founder approached keeping AI-generated worlds consistent.",
     outcomeStats: [
       { value: "V1", label: "Vision shipped on the platform" },
       { value: "40–70%", label: "Estimated token savings from plan/execute" },
