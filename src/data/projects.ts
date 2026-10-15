@@ -917,7 +917,7 @@ export const projects: Project[] = [
     // Placeholder details: add My Role, Challenge / Approach / Solution, Outcome and images when ready
     slug: "liliworld",
     name: "The LiliWorld",
-    tagline: "A cozy educational game for kids and parents to learn about nutrition.",
+    tagline: "A cozy life-sim for family nutrition.",
     year: "2022",
     category: "Featured Work",
     role: "Game Concept Designer, Product Designer",
@@ -927,6 +927,90 @@ export const projects: Project[] = [
     coverImageAlt: "The LiliWorld game screen: a top-down village with shops, a pond and a dock, with a coin counter and a star counter in the corners.",
     coverCaption: "A cozy educational game for kids and parents to learn about nutrition.",
     images: [],
+    page: {
+      problem:
+        "Children’s eating habits are worsening worldwide, and parents are looking for tools to be more present in them. A children’s clothing brand (ages 2–14) wanted to reach this market but didn’t know how. Its consultants pushed a web3 and metaverse experience with tokens, which didn’t fit a family audience and raised privacy and regulation risks we weren’t equipped to handle. The agency needed a concept that was safe, credible to parents and a realistic first step into the market.",
+      myRole:
+        "As lead product designer at the agency, I originated the concept and owned the game design: mechanics, story, characters, art assets, the educational loop and research. I supervised a mid-level designer on the companion web app (sign-in and account preferences) and presented the concept to the client’s board alongside the agency.",
+      sections: [
+        {
+          label: "Approach",
+          items: [
+            {
+              image: {
+                src: "/liliworld/island.webp",
+                alt: "The LiliWorld island seen from above, with an observatory, a clothing shop, a furniture store, a greenhouse, a dock and the island’s characters.",
+              },
+              caption:
+                "I replaced the web3 proposal with a cozy 2D life-sim in the spirit of Animal Crossing and Stardew Valley, built around caring for an island together rather than mandatory co-play. Four months of research backed the direction: interviews with school teachers and psychologists, three of four of whom actively recommend shared play to introduce new concepts, plus courses in educational game design for children.",
+            },
+            {
+              image: {
+                src: "/liliworld/tiles.webp",
+                alt: "Four stages of the island’s terrain tiles, from dry reeds to lush grass with trees, mushrooms and flowers.",
+              },
+              caption:
+                "The island is a metaphor for the body. Players keep it balanced by growing and cooking tasty, nutritious food for the NPC islanders, and progress through quizzes and challenges that show how food affects health the way it affects the island.",
+            },
+          ],
+        },
+        {
+          label: "Findings",
+          items: [
+            {
+              image: {
+                src: "/liliworld/gameplay.webp",
+                alt: "The LiliWorld gameplay screen: a player character and a hovering drone on a patchy field, with an item bar, a coin counter and a star counter.",
+              },
+              caption:
+                "Rewarding kids for eating healthy backfired. My first mechanic gave coins for healthy eating, but kids tried to bypass it. Teachers and psychologists helped me see that engagement comes from managing information and fostering curiosity, not from rewards. I redesigned the core loop around a multitool that discharges with use and recharges with high-protein, high-vitamin foods matched to what the child had just learned.",
+            },
+            {
+              image: {
+                src: "/liliworld/feature-plan.png",
+                alt: "A planning document for 1,020 hours of game work, listing what will be delivered and developed, with weekly activities.",
+              },
+              caption:
+                "Designing for an unproven market meant every mechanic had to justify itself. The board kept probing market fit and ROI throughout, so I tied each feature back to business value and presented the key risks with how we’d control them.",
+            },
+          ],
+        },
+        {
+          label: "Process",
+          items: [
+            {
+              image: {
+                src: "/liliworld/shop.webp",
+                alt: "Shop cards for carrots, blackberries, tomatoes, an apiary, honey, bees, a firefly lamp and potted plants, each with a price and a sell button.",
+              },
+              caption:
+                "The concept ran four months in 2022, restarting the cycle each month to revise mechanics and add assets and story. Weekly critique rounds aligned the team’s vision and expectations around shared inspiration, and I pitched the first 10 minutes of gameplay to the six-person board: the gameplay loop, the characters, the connection to market value and gaming market data.",
+            },
+            {
+              image: {
+                src: "/liliworld/characters.webp",
+                alt: "A sheet of LiliWorld characters: a koala in pink overalls, a scientist with goggles, a wizard, a straw-hat fisher, a toucan, a sheep and a drone.",
+              },
+              caption:
+                "The outputs were sprites, tiles, game UI (points, settings, information screens) and a feature deck.",
+            },
+          ],
+        },
+        {
+          label: "Outcome",
+          items: [
+            {
+              image: {
+                src: "/liliworld/home-room.webp",
+                alt: "The koala character’s home on the island: a small room with a bed, a chest, a coat stand, a rug and potted plants.",
+              },
+              caption:
+                "The board approved roughly $1M in initial investment, and the client acquired the concept and story from our agency for $180K, with the remainder reserved for development. They brought in an external game studio to produce assets at volume from my designs. The project later halted when development costs rose, and the client kept the IP to continue building in the future.",
+            },
+          ],
+        },
+      ],
+    },
     tags: ["Game Design", "Education", "Nutrition"],
   },
   {
