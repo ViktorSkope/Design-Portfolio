@@ -6,6 +6,9 @@
 //   slide:  the strip of covers moves by exactly one card, so the clicked
 //           neighbour becomes the centre card, while the text cross-fades.
 //   collapse: the way back, the cover shrinks into its place in the carousel.
+//   scrub:  scrolling on from the landing page, the card has already been grown
+//           into the cover by the scroll itself; the project page takes over,
+//           scrolled to where its cover and opening text already are.
 //
 // The page cannot be scrolled while one of them runs, so nothing drifts away from
 // the overlay.
@@ -27,6 +30,12 @@ type Pending =
       overlay: HTMLElement;
       backdrop: HTMLElement;
       project: HTMLElement | null;
+    }
+  | {
+      kind: "scrub";
+      slug: string;
+      overlay: HTMLElement;
+      scrollTop: number;
     }
   | {
       kind: "slide";
@@ -90,15 +99,26 @@ export function lockScroll(ms: number) {
   unlockTimer = window.setTimeout(unlockScroll, ms);
 }
 
-function arm(next: Pending) {
+function arm(next: Pending, { lock = true } = {}) {
   discard();
   pending = next;
-  lockScroll(TRANSITION_MS + 700);
+  // Scroll-driven handoffs keep scrolling alive, so the gesture carries on
+  if (lock) lockScroll(TRANSITION_MS + 700);
   // If the new page never claims the transition, clear the overlay anyway
   failsafe = window.setTimeout(discard, 4000);
 }
 
 const noTransform = (value: string) => !value || value === "none";
+
+// ─── Scrub (scroll-driven) ───────────────────────────────────────────────────
+
+/**
+ * The landing page grew the card into the cover; the project page takes it from
+ * here, scrolled to `scrollTop` so its text is where the reader left it.
+ */
+export function handOffScrub(slug: string, overlay: HTMLElement, scrollTop: number) {
+  arm({ kind: "scrub", slug, overlay, scrollTop }, { lock: false });
+}
 
 // ─── Expand ──────────────────────────────────────────────────────────────────
 
@@ -370,7 +390,7 @@ export function arriveHome(centre: HTMLElement | null, home: HTMLElement | null)
 // ─── Arrival ─────────────────────────────────────────────────────────────────
 
 export interface Arrival {
-  kind: "expand" | "slide" | "none";
+  kind: "expand" | "slide" | "scrub" | "none";
   /** Slide only: 1 when the new page arrives from the right, -1 from the left. */
   direction: 1 | -1;
 }
@@ -397,6 +417,27 @@ export function arrive(slug: string, targets: ArrivalTargets): Arrival {
   }
   pending = null;
   window.clearTimeout(failsafe);
+
+  if (current.kind === "scrub") {
+    const { overlay } = current;
+    window.scrollTo(0, current.scrollTop);
+    const to = targets.cover?.getBoundingClientRect();
+    const from = overlay.getBoundingClientRect();
+    const off = to ? Math.max(Math.abs(to.left - from.left), Math.abs(to.top - from.top), Math.abs(to.width - from.width)) : 0;
+    if (to && off > 1) {
+      // The landing page only estimated where the cover would be: settle onto it
+      const settle = overlay.animate(
+        [{}, { left: `${to.left}px`, top: `${to.top}px`, width: `${to.width}px`, height: `${to.height}px` }],
+        { duration: 220, easing: "ease-out", fill: "forwards" },
+      );
+      settle.onfinish = () => overlay.remove();
+      window.setTimeout(() => overlay.remove(), 600);
+    } else {
+      // Identical to the cover underneath: let it paint once, then step aside
+      requestAnimationFrame(() => requestAnimationFrame(() => overlay.remove()));
+    }
+    return { kind: "scrub", direction: 1 };
+  }
 
   if (current.kind === "expand" && targets.cover) {
     const { cover } = targets;

@@ -68,6 +68,8 @@ export interface Project {
   slug: string;
   name: string;
   tagline: string;
+  // One line of results, shown with the project on the landing page
+  impact?: string;
   year: string;
   category: ProjectCategory;
   role: string;
@@ -223,6 +225,7 @@ export const projects: Project[] = [
     slug: "blindspot",
     name: "Blindspot",
     tagline: "An AI notetaker app for quick memory snapshots.",
+    impact: "Sold to an insurance company as their internal prospecting tool",
     year: "2025",
     category: "Hackathon Project",
     role: "Founder",
@@ -291,6 +294,7 @@ export const projects: Project[] = [
     slug: "ingrid",
     name: "Ingrid",
     tagline: "Redesigning a platform that helps technicians keep autonomous harvesters running.",
+    impact: "Onboarding cut from 1 hour to 8 minutes · USD 1.5M a year saved",
     year: "2022",
     category: "Featured Work",
     role: "Product Design Lead",
@@ -795,6 +799,7 @@ export const projects: Project[] = [
     slug: "rho-studio",
     name: "Rho Studio",
     tagline: "Designing how writers and AI agents build stories together, for an a16z-backed AI game engine.",
+    impact: "V1 shipped · an estimated 40–70% token savings from plan/execute",
     year: "2023",
     category: "Featured Work",
     role: "Sole Product Designer",
@@ -918,6 +923,7 @@ export const projects: Project[] = [
     slug: "liliworld",
     name: "The LiliWorld",
     tagline: "A cozy life-sim for family nutrition.",
+    impact: "~$1M approved by the board · concept sold for $180K",
     year: "2022",
     category: "Featured Work",
     role: "Game Concept Designer, Product Designer",
