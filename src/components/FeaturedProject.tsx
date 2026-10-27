@@ -56,6 +56,12 @@ const TILT_SCALE = 1.04;
 const TILT_MAX_X = 7; // degrees
 const TILT_MAX_Y = 9;
 
+// How strongly projects outside the filter are washed out
+const OUTSIDE_WASH = 0.55;
+
+// Regrouping the carousel: how long the pieces take to fade out (and back in)
+const VEIL_MS = 300;
+
 // How much of the case study's opening shows under the carousel before reading on
 const INTRO_TEASER = 230;
 // Space above the teaser, and between it and the "scroll to read" line
@@ -224,16 +230,44 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
     stepRef.current = step;
   });
 
+  // Regrouping (a filter coming or going) would send pieces sliding across each
+  // other. Instead they fade out, move while unseen, and fade back in at their
+  // new places. "sides" keeps the selected piece in view; "all" hides it too.
+  const [veil, setVeil] = useState<"none" | "sides" | "all">("none");
+  const [instant, setInstant] = useState(false);
+  const regroupTimers = useRef<number[]>([]);
+  const regroup = useCallback((hide: "sides" | "all", apply: () => void) => {
+    regroupTimers.current.forEach((timer) => window.clearTimeout(timer));
+    setVeil(hide);
+    regroupTimers.current = [
+      window.setTimeout(() => {
+        setInstant(true);
+        apply();
+      }, VEIL_MS),
+      // Once the pieces have been drawn in their new places, let them fade back in
+      window.setTimeout(() => {
+        setInstant(false);
+        setVeil("none");
+      }, VEIL_MS + 60),
+    ];
+  }, []);
+  useEffect(() => () => regroupTimers.current.forEach((timer) => window.clearTimeout(timer)), []);
+
   // A hero word was clicked: centre its group, or show everything again
   useEffect(() => {
     const list = slugs.split(",");
     return onWorkFilter((group) => {
-      setFilter(group);
-      if (!group) return;
+      if (!group) {
+        regroup("sides", () => setFilter(null));
+        return;
+      }
       const members = list.filter((slug) => inWorkGroup(group, slug));
-      if (members.length) setActiveSlug(members[Math.floor((members.length - 1) / 2)]);
+      regroup("all", () => {
+        setFilter(group);
+        if (members.length) setActiveSlug(members[Math.floor((members.length - 1) / 2)]);
+      });
     });
-  }, [slugs]);
+  }, [slugs, regroup]);
 
   // Sideways scrolling (trackpads, shift + wheel) moves the ring one piece at a
   // time. Vertical scrolling is left alone so the page still scrolls normally.
@@ -576,18 +610,23 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
             const isCenter = d === 0;
             // Outside the filter: greyed, but still solid so it never mixes with what is behind it
             const outside = !inFilter(p.slug);
+            const veiled = veil === "all" || (veil === "sides" && !isCenter);
 
             const style: CSSProperties = {
               width: "var(--cw)",
               aspectRatio: `${ASPECT}`,
               top: 12,
               zIndex: 10 - distance,
-              opacity: hiddenPiece ? 0 : 1,
+              opacity: hiddenPiece || veiled ? 0 : 1,
               transform: `translateX(-50%) translateX(calc(var(--cw) * ${side * place.x})) rotateY(${-side * place.rotate}deg) scale(${place.scale})`,
               // It fades in at its new spot rather than travelling across the centre
-              transition: crossed
-                ? "transform 0s, opacity 500ms ease, filter 900ms ease"
-                : "transform 900ms cubic-bezier(0.45, 0, 0.2, 1), opacity 500ms ease, filter 900ms ease, z-index 900ms linear",
+              transition: instant
+                ? `transform 0s, opacity ${VEIL_MS}ms ease, filter 0s, z-index 0s`
+                : crossed
+                  ? "transform 0s, opacity 500ms ease, filter 900ms ease"
+                  : veil !== "none"
+                    ? `transform 900ms cubic-bezier(0.45, 0, 0.2, 1), opacity ${VEIL_MS}ms ease, filter 900ms ease, z-index 900ms linear`
+                    : "transform 900ms cubic-bezier(0.45, 0, 0.2, 1), opacity 500ms ease, filter 900ms ease, z-index 900ms linear",
               filter: `${outside ? "grayscale(1) " : ""}brightness(${isCenter ? 1 : 1 - distance * 0.06})`,
               // The selected piece only reacts inside its central hit area
               pointerEvents: hiddenPiece || isCenter ? "none" : "auto",
@@ -602,6 +641,23 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                   draggable={false}
                   loading={distance <= 1 ? "eager" : "lazy"}
                   className={imageBase}
+                />
+                {/* A white wash over the projects outside the filter, so the group stands
+                    out, cut to the image's own shape so transparent areas stay clear */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 block bg-white transition-opacity duration-700 ease-out"
+                  style={{
+                    opacity: outside ? OUTSIDE_WASH : 0,
+                    WebkitMaskImage: `url("${p.carouselImage ?? p.coverImage}")`,
+                    maskImage: `url("${p.carouselImage ?? p.coverImage}")`,
+                    WebkitMaskSize: "contain",
+                    maskSize: "contain",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskPosition: "top center",
+                    maskPosition: "top center",
+                  }}
                 />
                 {/* Reflection for the side pieces: a flipped copy that fades out below.
                     The selected piece has none, leaving room for its case study below. */}
