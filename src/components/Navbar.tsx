@@ -27,8 +27,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const isAbout = pathname === "/about";
 
+  // The current page sits on a soft tone just darker than the background: it reads
+  // as "you are here" without looking like something to click
   const activeClass =
-    "text-accent text-[11px] font-semibold uppercase tracking-[0.14em] hover:opacity-60 transition-opacity duration-200";
+    "rounded-full bg-[#E3DED9] px-3 py-1.5 -my-1.5 text-ink text-[11px] font-semibold uppercase tracking-[0.14em] cursor-default";
   const inactiveClass =
     "text-[#737373] text-[11px] font-semibold uppercase tracking-[0.14em] hover:text-ink transition-colors duration-200";
 
