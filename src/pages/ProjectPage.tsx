@@ -8,6 +8,7 @@ import CaseStudyIntro, { BODY, HAIRLINE, LABEL, TWO_COLUMNS } from "../component
 import { arrive, beginCollapse, beginSlide, lockScroll, TRANSITION_MS } from "../lib/pageTransition";
 import { rememberCoverBox } from "../lib/scrubTransition";
 import { useEdgeScroll } from "../lib/edgeScroll";
+import { DARK_TONES } from "../lib/darkTones";
 
 // Shared geometry of the page: one content column, a cover card of fixed
 // proportions, and two columns with a wide gutter for everything below it.
@@ -17,13 +18,13 @@ const COVER_ASPECT = 1.588;
 
 function PlaceholderImage() {
   return (
-    <div className="flex aspect-[5/3] w-full flex-col items-center justify-center gap-2 rounded-[14px] border border-dashed border-[#d6cfc6] bg-[#e8e3de]">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b3aba1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <div className="flex aspect-[5/3] w-full flex-col items-center justify-center gap-2 rounded-[14px] border border-dashed border-[#3a3a3a] bg-[#1e1e1e]">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6b6763" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
         <polyline points="21 15 16 10 5 21" />
       </svg>
-      <span className="text-[10px] uppercase tracking-[0.12em] text-[#b3aba1]">Image coming soon</span>
+      <span className="text-[10px] uppercase tracking-[0.12em] text-[#6b6763]">Image coming soon</span>
     </div>
   );
 }
@@ -216,14 +217,16 @@ function ProjectPageContent({ project }: { project: Project }) {
   useEdgeScroll("top", goHome, { touch: false });
 
   return (
-    <div id="project-page" ref={pageRef} className="min-h-screen bg-page pb-24 [--cw:min(1000px,calc(100vw-40px))] md:pb-28">
-      {/* Header and way back */}
+    <div id="project-page" ref={pageRef} className="min-h-screen bg-(--bg) pb-24 [--cw:min(1000px,calc(100vw-40px))] md:pb-28" style={DARK_TONES}>
+      {/* Header and way back. The header keeps the light page; the case study below is dark. */}
       <div ref={headRef} className="mx-auto w-[var(--cw)]">
-        <Navbar />
+        <div className="relative z-40 before:absolute before:inset-y-0 before:left-1/2 before:-z-10 before:w-screen before:-translate-x-1/2 before:bg-page">
+          <Navbar />
+        </div>
         <Link
           to="/#work"
           onClick={backToWork}
-          className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373] transition-colors hover:text-ink"
+          className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-(--muted) transition-colors hover:text-(--ink)"
         >
           <span aria-hidden="true">←</span> Back to work
         </Link>
@@ -290,7 +293,7 @@ function ProjectPageContent({ project }: { project: Project }) {
         <footer className="mt-[72px] flex flex-wrap items-center justify-between gap-4">
           <ul className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
-              <li key={tag} className="rounded-[3px] border border-[#DAD3CA] px-3 py-[7px] text-[9px] font-semibold uppercase tracking-[0.16em] text-[#8a8379]">
+              <li key={tag} className="rounded-[3px] border border-(--hair) px-3 py-[7px] text-[9px] font-semibold uppercase tracking-[0.16em] text-(--muted)">
                 {tag}
               </li>
             ))}
@@ -301,7 +304,7 @@ function ProjectPageContent({ project }: { project: Project }) {
               e.preventDefault();
               slideTo(next, 1);
             }}
-            className="text-[10px] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:text-accent"
+            className="text-[10px] font-semibold uppercase tracking-[0.16em] text-(--ink) transition-colors hover:text-accent"
           >
             Next: {next.name} <span aria-hidden="true">→</span>
           </Link>

@@ -4,6 +4,7 @@ import { getCoverBackground, getProjectBySlug, type Project } from "../data/proj
 import { arriveHome, beginExpand, handOffScrub, peekCollapseSlug, prefersReducedMotion } from "../lib/pageTransition";
 import { createScrubCard, drawScrubCard, easeScrub, projectLayout } from "../lib/scrubTransition";
 import CaseStudyIntro from "./CaseStudyIntro";
+import { DARK_TONES } from "../lib/darkTones";
 import { inWorkGroup, onWorkFilter, setWorkFilter, WORK_GROUPS, type WorkGroup } from "../lib/workFilter";
 
 export interface FeaturedItem {
@@ -137,7 +138,7 @@ function TiltLayer({ active, children }: { active: boolean; children: React.Reac
 // A project's results, set apart so they are read first
 function Impact({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-start gap-1.5 text-[13px] font-medium leading-snug text-[#0f6b3a]">
+    <span className="inline-flex items-start gap-1.5 text-[13px] font-medium leading-snug text-(--impact)">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="mt-[2px] shrink-0">
         <path d="M4 16l5-5 4 4 7-7M14 8h6v6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
@@ -542,24 +543,28 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
     <section
       id="work"
       ref={sectionRef}
-      className="[--cw:80vw] [--sh:1.14] md:[--cw:52vw] lg:[--cw:min(46vw,760px)] lg:[--sh:1.3]"
+      className="relative isolate [--cw:80vw] [--sh:1.14] md:[--cw:52vw] lg:[--cw:min(46vw,760px)] lg:[--sh:1.3]"
+      style={DARK_TONES}
       aria-roledescription="carousel"
       aria-label="Featured projects"
     >
+      {/* The dark band: full-bleed, starting a little above the section so it divides
+          the hero from the work */}
+      <div aria-hidden="true" className="absolute -top-14 bottom-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-(--bg)" />
       {/* Pinned while the visitor scrolls through the runway below */}
       <div ref={pinnedRef} data-work-pinned className={reduceMotion ? "" : "sticky"}>
       {/* One fixed height for the hint and the filter chip, so swapping them moves nothing */}
       <div ref={hintRef} className="flex min-h-[40px] flex-col justify-end">
       {filter ? (
         <p className="mb-2 flex flex-wrap items-center justify-center gap-2 text-center text-[11px] font-semibold uppercase tracking-[0.16em]">
-          <span className="text-[#737373]">Showing</span>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-ink py-1 pl-3 pr-1 text-white">
+          <span className="text-(--muted)">Showing</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-(--ink) py-1 pl-3 pr-1 text-(--bg)">
             {WORK_GROUPS[filter].label} · {slides.filter((s) => inFilter(s.project.slug)).length}
             <button
               type="button"
               onClick={() => setWorkFilter(null)}
               aria-label="Show all projects"
-              className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-white/15 transition-colors hover:bg-white/30"
+              className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-(--bg)/15 transition-colors hover:bg-(--bg)/30"
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
@@ -569,13 +574,13 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
           <button
             type="button"
             onClick={() => setWorkFilter(null)}
-            className="cursor-pointer uppercase text-[#737373] underline underline-offset-4 hover:text-ink"
+            className="cursor-pointer uppercase text-(--muted) underline underline-offset-4 hover:text-(--ink)"
           >
             Show all
           </button>
         </p>
       ) : (
-        <p className="mb-2 flex items-center justify-center gap-2 text-center text-[#737373] text-[11px] font-semibold uppercase tracking-[0.16em]">
+        <p className="mb-2 flex items-center justify-center gap-2 text-center text-(--muted) text-[11px] font-semibold uppercase tracking-[0.16em]">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="shrink-0">
             <path d="M9 11V5.5a1.5 1.5 0 013 0V10m0-1.5a1.5 1.5 0 013 0V11m0-1a1.5 1.5 0 013 0v4.5c0 3-2 5.5-5.5 5.5h-1.2c-1.6 0-2.8-.6-3.8-1.8L5 15.5a1.5 1.5 0 012.2-2L9 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -642,11 +647,11 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
                   loading={distance <= 1 ? "eager" : "lazy"}
                   className={imageBase}
                 />
-                {/* A white wash over the projects outside the filter, so the group stands
+                {/* A wash of the background over the projects outside the filter, so the group stands
                     out, cut to the image's own shape so transparent areas stay clear */}
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 block bg-white transition-opacity duration-700 ease-out"
+                  className="pointer-events-none absolute inset-0 block bg-(--bg) transition-opacity duration-700 ease-out"
                   style={{
                     opacity: outside ? OUTSIDE_WASH : 0,
                     WebkitMaskImage: `url("${p.carouselImage ?? p.coverImage}")`,
@@ -731,13 +736,13 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
         style={{ marginTop: `calc(var(--cw) / ${ASPECT} * (1 - var(--sh)) + 20px)` }}
       >
         <div ref={summaryRef} className="flex min-h-[84px] flex-col items-center justify-start gap-1.5 px-4 text-center md:min-h-[64px]">
-          <span className="text-[#737373] text-[10px] font-semibold uppercase tracking-[0.16em]">
+          <span className="text-(--muted) text-[10px] font-semibold uppercase tracking-[0.16em]">
             {active + 1} / {count} · {current.category}
           </span>
           {current.impact ? (
             <Impact text={current.impact} />
           ) : (
-            <span className="max-w-[520px] text-[#737373] text-[13px] leading-relaxed">{current.tagline}</span>
+            <span className="max-w-[520px] text-(--muted) text-[13px] leading-relaxed">{current.tagline}</span>
           )}
         </div>
 
@@ -758,7 +763,7 @@ export default function FeaturedProject({ items }: FeaturedProjectProps) {
         <span
           ref={moreRef}
           style={{ marginTop: MORE_GAP }}
-          className="flex flex-col items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#737373] transition-colors group-hover/peek:text-ink"
+          className="flex flex-col items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-(--muted) transition-colors group-hover/peek:text-(--ink)"
         >
           Scroll to read the case study
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-[nudge_1.6s_ease-in-out_infinite] motion-reduce:animate-none">

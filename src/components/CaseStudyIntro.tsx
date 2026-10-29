@@ -1,11 +1,13 @@
 import type { Project } from "../data/projects";
 import { getProjectPage } from "../data/projectPage";
 
-// Shared type and grid of the case study pages: two columns with a wide gutter
+// Shared type and grid of the case study pages: two columns with a wide gutter.
+// Colours come from --ink, --muted and --hair when set (the landing page sets them
+// for its dark section), and fall back to the light page's tones.
 export const TWO_COLUMNS = "md:grid md:grid-cols-2 md:gap-x-[11.3%]";
-export const LABEL = "text-[10px] font-semibold uppercase tracking-[0.16em] text-[#737373]";
-export const BODY = "text-[13px] leading-[1.75] text-ink/75";
-export const HAIRLINE = "border-[#E2DCD4]";
+export const LABEL = "text-[10px] font-semibold uppercase tracking-[0.16em] text-(--muted,#737373)";
+export const BODY = "text-[13px] leading-[1.75] text-(--ink,#151515)/75";
+export const HAIRLINE = "border-(--hair,#E2DCD4)";
 
 export function Column({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -27,15 +29,15 @@ export default function CaseStudyIntro({ project, heading: Heading = "h1" }: { p
   return (
     <>
       <div className={`flex flex-col gap-6 ${TWO_COLUMNS} md:items-start`}>
-        <Heading className="text-[34px] font-medium leading-[1.1] tracking-[-0.8px] text-ink md:text-[38px]">{project.name}</Heading>
+        <Heading className="text-[34px] font-medium leading-[1.1] tracking-[-0.8px] text-(--ink,#151515) md:text-[38px]">{project.name}</Heading>
         <dl className="flex items-start justify-between gap-6 md:pt-2">
           <div className="flex flex-col gap-2">
             <dt className={LABEL}>Role</dt>
-            <dd className="text-[14px] text-ink">{project.role}</dd>
+            <dd className="text-[14px] text-(--ink,#151515)">{project.role}</dd>
           </div>
           <div className="flex flex-col gap-2 text-right">
             <dt className={LABEL}>Year</dt>
-            <dd className="text-[14px] text-ink">{project.year}</dd>
+            <dd className="text-[14px] text-(--ink,#151515)">{project.year}</dd>
           </div>
         </dl>
       </div>
