@@ -1,0 +1,200 @@
+.mosaic {
+  padding-top: var(--spacing-xxl);
+  padding-bottom: var(--spacing-section);
+}
+
+.mosaic__grid {
+  display: grid;
+  grid-template-columns: 575fr 539fr 266fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--spacing-base);
+  aspect-ratio: 1412 / 546;
+}
+
+.tile {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-default);
+}
+
+.tile img,
+.tile video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile--fleet {
+  grid-row: 1 / 3;
+  background: var(--color-surface-paper);
+}
+
+.tile--brand {
+  position: relative;
+  background: var(--color-surface-dark);
+}
+
+.tile--brand .tile__logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 52%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.tile--crd {
+  position: relative;
+  grid-column: 2 / 4;
+  background: var(--color-surface-map);
+}
+
+.typewriter,
+.typewriter * {
+  letter-spacing: 0;
+}
+
+/* Colours below are Ingrid's own dark theme: this tile shows their document, not VK's interface */
+.typewriter {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  margin: 0;
+  color: rgba(236, 236, 234, 0.72);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--spacing-lg));
+  transition: opacity 300ms ease;
+}
+
+.typewriter.is-fading {
+  opacity: 0;
+}
+
+/* Stops the full document flashing before the script takes over. Without scripts it stays readable */
+@media (scripting: enabled) {
+  .typewriter:not(.is-ready) {
+    visibility: hidden;
+  }
+}
+
+.typewriter__text {
+  position: relative;
+  padding: var(--spacing-lg);
+  transition: transform 240ms ease-out;
+}
+
+.typewriter__line {
+  min-height: 1.6em;
+}
+
+.typewriter__segment {
+  transition: color 200ms ease;
+}
+
+.typewriter__segment--heading {
+  color: #ececea;
+}
+
+.typewriter__segment--mark,
+.typewriter__segment--comment.is-done {
+  color: rgba(236, 236, 234, 0.42);
+}
+
+.typewriter__segment--token.is-done,
+.typewriter__segment--code.is-done {
+  color: #6b9bf5;
+}
+
+.typewriter__swatch {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.5em;
+  outline: 1px solid rgba(255, 255, 255, 0.24);
+  outline-offset: -1px;
+  border-radius: 2px;
+  animation: typewriter-swatch 200ms ease-out;
+}
+
+.typewriter__caret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  background: #ececea;
+  vertical-align: text-bottom;
+  animation: typewriter-caret 1s steps(2, jump-none) infinite;
+}
+
+@keyframes typewriter-swatch {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes typewriter-caret {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.tile--truck-card {
+  background: var(--color-surface-dark);
+}
+
+@media (max-width: 1024px) {
+  .mosaic {
+    padding-bottom: 96px;
+  }
+
+  .mosaic__grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+    aspect-ratio: auto;
+  }
+
+  .tile--fleet,
+  .tile--brand {
+    grid-row: 1;
+    aspect-ratio: 1;
+  }
+
+  .tile--truck-card,
+  .tile--crd {
+    grid-column: 1 / -1;
+    aspect-ratio: 1028 / 508;
+  }
+}
+
+@media (max-width: 760px) {
+  .mosaic {
+    padding-bottom: 64px;
+  }
+
+  .mosaic__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tile--fleet,
+  .tile--brand {
+    grid-row: auto;
+  }
+
+  .tile--crd {
+    aspect-ratio: 4 / 3;
+  }
+
+  .typewriter {
+    font-size: 12px;
+  }
+}

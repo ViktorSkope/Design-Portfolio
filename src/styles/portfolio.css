@@ -1,0 +1,554 @@
+/* What the portfolio adds to the VK system */
+
+
+/* A project's cover on its own backdrop, as a VK tile */
+.cover {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-default);
+  background: var(--color-surface-paper);
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  padding: 1.5%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.cover--fill img {
+  padding: 0;
+  object-fit: cover;
+}
+
+.tile:hover .cover img,
+.work-card:hover .cover img {
+  transform: scale(1.02);
+}
+
+.tile .cover {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.work-card .cover {
+  aspect-ratio: 4 / 3;
+  margin-bottom: var(--spacing-base);
+}
+
+.case-cover {
+  aspect-ratio: 1.46;
+}
+
+.case-figure + .case-figure {
+  margin-top: var(--spacing-xxl);
+}
+
+.case-figure button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-default);
+  background: var(--color-surface-paper);
+  cursor: zoom-in;
+}
+
+.case-figure img {
+  width: 100%;
+  height: auto;
+}
+
+.case-figure figcaption {
+  margin-top: var(--spacing-base);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.tags li {
+  padding: 4px 10px;
+  border-radius: var(--radius-default);
+  background: var(--color-surface-paper);
+  font-size: var(--text-caption);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 2.4fr;
+  gap: var(--spacing-xxl);
+}
+
+.about-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-default);
+}
+
+.about-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xl);
+}
+
+.compare {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-default);
+}
+
+.compare img {
+  width: 100%;
+  height: auto;
+}
+
+.compare .compare__after {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  clip-path: inset(0 0 0 var(--split, 50%));
+}
+
+.compare input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.compare__line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split, 50%);
+  width: 2px;
+  background: var(--color-surface-card);
+  pointer-events: none;
+}
+
+.lightbox {
+  max-width: 94vw;
+  max-height: 94vh;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-default);
+  background: none;
+  cursor: zoom-out;
+}
+
+.lightbox::backdrop {
+  background: rgb(15 21 29 / 0.85);
+}
+
+.lightbox img {
+  max-width: 94vw;
+  max-height: 94vh;
+}
+
+@media (max-width: 760px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tile .media-stage {
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+}
+
+.tile .media-stage video {
+  object-fit: contain;
+  height: auto;
+}
+
+/* A slight paper tone across the page */
+:root {
+  --color-canvas: #f4efe4;
+  --color-surface-paper: #e9e3d5;
+  --color-hairline: #dcd5c6;
+}
+
+/* ─── Header, laid out as on the previous portfolio ─────────────────────── */
+
+.nav__name {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav__name span,
+.nav__links {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.nav__name span + span,
+.nav__links a {
+  color: var(--color-muted);
+}
+
+.nav__links {
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.nav__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.nav__links a:hover {
+  color: var(--color-ink);
+}
+
+/* The current page sits on a soft tone just darker than the background */
+.nav__links a[aria-current="page"] {
+  border-radius: var(--radius-default);
+  background: var(--color-surface-paper);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+/* ─── Hero titles ───────────────────────────────────────────────────────── */
+
+.hero__title,
+.page-hero h1 {
+  font-size: min(52px, 4.4vw);
+  line-height: 1.14;
+}
+
+/* The bubble: the portrait alone, with no backing chip */
+.hero__chip {
+  padding: 0;
+  background: none;
+}
+
+.hero__chip img {
+  width: 0.92em;
+  height: 0.92em;
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .hero__title,
+  .page-hero h1 {
+    font-size: min(42px, 5vw);
+  }
+}
+
+/* ─── Contact popover ───────────────────────────────────────────────────── */
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+.contact {
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-default);
+  background: var(--color-surface-card);
+  color: var(--color-ink);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.35);
+}
+
+.contact::backdrop {
+  background: rgb(0 0 0 / 0.55);
+}
+
+.contact__panel {
+  position: relative;
+  padding: var(--spacing-sm);
+}
+
+.contact__close {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--radius-default);
+  background: none;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.contact__close:hover,
+.contact__row:hover,
+.contact__copy:hover {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+.contact__label {
+  padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xxs);
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+.contact__row {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-width: 0;
+  padding: 10px var(--spacing-sm);
+  border-radius: var(--radius-default);
+}
+
+.contact__row span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contact__row strong {
+  font-size: var(--text-caption);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.contact__row small {
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+}
+
+.contact__whatsapp {
+  color: var(--color-semantic-success);
+}
+
+.contact__email {
+  display: flex;
+  align-items: center;
+}
+
+.contact__copy {
+  flex-shrink: 0;
+  margin-right: var(--spacing-xxs);
+  padding: 6px 10px;
+  border: 0;
+  border-radius: var(--radius-default);
+  background: none;
+  color: var(--color-muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.contact hr {
+  height: 1px;
+  margin: var(--spacing-xs) var(--spacing-sm);
+  border: 0;
+  background: var(--color-hairline);
+}
+
+.contact__form,
+.contact__sent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xxs) var(--spacing-sm) var(--spacing-sm);
+  font-size: var(--text-caption);
+}
+
+.contact__form[hidden] {
+  display: none;
+}
+
+.contact__form label {
+  font-weight: 500;
+}
+
+.contact__form textarea,
+.contact__form input {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-default);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font: inherit;
+  resize: none;
+}
+
+.contact__error {
+  color: var(--color-semantic-error);
+}
+
+.contact__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-xxs);
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.contact__foot .btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.contact__again {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .nav__links {
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    font-size: 11px;
+  }
+
+  .nav__toggle {
+    border: 0;
+  }
+
+  .nav__toggle span {
+    height: 2px;
+    background: var(--color-muted);
+  }
+}
+
+/* ─── One type system: Instrument Sans, tighter on titles ─────────────────── */
+
+h1,
+h2:not(.footer__label),
+h3,
+.next-project strong,
+.stat strong {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+}
+
+/* The header items share one shape, so the current page and hover read as buttons */
+.nav__links a {
+  margin-block: -6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-default);
+}
+
+@media (min-width: 761px) {
+  .nav__links {
+    gap: var(--spacing-xs);
+    margin-right: -12px;
+  }
+
+  .nav__links a:not([aria-current]):hover {
+    background: var(--color-surface-paper);
+  }
+}
+
+@media (max-width: 760px) {
+  .nav__links a {
+    margin-block: 0;
+  }
+}
+
+/* ─── The bento: one large tile, with two stacked beside it ──────────────── */
+
+.mosaic__grid {
+  grid-template-columns: 304fr 192fr;
+  grid-template-rows: 1fr 1fr;
+  aspect-ratio: auto;
+}
+
+.tile--fleet {
+  grid-row: 1 / 3;
+  grid-column: 1;
+  aspect-ratio: 304 / 244;
+}
+
+/* The recording's window, centred in the taller stage */
+.tile .media-stage video {
+  top: 50%;
+  left: 8%;
+  width: 84%;
+  transform: translateY(-50%);
+}
+
+.tile--whirl {
+  position: relative;
+  grid-row: 1;
+  grid-column: 2;
+  background: #000;
+}
+
+/* Held inside the tile at any size, so the diagram is never cut off */
+.tile.tile--whirl img {
+  position: absolute;
+  inset: 7%;
+  width: 86%;
+  height: 86%;
+  object-fit: contain;
+}
+
+/* Ingrid crops in on the truck card, so the component reads large */
+.tile--truck-card {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+@media (max-width: 760px) {
+  .mosaic__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .tile--fleet,
+  .tile--whirl,
+  .tile--truck-card {
+    grid-row: auto;
+    grid-column: auto;
+    aspect-ratio: 1.46;
+  }
+}
+
+/* Work runs in two columns */
+.card-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 760px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* With no footer, the page ends on some air */
+#main {
+  padding-bottom: var(--section-gap);
+}

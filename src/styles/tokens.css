@@ -1,0 +1,82 @@
+/* VK design tokens. Source of truth: design/DESIGN.md and design/tokens.json */
+:root {
+  --color-primary: #0f151d;
+  --color-primary-hover: #262d37;
+  --color-ink: #0f151d;
+  --color-slate: #828ca4;
+  --color-body: #3d4552;
+  --color-muted: #5f6879;
+  --color-hairline: #dedbd5;
+  --color-canvas: #f5f3f1;
+  --color-surface-paper: #ebe8e1;
+  --color-surface-card: #ffffff;
+  --color-surface-dark: #0f151d;
+  --color-surface-map: #1a1d1b;
+  --color-on-primary: #ffffff;
+  --color-pixel-red: #fd2405;
+  --color-pixel-orange: #fd8905;
+  --color-pixel-amber: #fca808;
+  --color-pixel-yellow: #fcca0b;
+  --color-pixel-coral: #ff6272;
+  --color-pixel-pink: #ffa7ef;
+  --color-pixel-green: #0a8941;
+  --color-pixel-blue: #3327e9;
+  --color-pixel-charcoal: #313131;
+  --color-pixel-stone: #a9a996;
+  --color-pixel-sand: #dadac3;
+  --color-avatar-blue: #0984d8;
+  --color-avatar-orange: #f86f05;
+  --color-avatar-green: #088030;
+  --color-semantic-error: #d92a00;
+  --color-semantic-success: #0a8941;
+  --font-display: 'Instrument Sans', system-ui, sans-serif;
+  --font-ui: 'Instrument Sans', system-ui, sans-serif;
+  --tracking-display: -0.05em;
+  --tracking-ui: -0.02em;
+  --text-display-mega: 70px;
+  --leading-display-mega: 1.08;
+  --text-display-xl: 48px;
+  --leading-display-xl: 1.12;
+  --text-display-lg: 36px;
+  --leading-display-lg: 1.17;
+  --text-heading-xl: 48px;
+  --leading-heading-xl: 1.12;
+  --text-heading-lg: 32px;
+  --leading-heading-lg: 1.2;
+  --text-heading-md: 24px;
+  --leading-heading-md: 1.25;
+  --text-title-md: 20px;
+  --leading-title-md: 1.35;
+  --text-title-sm: 18px;
+  --leading-title-sm: 1.44;
+  --text-body-md: 16px;
+  --leading-body-md: 1.5;
+  --text-body-sm: 15px;
+  --leading-body-sm: 1.47;
+  --text-caption: 14px;
+  --leading-caption: 1.5;
+  --text-button: 15px;
+  --leading-button: 1;
+  --text-nav-link: 14px;
+  --leading-nav-link: 1.4;
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-base: 16px;
+  --spacing-md: 20px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 40px;
+  --spacing-section: 144px;
+  --radius-none: 0px;
+  --radius-default: 4px;
+  --radius-full: 9999px;
+  --content-width: 1412px;
+  --page-margin: var(--spacing-xxl);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --page-margin: var(--spacing-md);
+  }
+}

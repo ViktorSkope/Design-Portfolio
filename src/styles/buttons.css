@@ -1,0 +1,91 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  height: 44px;
+  padding: 0 var(--spacing-lg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-default);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--text-button);
+  line-height: var(--leading-button);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--outline {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+.btn--outline:hover {
+  background: var(--color-surface-paper);
+}
+
+.btn--on-dark {
+  background: var(--color-surface-card);
+  color: var(--color-ink);
+}
+
+.btn--on-dark:hover {
+  background: var(--color-surface-paper);
+}
+
+.btn--outline-on-dark {
+  border-color: var(--color-on-primary);
+  color: var(--color-on-primary);
+}
+
+.btn--outline-on-dark:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--small {
+  height: 38px;
+  padding: 0 var(--spacing-base);
+  border-radius: var(--radius-default);
+}
+
+.btn[aria-busy="true"] {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+.btn[aria-busy="true"]::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: spin 0.7s linear infinite;
+}
+
+.text-link {
+  display: inline-flex;
+  gap: var(--spacing-xs);
+  font-size: var(--text-body-sm);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+
+.text-link:hover {
+  color: var(--color-muted);
+}
+
+button.text-link {
+  font-family: inherit;
+}

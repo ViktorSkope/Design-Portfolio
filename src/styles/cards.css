@@ -1,0 +1,124 @@
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xxl) var(--spacing-base);
+}
+
+.work-card {
+  display: block;
+}
+
+.work-card .placeholder {
+  margin-bottom: var(--spacing-base);
+  transition: background-color 0.15s ease;
+}
+
+.work-card:hover .placeholder {
+  background: var(--color-hairline);
+}
+
+.work-card__meta {
+  margin-bottom: var(--spacing-xxs);
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+.work-card p:last-child {
+  margin-top: var(--spacing-xxs);
+  color: var(--color-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+
+.is-filtered-out {
+  display: none;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xxl);
+}
+
+.filter-bar .btn[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-xxl);
+}
+
+/* Article list */
+
+.article-list {
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.article-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--spacing-xl);
+  padding-block: var(--spacing-xl);
+  border-top: 1px solid var(--color-hairline);
+}
+
+.article-row__meta {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+.article-row h2 {
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--text-heading-md);
+  font-weight: 500;
+  line-height: var(--leading-heading-md);
+}
+
+.article-row a:hover h2 {
+  color: var(--color-muted);
+}
+
+.article-row p {
+  max-width: 720px;
+  color: var(--color-body);
+}
+
+/* Team */
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-xxl) var(--spacing-base);
+}
+
+.team-member .placeholder {
+  margin-bottom: var(--spacing-sm);
+}
+
+.team-member span {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+@media (max-width: 1024px) {
+  .card-grid,
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .article-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+  }
+}

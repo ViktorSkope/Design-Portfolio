@@ -1,0 +1,194 @@
+.breadcrumb {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+.breadcrumb a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.case-meta {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xxl);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-hairline);
+  text-align: left;
+}
+
+.case-meta dt {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+.case-meta dd {
+  margin: 0;
+  font-size: var(--text-body-sm);
+}
+
+.case-section {
+  display: grid;
+  grid-template-columns: 1fr 2.4fr;
+  gap: var(--spacing-xxl);
+}
+
+.case-section > h2 {
+  font-size: var(--text-heading-md);
+  font-weight: 500;
+  line-height: var(--leading-heading-md);
+}
+
+.case-section__body {
+  max-width: 820px;
+  color: var(--color-body);
+}
+
+.case-section__body > * + * {
+  margin-top: var(--spacing-base);
+}
+
+.case-section__body .lead {
+  color: var(--color-ink);
+  font-size: var(--text-title-md);
+  line-height: var(--leading-title-md);
+}
+
+.case-list {
+  display: grid;
+  gap: var(--spacing-xs);
+  padding-left: var(--spacing-md);
+  list-style: disc;
+}
+
+.case-steps {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.case-steps h3 {
+  margin-bottom: var(--spacing-xxs);
+  color: var(--color-ink);
+}
+
+.case-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-base);
+}
+
+.case-gallery .placeholder--wide {
+  grid-column: 1 / -1;
+}
+
+.next-project {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xl);
+  padding-block: var(--spacing-xl);
+  border-block: 1px solid var(--color-hairline);
+}
+
+.next-project span {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+.next-project strong {
+  display: block;
+  font-size: var(--text-heading-md);
+  font-weight: 500;
+  line-height: var(--leading-heading-md);
+}
+
+@media (max-width: 1024px) {
+  .case-meta {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .case-section {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-base);
+  }
+}
+
+@media (max-width: 560px) {
+  .case-meta {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .case-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .next-project {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Product recordings, inset over a painted backdrop. The window sits slightly above centre. */
+
+.media-stage {
+  position: relative;
+  aspect-ratio: 2000 / 1119;
+  overflow: hidden;
+  border-radius: var(--radius-default);
+  background-color: var(--color-surface-paper);
+  background-position: center;
+  background-size: cover;
+}
+
+.media-stage video {
+  position: absolute;
+  top: 11.8%;
+  left: 11.45%;
+  width: 77.1%;
+  height: auto;
+}
+
+.media-stage--ingrid {
+  background-image: url("/images/work/ingrid-backdrop.webp");
+}
+
+.media-stage--watchson {
+  background-image: url("/images/work/watchson-backdrop.webp");
+}
+
+/* Small stages give the window more of the frame so the product stays readable */
+.media-stage--card {
+  aspect-ratio: 4 / 3;
+  margin-bottom: var(--spacing-base);
+}
+
+.media-stage--card video {
+  top: 18.5%;
+  left: 8%;
+  width: 84%;
+}
+
+@media (max-width: 760px) {
+  .media-stage {
+    aspect-ratio: 4 / 3;
+  }
+
+  .media-stage video {
+    top: 18.5%;
+    left: 8%;
+    width: 84%;
+  }
+}
+
+.case-gallery .media-stage {
+  margin-bottom: 0;
+}
+
+.case-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-default);
+}
