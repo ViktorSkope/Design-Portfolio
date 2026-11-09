@@ -1,0 +1,51 @@
+/*
+ * Interaction principles for the whole portfolio (the scripts are in src/motion.ts):
+ * - Popups ease in and out.
+ * - Dropdowns open in 200 ms, and every exit is 20% shorter (160 ms).
+ * - List rows stagger by 30 ms, and details settle in one after another like notifications.
+ * - Buttons scale to 0.97 while pressed.
+ * - Popovers start at 0.95 and grow out of their trigger, then shrink back into it.
+ * - Shared objects keep one view-transition name across pages.
+ */
+:root {
+  --dur-open: 200ms;
+  --dur-exit: 160ms;
+  --stagger: 30ms;
+  --ease-popup: cubic-bezier(0.45, 0, 0.55, 1);
+  --press-scale: 0.97;
+}
+
+/* Pressing a button pushes it in slightly */
+:is(.btn, button, .nav__links a, .contact__row, .text-link) {
+  transition-property: background-color, color, border-color, transform;
+  transition-duration: 0.15s, 0.15s, 0.15s, 120ms;
+  transition-timing-function: ease;
+}
+
+:is(.btn, button, .nav__links a, .contact__row, .text-link):active:not(:disabled) {
+  transform: scale(var(--press-scale));
+}
+
+/* Page changes cross-fade, while the shared project media moves into place */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-open);
+  animation-timing-function: var(--ease-popup);
+}
+
+::view-transition-group(project-media) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.btn, button, .nav__links a, .contact__row, .text-link):active {
+    transform: none;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}

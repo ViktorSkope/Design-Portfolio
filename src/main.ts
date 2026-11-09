@@ -3,6 +3,7 @@ import { getProjectPage } from "./data/projectPage";
 import { VK_CARDS, VK_CASES } from "./data/vkCases";
 import "./contact";
 import { inWorkGroup, WORK_GROUPS, type WorkGroup } from "./data/workFilter";
+import { animateDialog, closePopover, openPopover, settle, toggleDropdown, transitionPage } from "./motion";
 
 // Watchson and Ingrid lead, then newest first
 const ORDER = ["watchson", "ingrid", "athos-commerce", "whirl", "rho-studio", "liliworld", "pewee-diary", "blindspot", "plywood"];
@@ -256,6 +257,10 @@ function render() {
     document.title = SITE_TITLE;
   }
 
+  // Cards arrive as staggered rows, and a case study's facts settle in one after another
+  settle(main.querySelectorAll(".card-grid > li"));
+  settle(main.querySelectorAll(".case-meta > div, .stats > .stat"));
+
   // As on the previous portfolio, everything but About counts as Work
   const section = path === "/about" ? "about" : "work";
   navLinks.querySelectorAll<HTMLElement>("[data-page]").forEach((link) => {
@@ -264,15 +269,22 @@ function render() {
   });
   setMenu(false);
   playVideos();
+  shownSlug = currentSlug();
 }
 
 function setMenu(open: boolean) {
-  navLinks.classList.toggle("is-open", open);
+  toggleDropdown(navLinks, open, navToggle);
   navToggle.setAttribute("aria-expanded", String(open));
   navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
 }
 
-navToggle.addEventListener("click", () => setMenu(!navLinks.classList.contains("is-open")));
+navToggle.addEventListener("click", () => setMenu(navToggle.getAttribute("aria-expanded") !== "true"));
+
+// The project media that carries across pages: a card or tile's, or the case study's own
+const PAGE_MEDIA = ".media-stage, .cover, video, img";
+const caseMedia = () => main.querySelector(".media-stage, .case-cover");
+const cardMedia = (slug: string) => main.querySelector(`a[href="/work/${slug}/"]`)?.querySelector(PAGE_MEDIA) ?? null;
+const currentSlug = () => location.pathname.match(/^\/work\/([^/]+)\/?$/)?.[1];
 
 document.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
@@ -282,7 +294,7 @@ document.addEventListener("click", (e) => {
     const big = lightbox.querySelector("img")!;
     big.src = zoom.dataset.zoom!;
     big.alt = zoom.querySelector("img")?.alt ?? "";
-    lightbox.showModal();
+    openPopover(lightbox, zoom);
     return;
   }
 
@@ -300,9 +312,17 @@ document.addEventListener("click", (e) => {
   const link = target.closest<HTMLAnchorElement>("a[href^='/']");
   if (!link || link.hasAttribute("data-external") || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   e.preventDefault();
-  history.pushState(null, "", link.getAttribute("href")!);
-  render();
-  window.scrollTo({ top: 0, behavior: "instant" });
+  const href = link.getAttribute("href")!;
+  const toCase = /^\/work\/[^/]+\/?$/.test(href);
+  transitionPage(
+    () => {
+      history.pushState(null, "", href);
+      render();
+      window.scrollTo({ top: 0, behavior: "instant" });
+    },
+    toCase ? link.querySelector(PAGE_MEDIA) : null,
+    () => (toCase ? caseMedia() : null),
+  );
 });
 
 document.addEventListener("input", (e) => {
@@ -310,7 +330,15 @@ document.addEventListener("input", (e) => {
   if (input.matches(".compare input")) input.parentElement!.style.setProperty("--split", `${input.value}%`);
 });
 
-lightbox.addEventListener("click", () => lightbox.close());
-addEventListener("popstate", render);
+animateDialog(lightbox);
+lightbox.addEventListener("click", () => closePopover(lightbox));
+
+// Going back from a case study, its media returns to the card it came from
+let shownSlug = currentSlug();
+addEventListener("popstate", () => {
+  const from = shownSlug;
+  const before = from ? caseMedia() : null;
+  transitionPage(render, before, () => (from && !currentSlug() ? cardMedia(from) : null));
+});
 
 render();

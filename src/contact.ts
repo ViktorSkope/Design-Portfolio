@@ -1,5 +1,7 @@
 // The "Get in touch" popover, carried over from the previous portfolio: WhatsApp,
 // email, and a quick hello that Formspree delivers by email.
+import { animateDialog, closePopover, openPopover } from "./motion";
+
 const EMAIL = "vikdopke@gmail.com";
 const FORMSPREE_FORM_ID = "xdekrjdq";
 const MESSAGE_MAX = 1000;
@@ -26,12 +28,14 @@ function showSent(isSent: boolean) {
 }
 
 document.addEventListener("click", (e) => {
-  if ((e.target as HTMLElement).closest("[data-contact]")) dialog.showModal();
+  const trigger = (e.target as HTMLElement).closest("[data-contact]");
+  if (trigger) openPopover(dialog, trigger);
 });
 
 // A click on the dimmed page lands on the dialog itself
+animateDialog(dialog);
 dialog.addEventListener("click", (e) => {
-  if (e.target === dialog || (e.target as HTMLElement).closest(".contact__close")) dialog.close();
+  if (e.target === dialog || (e.target as HTMLElement).closest(".contact__close")) closePopover(dialog);
 });
 
 copy.addEventListener("click", async () => {
