@@ -1,6 +1,6 @@
 import { getCoverBackground, projects, type Project } from "./data/projects";
-import { getProjectPage } from "./data/projectPage";
-import { VK_CARDS, VK_CASES } from "./data/vkCases";
+import { STORIES, type StoryBlock, type StoryMedia, type StoryRecording } from "./data/stories";
+import { VK_CARDS } from "./data/vkCases";
 import "./contact";
 import { inWorkGroup, WORK_GROUPS, type WorkGroup } from "./data/workFilter";
 import { animateDialog, closePopover, openPopover, settle, toggleDropdown, transitionPage } from "./motion";
@@ -9,7 +9,6 @@ import { animateDialog, closePopover, openPopover, settle, toggleDropdown, trans
 const ORDER = ["watchson", "ingrid", "athos-commerce", "whirl", "rho-studio", "liliworld", "pewee-diary", "blindspot", "plywood"];
 const list = ORDER.map((slug) => projects.find((p) => p.slug === slug)).filter((p): p is Project => Boolean(p));
 
-const COMING_SOON = "Details coming soon.";
 const SITE_TITLE = "Viktor Dopke – Product Designer";
 
 const main = document.querySelector<HTMLElement>("#main")!;
@@ -139,12 +138,6 @@ function aboutPage() {
     </section>`;
 }
 
-const caseSection = (title: string, body: string) => `
-  <section class="section container case-section">
-    <h2>${esc(title)}</h2>
-    <div class="case-section__body">${body}</div>
-  </section>`;
-
 const nextProject = (next: Project) => `
   <section class="section container">
     <a class="next-project" href="/work/${esc(next.slug)}/">
@@ -153,59 +146,100 @@ const nextProject = (next: Project) => `
     </a>
   </section>`;
 
+const recording = (r: StoryRecording) => `
+  <div class="media-stage media-stage--${r.stage}">
+    <video data-autoplay muted loop playsinline preload="none" poster="${r.poster}" width="${r.width}" height="${r.height}" aria-label="${esc(r.label)}">
+      <source src="${r.video}.webm" type="video/webm" />
+      <source src="${r.video}.mp4" type="video/mp4" />
+    </video>
+  </div>`;
+
+const figure = (m: StoryMedia) => `
+  <figure class="story-figure">
+    ${"stage" in m ? recording(m) : `<button type="button" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`}
+    ${m.caption ? `<figcaption>${esc(m.caption)}</figcaption>` : ""}
+  </figure>`;
+
+const anchor = (label: string) => "s-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+const storyBlock = (b: StoryBlock) => {
+  const text = `
+    <p class="story-block__label">${esc(b.label)}</p>
+    <h2>${esc(b.headline)}</h2>
+    ${b.text ? `<p class="story-block__text">${esc(b.text)}</p>` : ""}
+    ${b.points ? `<ul class="story-block__points">${b.points.map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul>` : ""}`;
+  const stats = b.stats
+    ? `<div class="stats story-stats">${b.stats.map((st) => `<div class="stat"><strong>${esc(st.value)}</strong><span>${esc(st.label)}</span></div>`).join("")}</div>`
+    : "";
+  const compare = b.compare
+    ? `<figure class="story-figure">
+        <div class="compare">
+          <img src="${esc(b.compare.before)}" alt="${esc(b.compare.beforeAlt)}" loading="lazy" />
+          <img class="compare__after" src="${esc(b.compare.after)}" alt="${esc(b.compare.afterAlt)}" loading="lazy" />
+          <span class="compare__line"></span>
+          <input type="range" min="0" max="100" value="50" aria-label="Compare before and after" />
+        </div>
+        ${b.compare.caption ? `<figcaption>${esc(b.compare.caption)}</figcaption>` : ""}
+      </figure>`
+    : "";
+  const media = b.media?.length ? `<div class="story-media${b.pair ? " story-media--pair" : ""}">${b.media.map(figure).join("")}</div>` : "";
+  return b.split
+    ? `<section class="story-block story-block--split" id="${anchor(b.label)}"><div>${text}${stats}</div>${media}</section>`
+    : `<section class="story-block" id="${anchor(b.label)}">${text}${stats}${compare}${media}</section>`;
+};
+
 function casePage(p: Project) {
   const next = list[(list.indexOf(p) + 1) % list.length];
-  if (VK_CASES[p.slug]) return VK_CASES[p.slug] + nextProject(next);
-  const page = getProjectPage(p);
-  const sections = page.sections
-    .map((s) => ({ ...s, items: s.items.filter((item) => item.image || item.caption !== COMING_SOON) }))
-    .filter((s) => s.items.length);
+  const story = STORIES[p.slug];
+  const coverMedia = story?.cover
+    ? recording(story.cover).replace('class="media-stage', 'class="case-cover media-stage')
+    : CARD_IMAGES[p.slug]
+      ? cardImage(p.slug, "case-cover")
+      : cover(p, "case-cover");
+  const blocks = story?.blocks ?? [];
 
   return `
-    <section class="page-hero container">
+    <section class="page-hero container story-hero">
       <p class="breadcrumb"><a href="/work/">Work</a> / ${esc(p.name)}</p>
-      <h1><span class="slate">${esc(p.name)}.</span> ${esc(p.tagline)}</h1>
-      <dl class="case-meta">
-        <div><dt>Role</dt><dd>${esc(p.role)}</dd></div>
-        <div><dt>Year</dt><dd>${esc(p.year)}</dd></div>
-        <div><dt>Type</dt><dd>${esc(p.category)}</dd></div>
-        ${p.impact ? `<div><dt>Results</dt><dd>${esc(p.impact)}</dd></div>` : ""}
-      </dl>
+      <h1>${esc(story?.title ?? p.tagline)}</h1>
+      <p class="page-hero__lead">${esc(story?.summary ?? p.overview)}</p>
+      ${story?.link ? `<div class="page-hero__actions"><a href="${esc(story.link.href)}" class="btn btn--primary" target="_blank" rel="noopener" data-external>${esc(story.link.label)}</a></div>` : ""}
+      <dl class="case-meta">${(story?.facts ?? [{ label: "Role", value: p.role }, { label: "Year", value: p.year }])
+        .map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`)
+        .join("")}</dl>
     </section>
-    <section class="container" aria-label="${esc(p.name)} cover">${CARD_IMAGES[p.slug] ? cardImage(p.slug, "case-cover") : cover(p, "case-cover")}</section>
-    ${caseSection("Problem", `<p class="lead">${esc(page.problem)}</p>`)}
-    ${caseSection("My role", `<p>${esc(page.myRole)}</p>`)}
-    ${sections
-      .map((s) =>
-        caseSection(
-          s.label,
-          s.items
-            .map(
-              (item) => `
-              <figure class="case-figure">
-                ${item.image ? `<button type="button" data-zoom="${esc(item.image.src)}" aria-label="Enlarge image: ${esc(item.image.alt)}"><img src="${esc(item.image.src)}" alt="${esc(item.image.alt)}" loading="lazy" /></button>` : ""}
-                ${item.caption ? `<figcaption>${esc(item.caption)}</figcaption>` : ""}
-              </figure>`,
-            )
-            .join(""),
-        ),
-      )
-      .join("")}
+    <section class="container" aria-label="${esc(p.name)} cover">${coverMedia}</section>
     ${
-      page.beforeAfter
-        ? caseSection(
-            "Before / After",
-            `<div class="compare">
-              <img src="${esc(page.beforeAfter.before)}" alt="${esc(page.beforeAfter.beforeAlt)}" loading="lazy" />
-              <img class="compare__after" src="${esc(page.beforeAfter.after)}" alt="${esc(page.beforeAfter.afterAlt)}" loading="lazy" />
-              <span class="compare__line"></span>
-              <input type="range" min="0" max="100" value="50" aria-label="Compare before and after" />
-            </div>`,
-          )
+      blocks.length
+        ? `<div class="container story">
+            <nav class="story__toc" aria-label="On this page">
+              <ol>${blocks.map((b) => `<li><a href="#${anchor(b.label)}">${esc(b.label)}</a></li>`).join("")}</ol>
+            </nav>
+            <div class="story__body">${blocks.map(storyBlock).join("")}</div>
+          </div>`
         : ""
     }
-    ${caseSection("Tags", `<ul class="tags">${p.tags.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`)}
     ${nextProject(next)}`;
+}
+
+// Highlights the section being read in the side contents
+let tocWatcher: IntersectionObserver | undefined;
+
+function watchContents() {
+  tocWatcher?.disconnect();
+  const links = main.querySelectorAll<HTMLAnchorElement>(".story__toc a");
+  if (!links.length) return;
+  links[0].setAttribute("aria-current", "");
+  tocWatcher = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        links.forEach((a) => a.toggleAttribute("aria-current", a.getAttribute("href") === `#${target.id}`));
+      });
+    },
+    { rootMargin: "-30% 0px -60% 0px" },
+  );
+  main.querySelectorAll(".story-block").forEach((block) => tocWatcher!.observe(block));
 }
 
 // ─── Routing ─────────────────────────────────────────────────────────────────
@@ -261,6 +295,7 @@ function render() {
   });
   setMenu(false);
   playVideos();
+  watchContents();
   shownSlug = currentSlug();
 }
 
@@ -274,7 +309,7 @@ navToggle.addEventListener("click", () => setMenu(navToggle.getAttribute("aria-e
 
 // The project media that carries across pages: a card or tile's, or the case study's own
 const PAGE_MEDIA = ".media-stage, .cover, video, img";
-const caseMedia = () => main.querySelector(".media-stage, .case-cover");
+const caseMedia = () => main.querySelector(".case-cover");
 const cardMedia = (slug: string) => main.querySelector(`a[href="/work/${slug}/"]`)?.querySelector(PAGE_MEDIA) ?? null;
 const currentSlug = () => location.pathname.match(/^\/work\/([^/]+)\/?$/)?.[1];
 
@@ -287,6 +322,14 @@ document.addEventListener("click", (e) => {
     big.src = zoom.dataset.zoom!;
     big.alt = zoom.querySelector("img")?.alt ?? "";
     openPopover(lightbox, zoom);
+    return;
+  }
+
+  // Contents links scroll within the page, without a history entry the router would re-render
+  const jump = target.closest<HTMLAnchorElement>(".story__toc a");
+  if (jump) {
+    e.preventDefault();
+    main.querySelector(jump.getAttribute("href")!)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
     return;
   }
 
