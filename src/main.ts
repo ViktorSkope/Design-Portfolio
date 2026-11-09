@@ -63,6 +63,12 @@ const CARD_IMAGES: Record<string, { src: string; alt: string; width: number; hei
     width: 2000,
     height: 1260,
   },
+  liliworld: {
+    src: "/images/work/liliworld-card.webp",
+    alt: "The LiliWorld island from above: an observatory, shops and a greenhouse around a stone plaza, with a dock and a boat on turquoise water.",
+    width: 2000,
+    height: 1266,
+  },
 };
 
 const cardImage = (slug: string, className = "") => {
