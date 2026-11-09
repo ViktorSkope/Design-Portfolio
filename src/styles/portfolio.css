@@ -552,3 +552,56 @@ h3,
 #main {
   padding-bottom: var(--section-gap);
 }
+
+/* Watchson's star panel: the app's top right corner, bleeding off the left and bottom of a landscape */
+.media-stage--watchson-panel {
+  aspect-ratio: 2000 / 1659;
+  background-image: url("/images/work/watchson-landscape.webp");
+  background-position: 74% 63%;
+  background-size: 134% auto;
+}
+
+.media-stage--watchson-panel video {
+  top: 17.4%;
+  left: 0;
+  width: 77%;
+  border-top-right-radius: 14px;
+}
+
+/* A case section with its text beside an image or recording */
+.case-section--split {
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(64px, 8vw, 128px);
+  align-items: center;
+}
+
+.case-section__text h2 {
+  margin-bottom: var(--spacing-base);
+  font-size: var(--text-heading-md);
+  font-weight: 500;
+  line-height: var(--leading-heading-md);
+}
+
+@media (max-width: 1024px) {
+  .case-section--split {
+    grid-template-columns: 1fr;
+    row-gap: var(--spacing-xl);
+  }
+}
+
+/* A card animation that brings its own background */
+.cover--video {
+  background: #fff;
+}
+
+.cover--video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.work-card:hover .cover--video video {
+  transform: scale(1.02);
+}

@@ -5,7 +5,7 @@ import "./contact";
 import { inWorkGroup, WORK_GROUPS, type WorkGroup } from "./data/workFilter";
 
 // Watchson and Ingrid lead, then newest first
-const ORDER = ["watchson", "ingrid", "athos-commerce", "blindspot", "rho-studio", "liliworld", "pewee-diary", "whirl", "plywood"];
+const ORDER = ["watchson", "ingrid", "athos-commerce", "whirl", "rho-studio", "liliworld", "pewee-diary", "blindspot", "plywood"];
 const list = ORDER.map((slug) => projects.find((p) => p.slug === slug)).filter((p): p is Project => Boolean(p));
 
 const COMING_SOON = "Details coming soon.";
@@ -38,10 +38,26 @@ const stage = (slug: string) => {
   </div>`;
 };
 
+// Animations that fill a card on their own, with no backdrop
+const CARD_VIDEOS: Record<string, { video: string; poster: string; width: number; height: number }> = {
+  whirl: { video: "/videos/whirl-card", poster: "/images/work/whirl-card-poster.webp", width: 876, height: 656 },
+};
+
+const cardVideo = (slug: string) => {
+  const card = CARD_VIDEOS[slug];
+  return `
+  <span class="cover cover--video">
+    <video data-autoplay muted loop playsinline preload="none" poster="${card.poster}" width="${card.width}" height="${card.height}" aria-hidden="true">
+      <source src="${card.video}.webm" type="video/webm" />
+      <source src="${card.video}.mp4" type="video/mp4" />
+    </video>
+  </span>`;
+};
+
 const workCard = (p: Project) => `
   <li data-slug="${esc(p.slug)}">
     <a href="/work/${esc(p.slug)}/" class="work-card">
-      ${VK_CARDS[p.slug] ? stage(p.slug) : cover(p)}
+      ${VK_CARDS[p.slug] ? stage(p.slug) : CARD_VIDEOS[p.slug] ? cardVideo(p.slug) : cover(p)}
       <p class="work-card__meta">${esc(VK_CARDS[p.slug]?.meta ?? `${p.category} · ${p.year}`)}</p>
       <h3>${esc(p.name)}</h3>
       <p>${esc(VK_CARDS[p.slug]?.result ?? p.impact ?? p.tagline)}</p>
