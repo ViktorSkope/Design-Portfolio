@@ -65,10 +65,10 @@ const CARD_IMAGES: Record<string, { src: string; alt: string; width: number; hei
   },
 };
 
-const cardImage = (slug: string) => {
+const cardImage = (slug: string, className = "") => {
   const card = CARD_IMAGES[slug];
   return `
-  <span class="cover cover--fill">
+  <span class="cover cover--fill ${className}">
     <img src="${card.src}" alt="${esc(card.alt)}" width="${card.width}" height="${card.height}" />
   </span>`;
 };
@@ -166,7 +166,7 @@ function casePage(p: Project) {
         ${p.impact ? `<div><dt>Results</dt><dd>${esc(p.impact)}</dd></div>` : ""}
       </dl>
     </section>
-    <section class="container" aria-label="${esc(p.name)} cover">${cover(p, "case-cover")}</section>
+    <section class="container" aria-label="${esc(p.name)} cover">${CARD_IMAGES[p.slug] ? cardImage(p.slug, "case-cover") : cover(p, "case-cover")}</section>
     ${caseSection("Problem", `<p class="lead">${esc(page.problem)}</p>`)}
     ${caseSection("My role", `<p>${esc(page.myRole)}</p>`)}
     ${sections
