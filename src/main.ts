@@ -55,10 +55,28 @@ const cardVideo = (slug: string) => {
   </span>`;
 };
 
+// Thumbnails composed with their own background, cropped to fill the card
+const CARD_IMAGES: Record<string, { src: string; alt: string; width: number; height: number }> = {
+  "athos-commerce": {
+    src: "/images/work/athos-card.webp",
+    alt: "The Athos Commerce dashboard over a soft watercolour background, showing search performance, catalog sync and category performance.",
+    width: 2000,
+    height: 1260,
+  },
+};
+
+const cardImage = (slug: string) => {
+  const card = CARD_IMAGES[slug];
+  return `
+  <span class="cover cover--fill">
+    <img src="${card.src}" alt="${esc(card.alt)}" width="${card.width}" height="${card.height}" />
+  </span>`;
+};
+
 const workCard = (p: Project) => `
   <li data-slug="${esc(p.slug)}">
     <a href="/work/${esc(p.slug)}/" class="work-card">
-      ${VK_CARDS[p.slug] ? stage(p.slug) : CARD_VIDEOS[p.slug] ? cardVideo(p.slug) : cover(p)}
+      ${VK_CARDS[p.slug] ? stage(p.slug) : CARD_VIDEOS[p.slug] ? cardVideo(p.slug) : CARD_IMAGES[p.slug] ? cardImage(p.slug) : cover(p)}
       <p class="work-card__meta">${esc(VK_CARDS[p.slug]?.meta ?? `${p.category} · ${p.year}`)}</p>
       <h3>${esc(p.name)}</h3>
       <p>${esc(VK_CARDS[p.slug]?.result ?? p.impact ?? p.tagline)}</p>
