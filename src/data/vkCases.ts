@@ -8,7 +8,7 @@ export const VK_CARDS: Record<string, { meta: string; result: string; poster: st
   },
   watchson: {
     meta: "Platform · Internal tooling",
-    result: "Only 2–3 of 75 developers kept their skills updated through forms. In a controlled study, 95% created profiles and kept using the platform.",
+    result: "Fewer than 10% of 75 collaborators updated their skills form, so we turned it into a game leaders could plan with.",
     poster: "/images/work/watchson-thumb-poster.webp",
     video: "/videos/watchson-thumb",
   },

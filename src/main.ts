@@ -139,7 +139,7 @@ function aboutPage() {
 }
 
 const nextProject = (next: Project) => `
-  <section class="section container">
+  <section class="section container container--case">
     <a class="next-project" href="/work/${esc(next.slug)}/">
       <div><span>Next project</span><strong>${esc(next.name)}</strong></div>
       <span class="text-link">View case study</span>
@@ -155,8 +155,8 @@ const recording = (r: StoryRecording) => `
   </div>`;
 
 const figure = (m: StoryMedia) => `
-  <figure class="story-figure">
-    ${"stage" in m ? recording(m) : `<button type="button" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`}
+  <figure class="story-figure${"plain" in m && m.plain ? " story-figure--plain" : ""}">
+    ${"stage" in m ? recording(m) : "plain" in m && m.plain ? `<img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" />` : `<button type="button" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`}
     ${m.caption ? `<figcaption>${esc(m.caption)}</figcaption>` : ""}
   </figure>`;
 
@@ -183,9 +183,15 @@ const storyBlock = (b: StoryBlock) => {
       </figure>`
     : "";
   const media = b.media?.length ? `<div class="story-media${b.pair ? " story-media--pair" : ""}">${b.media.map(figure).join("")}</div>` : "";
+  const versus = b.versus
+    ? `<div class="story-versus">${b.versus.map((v) => `<div><p class="story-versus__label">${esc(v.label)}</p><p>${esc(v.text)}</p></div>`).join("")}</div>`
+    : "";
+  const kind = [b.split && "story-block--split", b.split && b.reverse && "story-block--reverse", b.emphasis && "story-block--emphasis"]
+    .filter(Boolean)
+    .join(" ");
   return b.split
-    ? `<section class="story-block story-block--split" id="${anchor(b.label)}"><div>${text}${stats}</div>${media}</section>`
-    : `<section class="story-block" id="${anchor(b.label)}">${text}${stats}${compare}${media}</section>`;
+    ? `<section class="story-block ${kind}" id="${anchor(b.label)}"><div>${text}${stats}${versus}</div>${media}</section>`
+    : `<section class="story-block ${kind}" id="${anchor(b.label)}">${text}${stats}${versus}${compare}${media}</section>`;
 };
 
 function casePage(p: Project) {
@@ -199,7 +205,7 @@ function casePage(p: Project) {
   const blocks = story?.blocks ?? [];
 
   return `
-    <section class="page-hero container story-hero">
+    <section class="page-hero container container--case story-hero">
       <p class="breadcrumb"><a href="/work/">Work</a> / ${esc(p.name)}</p>
       <h1>${esc(story?.title ?? p.tagline)}</h1>
       <p class="page-hero__lead">${esc(story?.summary ?? p.overview)}</p>
@@ -208,38 +214,13 @@ function casePage(p: Project) {
         .map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`)
         .join("")}</dl>
     </section>
-    <section class="container" aria-label="${esc(p.name)} cover">${coverMedia}</section>
+    <section class="container container--case" aria-label="${esc(p.name)} cover">${coverMedia}</section>
     ${
       blocks.length
-        ? `<div class="container story">
-            <nav class="story__toc" aria-label="On this page">
-              <ol>${blocks.map((b) => `<li><a href="#${anchor(b.label)}">${esc(b.label)}</a></li>`).join("")}</ol>
-            </nav>
-            <div class="story__body">${blocks.map(storyBlock).join("")}</div>
-          </div>`
+        ? `<div class="container container--case story">${blocks.map(storyBlock).join("")}</div>`
         : ""
     }
     ${nextProject(next)}`;
-}
-
-// Highlights the section being read in the side contents
-let tocWatcher: IntersectionObserver | undefined;
-
-function watchContents() {
-  tocWatcher?.disconnect();
-  const links = main.querySelectorAll<HTMLAnchorElement>(".story__toc a");
-  if (!links.length) return;
-  links[0].setAttribute("aria-current", "");
-  tocWatcher = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(({ target, isIntersecting }) => {
-        if (!isIntersecting) return;
-        links.forEach((a) => a.toggleAttribute("aria-current", a.getAttribute("href") === `#${target.id}`));
-      });
-    },
-    { rootMargin: "-30% 0px -60% 0px" },
-  );
-  main.querySelectorAll(".story-block").forEach((block) => tocWatcher!.observe(block));
 }
 
 // ─── Routing ─────────────────────────────────────────────────────────────────
@@ -295,7 +276,6 @@ function render() {
   });
   setMenu(false);
   playVideos();
-  watchContents();
   shownSlug = currentSlug();
 }
 
@@ -322,14 +302,6 @@ document.addEventListener("click", (e) => {
     big.src = zoom.dataset.zoom!;
     big.alt = zoom.querySelector("img")?.alt ?? "";
     openPopover(lightbox, zoom);
-    return;
-  }
-
-  // Contents links scroll within the page, without a history entry the router would re-render
-  const jump = target.closest<HTMLAnchorElement>(".story__toc a");
-  if (jump) {
-    e.preventDefault();
-    main.querySelector(jump.getAttribute("href")!)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
     return;
   }
 

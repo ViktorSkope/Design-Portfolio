@@ -669,41 +669,6 @@ h3,
   aspect-ratio: 2000 / 1119;
 }
 
-.story {
-  display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
-  column-gap: clamp(40px, 6vw, 112px);
-  padding-top: 120px;
-}
-
-.story__toc {
-  position: sticky;
-  top: var(--spacing-xl);
-  align-self: start;
-}
-
-.story__toc ol {
-  display: grid;
-  gap: var(--spacing-xs);
-}
-
-.story__toc a {
-  color: var(--color-muted);
-  font-size: var(--text-caption);
-  transition: color var(--dur-exit) var(--ease-popup);
-}
-
-.story__toc a:hover,
-.story__toc a[aria-current] {
-  color: var(--color-ink);
-}
-
-.story__body {
-  display: grid;
-  gap: 128px;
-  min-width: 0;
-}
-
 .story-block {
   scroll-margin-top: var(--spacing-xl);
 }
@@ -798,19 +763,6 @@ h3,
 }
 
 @media (max-width: 1024px) {
-  .story {
-    grid-template-columns: minmax(0, 1fr);
-    padding-top: 72px;
-  }
-
-  .story__toc {
-    display: none;
-  }
-
-  .story__body {
-    gap: 96px;
-  }
-
   .story-block--split {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--spacing-xxl);
@@ -826,7 +778,7 @@ h3,
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .story__body {
+  .story {
     gap: 80px;
   }
 }
@@ -853,4 +805,146 @@ h3,
     font-size: var(--text-title-sm);
     line-height: var(--leading-title-sm);
   }
+}
+
+/* The one statement a project turns on, set larger with a rule beside it */
+.story-block--emphasis {
+  padding-left: clamp(20px, 3vw, 40px);
+  border-left: 2px solid var(--color-ink);
+}
+
+.story-block--emphasis h2 {
+  max-width: 880px;
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.15;
+}
+
+/* Before and after, side by side */
+.story-versus {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-base);
+  max-width: 880px;
+  margin-top: var(--spacing-xxl);
+}
+
+.story-versus > div {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-default);
+  background: var(--color-surface-paper);
+  color: var(--color-body);
+}
+
+.story-versus > div:last-child {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.story-versus__label {
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--text-caption);
+  opacity: 0.7;
+}
+
+/* Consecutive splits alternate sides */
+@media (min-width: 1025px) {
+  .story-block--reverse > :first-child {
+    order: 2;
+  }
+}
+
+@media (max-width: 760px) {
+  .story-versus {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ─── Project story, simplified: left-aligned hero, short split sections ─── */
+
+.story-hero {
+  text-align: left;
+}
+
+.story-hero h1 {
+  max-width: 640px;
+  margin-inline: 0;
+  font-size: clamp(36px, 3.2vw, 46px);
+  line-height: 1.12;
+}
+
+.story-hero .page-hero__lead {
+  max-width: 480px;
+  margin-inline: 0;
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+}
+
+.story-hero .page-hero__actions {
+  justify-content: flex-start;
+}
+
+.story {
+  display: grid;
+  gap: 128px;
+  padding-top: 72px;
+  padding-inline: clamp(0px, 2.2vw, 32px);
+}
+
+.story-block h2 {
+  font-size: clamp(24px, 2vw, 30px);
+}
+
+.story-block__text,
+.story-block__points {
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+}
+
+.story-block--split {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  column-gap: clamp(64px, 10vw, 160px);
+}
+
+.story-block--split > div:first-child {
+  max-width: 420px;
+}
+
+/* Illustrations sit small on the page itself */
+.story-figure--plain img {
+  width: min(200px, 60%);
+  margin-inline: auto;
+}
+
+@media (max-width: 1024px) {
+  .story {
+    gap: 96px;
+    padding-inline: 0;
+  }
+
+  .story-figure--plain img {
+    margin-inline: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .story-hero h1 {
+    font-size: 30px;
+  }
+}
+
+/* Project pages read in a narrower column than the work grid */
+.container--case {
+  max-width: calc(1032px + 2 * var(--page-margin));
+}
+
+@media (min-width: 761px) {
+  .story-hero h1 {
+    max-width: 760px;
+    font-size: clamp(34px, 2.9vw, 42px);
+  }
+}
+
+/* Room before the next project, as between sections */
+.story {
+  padding-bottom: 64px;
 }

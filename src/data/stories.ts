@@ -5,6 +5,8 @@
 export interface StoryImage {
   src: string;
   alt: string;
+  // An illustration: shown small on the page background, with no zoom
+  plain?: boolean;
   caption?: string;
 }
 
@@ -30,6 +32,12 @@ export interface StoryBlock {
   media?: StoryMedia[];
   // Text beside the media instead of above it
   split?: boolean;
+  // With split: the media on the left, so consecutive splits alternate
+  reverse?: boolean;
+  // A single statement set larger, for the one line the project turns on
+  emphasis?: boolean;
+  // Two short columns compared side by side, like before and after
+  versus?: { label: string; text: string }[];
   // Two images side by side
   pair?: boolean;
   stats?: { value: string; label: string }[];
@@ -58,14 +66,14 @@ const rec = (
 
 export const STORIES: Record<string, Story> = {
   watchson: {
-    title: "Turning a skills form into a team-building game",
+    title: "Gamifying an HR form into a complete people management system",
     summary:
-      "Watchson shows managers who fits each client project, and gives developers a reason to keep their skills current.",
+      "Watchson turned a skills form nobody filled in into a game collaborators play and a source of truth leaders plan with.",
     facts: [
       { label: "Role", value: "Product Designer" },
-      { label: "Team", value: "CTO, lead developer and me" },
-      { label: "Client", value: "Ateliware (internal tool)" },
-      { label: "Scope", value: "Discovery, concept, product design" },
+      { label: "Collaborator", value: "Lauri Jr." },
+      { label: "Client", value: "ateliware" },
+      { label: "Scope", value: "Product Design" },
       { label: "Year", value: "2022" },
     ],
     cover: rec(
@@ -78,46 +86,18 @@ export const STORIES: Record<string, Story> = {
     ),
     blocks: [
       {
-        label: "Problem",
-        headline: "Developers were asked to update a skills form every six months. Almost none did.",
-        text: "Only 2–3 of 75 kept their profile current, so managers staffed client projects by guesswork.",
+        label: "Overview",
+        headline: "Every six months, ateliware's leaders decided who works where",
+        text: "They managed collaborators' skills and positions with a form. Less than 10% of their 75 collaborators kept it updated, so team leaders did a lot of guesswork during those meetings.",
+        split: true,
+        media: [{ src: "/watchson/form-illustration.png", alt: "", plain: true }],
       },
       {
-        label: "Insight",
-        headline: "The team already turned work into games, so we asked: what if staffing felt like a football manager?",
-        text: "I ran interviews and card-game sessions with developers. A few had gamified parts of their work and life, and that became the idea.",
-        media: [{ src: "/watchson/skills-flow.png", alt: "An early flow that asks how skilled you are in English, Front End and Back End, with a sleepy emoji beside it.", caption: "An early flow: rating your own skills" }],
-      },
-      {
-        label: "Concept",
-        headline: "A client project is a match, and every person gets a fit score for it.",
-        text: "Football manager games build player cards from skill, chemistry and motivation. Watchson does the same for real projects.",
-        media: [{ src: "/watchson/new-simulation.webp", alt: "The New Simulation screen, a table ranking employees by level and fit for a project, next to a radar chart of project requirements against team skills.", caption: "A simulation ranks people by level and fit, and shows the skill gaps" }],
-      },
-      {
-        label: "Solution",
-        headline: "Managers see their whole workforce in one place.",
-        points: [
-          "A welcome email invites each developer to log, track or improve their skills",
-          "Simulations compare a team's skills with what the project needs",
-          "Hours, projects, skills and mood sit side by side, so staffing stops being guesswork",
-        ],
+        label: "Challenge",
+        headline: "Have a consistent way to keep collaborators' skills updated and in one place.",
+        text: "The challenge was to deliver a process that would not only engage ateliware's collaborators, but also become the source of truth for the bi-annual meetings.",
         split: true,
         media: [rec("watchson-panel", "watchson-panel", "watchson-panel-poster.webp", 650, 582, "Watchson in use: a project's team table beside the star skills panel")],
-      },
-      {
-        label: "Outcome",
-        headline: "95% of developers created a profile and kept using it.",
-        text: "In a controlled time study, without being reminded. Team leads now help developers test and grow their skills inside the tool.",
-        stats: [
-          { value: "2–3 of 75", label: "Kept profiles updated with the old form" },
-          { value: "95%", label: "Created profiles and kept using Watchson" },
-        ],
-      },
-      {
-        label: "Along the way",
-        headline: "We tried achievements, avatars and a mascot. We drew too many ducks.",
-        media: [{ src: "/watchson/ducks.webp", alt: "A flock of purple duck mascots, including a builder duck and a wizard duck with a star on its hat." }],
       },
     ],
   },
