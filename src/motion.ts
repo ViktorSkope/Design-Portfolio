@@ -157,7 +157,7 @@ export const SHARED_NAME = "project-media";
 
 /** Runs a page change as a view transition, keeping one name on the shared object before and after. */
 export function transitionPage(change: () => void, before: Element | null, after: () => Element | null) {
-  type Transition = { finished: Promise<void>; ready: Promise<void>; skipTransition: () => void };
+  type Transition = { finished: Promise<void>; ready: Promise<void>; updateCallbackDone?: Promise<void>; skipTransition: () => void };
   const start = (document as Document & { startViewTransition?: (cb: () => void) => Transition }).startViewTransition;
   if (!start || reducedMotion() || document.hidden) {
     change();
@@ -174,7 +174,9 @@ export function transitionPage(change: () => void, before: Element | null, after
   });
   const clear = () =>
     document.querySelectorAll<HTMLElement>("[style*='view-transition-name']").forEach((el) => (el.style.viewTransitionName = ""));
+  // A skipped transition rejects these; the page has already changed, so that's fine
   transition.ready.catch(() => {});
+  transition.updateCallbackDone?.catch(() => {});
   transition.finished.then(clear, clear);
   // The page must never wait on the animation: if no frame has come by now, change without it
   setTimeout(() => {

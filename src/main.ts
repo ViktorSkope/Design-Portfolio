@@ -65,50 +65,18 @@ const workCard = (p: Project) => `
     </a>
   </li>`;
 
-const tile = (p: Project, kind: string) => `
-  <a href="/work/${esc(p.slug)}/" class="tile tile--${kind}" aria-label="${esc(p.name)} case study">${VK_CARDS[p.slug] ? stage(p.slug) : cover(p)}</a>`;
-
-// The truck status card recording, cut to fill this tile
-const ingridTile = `
-  <a href="/work/ingrid/" class="tile tile--truck-card" aria-label="Ingrid case study: a truck status card over a satellite map, showing speed, payload and arrival time">
-    <video data-autoplay muted loop playsinline preload="none" poster="/images/work/ingrid-truck-card-poster.webp" width="946" height="430" aria-hidden="true">
-      <source src="/videos/ingrid-truck-card.webm" type="video/webm" />
-      <source src="/videos/ingrid-truck-card.mp4" type="video/mp4" />
-    </video>
-  </a>`;
-
-const whirlTile = `
-  <a href="/work/whirl/" class="tile tile--whirl" aria-label="Whirl case study: how the spiraling handwritten logo was built">
-    <img src="/whirl-logo-construction.png" alt="" width="1159" height="906" />
-  </a>`;
-
 // ─── Pages ───────────────────────────────────────────────────────────────────
 
 function homePage() {
-  const watchson = list.find((p) => p.slug === "watchson")!;
   return `
     <section class="hero container">
       <h1 class="hero__title">
         <span class="hero__title-setup">Multidisciplinary product designer with 10+ YOE</span>
         driving design strategy for B2B&nbsp;SaaS, Startups and&nbsp;Games.<span class="hero__chip" aria-hidden="true"><img src="/avatar-pixel.webp" alt="" width="50" height="50" /></span>
       </h1>
-      <div class="hero__actions">
-        <button type="button" data-contact class="btn btn--primary">Get in touch</button>
-        <a href="/work/" class="btn btn--outline">See all work</a>
-      </div>
     </section>
 
-    <section class="mosaic container" aria-label="Selected work">
-      <div class="mosaic__grid">
-        ${tile(watchson, "fleet")}${whirlTile}${ingridTile}
-      </div>
-    </section>
-
-    <section class="section container">
-      <div class="section-head">
-        <h2>Selected work</h2>
-        <a href="/work/" class="text-link">See all work</a>
-      </div>
+    <section class="section container home-work" aria-label="Selected work">
       <ul class="card-grid">${list.slice(0, 6).map(workCard).join("")}</ul>
     </section>`;
 }
