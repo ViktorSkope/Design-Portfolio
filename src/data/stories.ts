@@ -7,6 +7,8 @@ export interface StoryImage {
   alt: string;
   // An illustration: shown small on the page background, with no zoom
   plain?: boolean;
+  // A painting the screenshot sits on, like the recordings' stages
+  backdrop?: string;
   caption?: string;
 }
 
@@ -99,6 +101,30 @@ export const STORIES: Record<string, Story> = {
         split: true,
         media: [rec("watchson-panel", "watchson-panel", "watchson-panel-poster.webp", 650, 582, "Watchson in use: a project's team table beside the star skills panel")],
       },
+      {
+        label: "Solution",
+        headline: "Every collaborator got a character sheet worth keeping up to date",
+        text: "Skills became levels, XP and a five-point star scored against what their project expects. Collaborators see how they help their party and where it needs a hand, and leaders plan the next six months with the same numbers.",
+        media: [
+          {
+            src: "/watchson/player-profile.webp",
+            alt: "A collaborator's Watchson profile: level and XP, their current project and party, how they help the team, and a star chart against the project baseline",
+            backdrop: "/images/work/field-backdrop.webp",
+          },
+        ],
+      },
+      {
+        label: "Planning",
+        headline: "Leaders walked into the meeting knowing what every team costs",
+        text: "The same data rolled up into budgets per project and the cost of everyone on the bench, with the open seats each person could fill. Deciding who works where became a matter of reading the numbers, not guessing.",
+        media: [
+          {
+            src: "/watchson/costs.gif",
+            alt: "Watchson's costs view: total, billable and bench cost, each project's budget used, and the people on the bench with the projects they could join",
+            backdrop: "/images/work/sky-backdrop.webp",
+          },
+        ],
+      },
     ],
   },
 
@@ -110,10 +136,8 @@ export const STORIES: Record<string, Story> = {
       { label: "Role", value: "Product Design Lead" },
       { label: "Team", value: "A researcher, two field technicians and me" },
       { label: "Scope", value: "Product design, UX research, visual identity" },
-      { label: "Discovery", value: "4 weeks" },
       { label: "Year", value: "2022" },
     ],
-    link: { href: "https://ingrid-eight.vercel.app/", label: "Open the live product" },
     cover: rec(
       "ingrid",
       "ingrid-fleet",
@@ -124,57 +148,35 @@ export const STORIES: Record<string, Story> = {
     ),
     blocks: [
       {
-        label: "Problem",
-        headline: "Technicians had seconds to react, but errors arrived as codes.",
-        points: [
-          "Understanding a problem meant reading the full log",
-          "Codes had to be memorised or looked up on a cheat sheet",
-          "Some errors were only signal noise, with nothing really wrong",
-        ],
-        media: [{ src: "/ingrid/time-to-reaction.png", alt: "Time to reaction: a code log splits into error, monitoring and health signals, which lead to danger, warning and position states.", caption: "One code log hid three different kinds of signal" }],
+        label: "Overview",
+        headline: "Technicians watch autonomous harvesters from afar, with seconds to react",
+        text: "Every problem reached them as an error code. Understanding one meant reading the full log or a cheat sheet, and some codes were only signal noise.",
+        split: true,
+        media: [{ src: "/ingrid/time-to-reaction.png", alt: "Time to reaction: a code log splits into error, monitoring and health signals, which lead to danger, warning and position states." }],
       },
       {
-        label: "Research",
-        headline: "We watched how technicians actually monitor the machines.",
-        text: "A four-week discovery mapped their day, then we tested prototypes against the decisions they make in the field.",
-        pair: true,
-        media: [
-          { src: "/ingrid/workshop-board.webp", alt: "The discovery workshop board: an agenda and the business impacts and blockers on sticky notes, then the user journey drawn as a map.", caption: "Discovery workshop" },
-          { src: "/ingrid/flows.webp", alt: "Wireframe flows for the platform, from login and home through the interactive map to equipment data, warnings and the emergency stop.", caption: "Flows tested with technicians" },
-        ],
-      },
-      {
-        label: "Key decision",
-        headline: "Design for reaction, not decoding.",
-        text: "Instead of asking technicians to read an error and decide, the product acts by default, and they step in when they know more.",
-        media: [{ src: "/ingrid/danger-warning.webp", alt: "A danger warning over the production map for combine D10: low rear tire pressure, shutting down in 45 seconds, with a Cancel Shutdown button.", caption: "A countdown to shutdown that the technician can cancel" }],
+        label: "Challenge",
+        headline: "Help technicians react to a problem without decoding it first.",
+        text: "A four-week discovery mapped their day with a researcher and two field technicians, then we tested prototypes against the decisions they make in the field.",
+        split: true,
+        media: [{ src: "/ingrid/workshop-board.webp", alt: "The discovery workshop board: an agenda and the business impacts and blockers on sticky notes, then the user journey drawn as a map." }],
       },
       {
         label: "Solution",
-        headline: "Every warning is tiered by how urgent it is.",
-        points: [
-          "Emergencies start a countdown to shutoff; dismissing it keeps the machine running",
-          "Major errors can be postponed until the technician knows more",
-          "Simple recurring errors stay on screen without interrupting work",
-        ],
-        split: true,
-        media: [rec("fill", "ingrid-truck-card", "ingrid-truck-card-poster.webp", 946, 430, "Ingrid in use: a truck's status card over a satellite map, showing its speed, payload and arrival time")],
+        headline: "Every warning is tiered by how urgent it is",
+        text: "Emergencies start a countdown to shutdown that the technician can cancel. Major errors can wait until they know more, and recurring ones stay on screen without interrupting work.",
+        media: [rec("native", "ingrid-truck-card", "ingrid-truck-card-poster.webp", 946, 430, "Ingrid in use: a truck's status card over a satellite map, showing its speed, payload and arrival time")],
       },
       {
         label: "Outcome",
-        headline: "Onboarding went from an hour-long workshop to eight minutes.",
-        text: "Controlled studies showed full adoption within two sessions, usually one. The MVP also replaced other training and monitoring software.",
+        headline: "Onboarding went from an hour-long workshop to eight minutes",
+        text: "Controlled studies showed full adoption within two sessions, and the MVP replaced other training and monitoring software.",
         stats: [
           { value: "8 min", label: "Onboarding, down from an hour" },
           { value: "100%", label: "Adoption within two sessions" },
           { value: "$1.5M", label: "Saved each year in licensing fees" },
         ],
-        media: [rec("ingrid", "ingrid-onboarding", "ingrid-onboarding-poster.webp", 1280, 664, "Ingrid's guided onboarding: a step-by-step panel explains the fleet cards and their status dots beside the map", "The guided onboarding")],
-      },
-      {
-        label: "Brand",
-        headline: "A two-week sprint gave Ingrid a brand to show at conferences.",
-        media: [{ src: "/ingrid/identity-board.webp", alt: "The visual identity workshop board: style direction, reference photography and brand marks gathered for the Ingrid styleguide.", caption: "The styleguide and UI kit came out of this board" }],
+        media: [rec("ingrid", "ingrid-onboarding", "ingrid-onboarding-poster.webp", 1280, 664, "Ingrid's guided onboarding: a step-by-step panel explains the fleet cards and their status dots beside the map")],
       },
     ],
   },
@@ -191,49 +193,42 @@ export const STORIES: Record<string, Story> = {
     ],
     blocks: [
       {
-        label: "Problem",
-        headline: "Personalising a shop shouldn't need code, but most tools demand it.",
-        text: "Shops and agencies want results tuned to their customers' habits. And no one had a full picture of what the old console did.",
-        media: [{ src: "/athos/flows.png", alt: "Sitemap of the Athos console mapping every menu, feature and flow.", caption: "I mapped every feature into a wiki before designing anything" }],
+        label: "Overview",
+        headline: "Hundreds of shops tuned their search in a console nobody fully understood",
+        text: "Athos Commerce's console was 20 years old. Its users knew it by heart, but no one on the team had a full picture of what it did.",
+        split: true,
+        media: [{ src: "/athos/walrus-challenge.svg", alt: "", plain: true }],
       },
       {
-        label: "Foundation",
-        headline: "Design and engineering had to speak the same language.",
-        text: "To win board approval we had to avoid the old technical debt. I built the design system on MUI, the framework engineering already used.",
-        media: [{ src: "/athos/variables.png", alt: "Variables in the Athos design kit, showing collections, names and the Athos Light mode values.", caption: "Variables layered on top of MUI's base" }],
+        label: "Challenge",
+        headline: "Rebuild the console without making its daily users relearn their work.",
+        text: "I mapped every feature into a wiki before designing anything, and built the design system on MUI, the framework engineering already used, so we wouldn't carry the old technical debt.",
+        split: true,
+        media: [{ src: "/athos/flows.png", alt: "Sitemap of the Athos console mapping every menu, feature and flow." }],
       },
       {
-        label: "Approach",
-        headline: "Highest impact, fewest changes first.",
-        text: "Like repairing a moving car. Once the components held up, we took on the big features, guided by beta customers and support recordings.",
-        pair: true,
-        media: [
-          { src: "/athos/manage-features.webp", alt: "Manage Features settings page with grouped feature toggles.", caption: "Feature settings" },
-          { src: "/athos/recommendations.webp", alt: "Recommendations profile editor with a live preview of recommended products.", caption: "Recommendations editor" },
-        ],
-      },
-      {
-        label: "Before / after",
-        headline: "The campaign editor, from two navigation bars to one.",
+        label: "Solution",
+        headline: "Highest impact, fewest changes first",
+        text: "Like repairing a moving car. The campaign editor went from two navigation bars to one, with the boosting rules docked beside the grid, and we kept some redundant actions so long-time users didn't have to relearn.",
         compare: {
           before: "/athos/editor-before.webp",
           after: "/athos/editor-after.webp",
           beforeAlt: "Original Edit Visual Merchandising Campaign page with a floating boosting rules panel over the product grid and two stacked navigation bars.",
           afterAlt: "Redesigned Campaign Editor with a single icon navigation, a docked Product Boosting Rules panel and a compact product grid.",
-          caption: "Drag to compare. The boosting rules now dock beside the grid",
+          caption: "Drag to compare",
         },
       },
       {
-        label: "Trade-off",
-        headline: "New users got faster. Long-time users didn't want to relearn.",
-        text: "So we kept some redundant actions for existing customers. New customers simply ignore them.",
-        media: [{ src: "/athos/create-synonym.png", alt: "The Create Synonym modal, with Grouped and One-Way synonym types and the searching-for and also-returns fields." }],
-      },
-      {
-        label: "Now",
-        headline: "From adding features to smoothing the journey across them.",
-        text: "As Athos acquired other companies, the design system let designers, marketers and PMs across teams build safely.",
-        media: [{ src: "/athos/color-aliases.png", alt: "Colour mapping boards comparing Athos and IR palettes and proposing aliases for background, stroke and text colours.", caption: "Aliasing two brands' colours into one system" }],
+        label: "Outcome",
+        headline: "Teams across acquired companies now build on the same system",
+        text: "As Athos acquired other companies, the design system let designers, marketers and PMs build safely, and the work moved from adding features to smoothing the journey across them.",
+        media: [
+          {
+            src: "/athos/recommendations.webp",
+            alt: "Recommendations profile editor with a live preview of recommended products.",
+            backdrop: "/images/work/lake-backdrop.webp",
+          },
+        ],
       },
     ],
   },
@@ -249,31 +244,42 @@ export const STORIES: Record<string, Story> = {
     ],
     blocks: [
       {
-        label: "Problem",
-        headline: "Writing notes is easy. Finding them in the right context isn't.",
+        label: "Overview",
+        headline: "Writing notes is easy. Finding them in the right context isn't",
         text: "My own notes app with ChatGPT lost track in long sessions and mixed up similar names and projects.",
-      },
-      {
-        label: "Solution",
-        headline: "Just write. Type @ for people and / for projects.",
-        text: "No folders, no lists. Those two tools give every note enough context to be found later.",
-        media: [{ src: "/blindspot/popup-notes.webp", alt: "Blindspot's quick note pop-up on the desktop, over a notes window with a search and a chat for recalling context using @ for people and / for projects." }],
-      },
-      {
-        label: "Validation",
-        headline: "A weekend prototype, then a waitlist.",
-        text: "I demoed it to friends and learned what to change next: more channels, messaging app integrations, import and export.",
-        media: [{ src: "/blindspot/website.png", alt: "Blindspot's website: Out of sight, but never out of mind, with a Get the Demo button and hand-drawn mascots." }],
-      },
-      {
-        label: "Brand",
-        headline: "Doodles on an empty white sheet.",
+        split: true,
         media: [{ src: "/blindspot/mascots.webp", alt: "Four Blindspot mascots on lilac, dark, white and lime backgrounds next to the logo." }],
       },
       {
+        label: "Challenge",
+        headline: "Give every note enough context to be found later, without folders or lists.",
+        text: "An engineer and I built a prototype in a weekend, demoed it to friends and opened a waitlist.",
+        split: true,
+        media: [{ src: "/blindspot/website.png", alt: "Blindspot's website: Out of sight, but never out of mind, with a Get the Demo button and hand-drawn mascots." }],
+      },
+      {
+        label: "Solution",
+        headline: "Just write. Type @ for people and / for projects",
+        text: "Those two tools link each note to who and what it's about, so you can recall the context of an idea before a meeting.",
+        media: [
+          {
+            src: "/blindspot/popup-notes.webp",
+            alt: "Blindspot's quick note pop-up on the desktop, over a notes window with a search and a chat for recalling context using @ for people and / for projects.",
+            backdrop: "/images/work/field-backdrop.webp",
+          },
+        ],
+      },
+      {
         label: "Outcome",
-        headline: "An insurance company bought it to prospect clients.",
-        media: [{ src: "/blindspot/expanded-view.webp", alt: "Blindspot's expanded view: a sidebar with the account and My Network, and a clean page for writing context notes." }],
+        headline: "An insurance company bought it to prospect clients",
+        text: "The waitlist told us what to build next: more channels, messaging app integrations, import and export.",
+        media: [
+          {
+            src: "/blindspot/expanded-view.webp",
+            alt: "Blindspot's expanded view: a sidebar with the account and My Network, and a clean page for writing context notes.",
+            backdrop: "/images/work/sky-backdrop.webp",
+          },
+        ],
       },
     ],
   },
@@ -289,30 +295,30 @@ export const STORIES: Record<string, Story> = {
     ],
     blocks: [
       {
-        label: "Problem",
-        headline: "New restaurants struggle to reach people nearby.",
-        text: "Star Sales wanted a coupon partner program to connect them. I designed Whirl to show how AI could make that journey better.",
+        label: "Overview",
+        headline: "New restaurants struggle to reach the people nearby",
+        text: "Star Sales wanted a coupon partner program to connect them. Whirl is my concept for how AI could make that journey better.",
+        split: true,
+        media: [{ src: "/whirl/logo-identity.webp", alt: "Whirl logo construction, with a handwritten spiral sketch and proportions, shown as an app icon in the App Store and on an iPhone home screen." }],
       },
       {
-        label: "Decision",
-        headline: "Choose by elimination.",
-        text: "Cards show places; you discard what you don't want, and the app learns your taste from what's left.",
+        label: "Challenge",
+        headline: "Make choosing a place feel lighter than setting filters.",
+        text: "Cards show places, you discard what you don't want, and the app learns your taste from what's left.",
+        split: true,
         media: [{ src: "/whirl/sorting-home.webp", alt: "Whirl home screen with an Around you carousel and card sorting categories, surrounded by tilted City Tour, Gallery, Coffee Place and Outdoors Restaurant cards." }],
       },
       {
         label: "Solution",
-        headline: "Ask in plain language instead of setting filters.",
-        text: "Dietary needs, pets, parking: the assistant suggests a match and a next step, like seeing the menu before you go.",
-        pair: true,
+        headline: "Ask in plain language, and get a match with a next step",
+        text: "Dietary needs, pets, parking: the assistant suggests a place and what to do next, like seeing the menu before you go.",
         media: [
-          { src: "/whirl/chat-screens.webp", alt: "Two Whirl chat screens: suggested prompts, and a pet-friendly restaurant recommendation with a reservation prompt." },
-          { src: "/whirl/coffee-chat.webp", alt: "A Whirl chat suggesting a nearby coffee shop, with pet friendly and parking tags and a prompt to see the online menu." },
+          {
+            src: "/whirl/chat-screens.webp",
+            alt: "Two Whirl chat screens: suggested prompts, and a pet-friendly restaurant recommendation with a reservation prompt.",
+            backdrop: "/images/work/sky-backdrop.webp",
+          },
         ],
-      },
-      {
-        label: "Brand",
-        headline: "A handwritten spiral, carried into the app icon.",
-        media: [{ src: "/whirl/logo-identity.webp", alt: "Whirl logo construction, with a handwritten spiral sketch and proportions, shown as an app icon in the App Store and on an iPhone home screen." }],
       },
     ],
   },
@@ -329,40 +335,39 @@ export const STORIES: Record<string, Story> = {
     ],
     blocks: [
       {
-        label: "Problem",
-        headline: "There was no playbook for people and AI agents in one chat.",
-        points: [
-          "Users had to know who was speaking, a person or an agent",
-          "They had to trust what agents produced",
-          "Change one fact in a story, and agents could quietly contradict the rest",
+        label: "Overview",
+        headline: "Writers and AI agents build game worlds together in one chat",
+        text: "There was no playbook for people and agents sharing a workspace. Users had to know who was speaking, and trust what agents produced.",
+        split: true,
+        media: [{ src: "/rho/home-agents.webp", alt: "Rho Engine's home screen: suggested agent tasks, and a feed of the team's chapter edits and an AI Image Generator's results." }],
+      },
+      {
+        label: "Challenge",
+        headline: "Keep the story consistent when people and agents change it at once.",
+        text: "Change one fact in a story, and agents could quietly contradict the rest.",
+        split: true,
+        media: [{ src: "/rho/thread.png", alt: "A Cozy Farm thread beside the home screen, with messages from the team, an AI Director's plan and an AI Image Generator result." }],
+      },
+      {
+        label: "Solution",
+        headline: "Agents only act when called, and plan before they run",
+        text: "Bring an agent into the shared chat with an @mention. It proposes a plan, runs once you approve and shows its progress. Change a story fact, and everything that depends on it is flagged.",
+        media: [
+          {
+            src: "/rho/chapter-plan.png",
+            alt: "A Cozy Farm chapter with generated farming tool images, a team conversation with an AI Director, and a plan panel listing running tasks.",
+            backdrop: "/images/work/field-backdrop.webp",
+          },
         ],
       },
       {
-        label: "Decision 1",
-        headline: "Agents only act when called.",
-        text: "The workspace is a group chat, like Slack. Build an agent in a private chat, then bring it into the shared one with an @mention.",
-        media: [{ src: "/rho/thread.png", alt: "A Cozy Farm thread beside the home screen, with messages from the team, an AI Director's plan and an AI Image Generator result.", caption: "Every agent is labelled and waits to be called" }],
-      },
-      {
-        label: "Decision 2",
-        headline: "Agents plan first, and act once you approve.",
-        text: "A high-effort plan, then a low-effort run, estimated to cut token use by 40–70%. Testing showed silent waiting felt broken, so each agent shows its progress.",
-        media: [{ src: "/rho/chapter-plan.png", alt: "A Cozy Farm chapter with generated farming tool images, a team conversation with an AI Director, and a plan panel listing running tasks.", caption: "The plan panel lists what each agent is doing" }],
-      },
-      {
-        label: "Decision 3",
-        headline: "Change a story fact, and everything that depends on it is flagged.",
-        text: "A continuity system based on atomic design keeps characters, places and chapters consistent.",
-      },
-      {
         label: "Outcome",
-        headline: "V1 shipped and became core to the company's growth plan.",
-        text: "The founders could show investors a working product instead of a slide.",
+        headline: "V1 shipped and became core to the company's growth plan",
+        text: "The founders could show investors a working product instead of a slide, and planning before running is estimated to cut token use by 40–70%.",
         stats: [
           { value: "V1", label: "Shipped on the platform" },
           { value: "40–70%", label: "Estimated token savings" },
         ],
-        media: [{ src: "/rho/export.webp", alt: "An export dialog for 24 selected files, with Game File, File type and Export destination fields.", caption: "Generated assets export in bulk to game files" }],
       },
     ],
   },
@@ -378,41 +383,37 @@ export const STORIES: Record<string, Story> = {
     ],
     blocks: [
       {
-        label: "Problem",
-        headline: "The brand's consultants pitched a metaverse with tokens. Families needed something safer.",
-        text: "Children's eating habits are worsening and parents want to be more involved. Web3 carried privacy and regulation risks for a young audience.",
-      },
-      {
-        label: "Idea",
-        headline: "Care for an island, and learn how to care for your body.",
-        text: "A cozy 2D life-sim. Players keep the island balanced by growing and cooking nutritious food for its islanders.",
-        pair: true,
-        media: [
-          { src: "/liliworld/island.webp", alt: "The LiliWorld island seen from above, with an observatory, a clothing shop, a furniture store, a greenhouse, a dock and the island's characters.", caption: "The island" },
-          { src: "/liliworld/tiles.webp", alt: "Four stages of the island's terrain tiles, from dry reeds to lush grass with trees, mushrooms and flowers.", caption: "The land heals as players eat well" },
-        ],
-      },
-      {
-        label: "What failed",
-        headline: "Rewarding kids for eating healthy backfired.",
-        text: "Kids tried to game the coins. Teachers and psychologists pointed to curiosity instead, so the core became a multitool that recharges with the foods a child just learned about.",
-        media: [{ src: "/liliworld/gameplay.webp", alt: "The LiliWorld gameplay screen: a player character and a hovering drone on a patchy field, with an item bar, a coin counter and a star counter." }],
-      },
-      {
-        label: "Pitch",
-        headline: "Every mechanic had to justify its business value.",
-        text: "I pitched the first 10 minutes of gameplay to a six-person board, tying each feature to market value and its risks.",
+        label: "Overview",
+        headline: "A children's clothing brand wanted to help families eat better",
+        text: "Its consultants pitched a metaverse with tokens, but Web3 carried privacy and regulation risks for a young audience.",
+        split: true,
         media: [{ src: "/liliworld/characters.webp", alt: "A sheet of LiliWorld characters: a koala in pink overalls, a scientist with goggles, a wizard, a straw-hat fisher, a toucan, a sheep and a drone." }],
       },
       {
+        label: "Challenge",
+        headline: "Teach kids about nutrition without turning food into a reward.",
+        text: "Our first prototype paid coins for eating healthy, and kids tried to game them. Teachers and psychologists pointed us to curiosity instead.",
+        split: true,
+        media: [{ src: "/liliworld/gameplay.webp", alt: "The LiliWorld gameplay screen: a player character and a hovering drone on a patchy field, with an item bar, a coin counter and a star counter." }],
+      },
+      {
+        label: "Solution",
+        headline: "Care for an island, and learn how to care for your body",
+        text: "Players grow and cook food for the islanders, and their multitool recharges with the foods they just learned about. The land heals as they eat well.",
+        pair: true,
+        media: [
+          { src: "/liliworld/island.webp", alt: "The LiliWorld island seen from above, with an observatory, a clothing shop, a furniture store, a greenhouse, a dock and the island's characters." },
+          { src: "/liliworld/tiles.webp", alt: "Four stages of the island's terrain tiles, from dry reeds to lush grass with trees, mushrooms and flowers." },
+        ],
+      },
+      {
         label: "Outcome",
-        headline: "The board approved about $1M, and the concept sold for $180K.",
-        text: "An external studio produced assets from my designs. Development later paused when costs rose, and the client kept the IP.",
+        headline: "The board approved about $1M, and the concept sold for $180K",
+        text: "I pitched the first 10 minutes of gameplay, tying each mechanic to its business value. Development later paused when costs rose, and the client kept the IP.",
         stats: [
           { value: "~$1M", label: "Approved by the board" },
           { value: "$180K", label: "Paid for the concept and story" },
         ],
-        media: [{ src: "/liliworld/home-room.webp", alt: "The koala character's home on the island: a small room with a bed, a chest, a coat stand, a rug and potted plants." }],
       },
     ],
   },

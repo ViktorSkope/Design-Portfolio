@@ -147,7 +147,7 @@ const nextProject = (next: Project) => `
   </section>`;
 
 const recording = (r: StoryRecording) => `
-  <div class="media-stage media-stage--${r.stage}">
+  <div class="media-stage media-stage--${r.stage}"${r.stage === "native" ? ` style="aspect-ratio:${r.width}/${r.height}"` : ""}>
     <video data-autoplay muted loop playsinline preload="none" poster="${r.poster}" width="${r.width}" height="${r.height}" aria-label="${esc(r.label)}">
       <source src="${r.video}.webm" type="video/webm" />
       <source src="${r.video}.mp4" type="video/mp4" />
@@ -155,8 +155,8 @@ const recording = (r: StoryRecording) => `
   </div>`;
 
 const figure = (m: StoryMedia) => `
-  <figure class="story-figure${"plain" in m && m.plain ? " story-figure--plain" : ""}">
-    ${"stage" in m ? recording(m) : "plain" in m && m.plain ? `<img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" />` : `<button type="button" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`}
+  <figure class="story-figure${"plain" in m && m.plain ? " story-figure--plain" : ""}${"backdrop" in m && m.backdrop ? " story-figure--staged" : ""}">
+    ${"stage" in m ? recording(m) : "plain" in m && m.plain ? `<img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" />` : `<button type="button" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"${"backdrop" in m && m.backdrop ? ` style="background-image:url('${esc(m.backdrop)}')"` : ""}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`}
     ${m.caption ? `<figcaption>${esc(m.caption)}</figcaption>` : ""}
   </figure>`;
 
@@ -245,6 +245,50 @@ function playVideos() {
   videos.forEach((video) => watcher!.observe(video));
 }
 
+// Before/after sliders sweep from side to side while in view, until someone drags them
+let sweeper: IntersectionObserver | undefined;
+
+function sweepCompares() {
+  sweeper?.disconnect();
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  main.querySelectorAll<HTMLElement>(".compare").forEach((box) => {
+    const input = box.querySelector("input")!;
+    let frame = 0;
+    let elapsed = 0;
+    let last = 0;
+    let stopped = false;
+    const PERIOD = 6000;
+    const step = (now: number) => {
+      if (last) elapsed += now - last;
+      last = now;
+      const value = 50 + 42 * Math.sin((elapsed / PERIOD) * 2 * Math.PI);
+      input.value = String(value);
+      box.style.setProperty("--split", `${value}%`);
+      frame = requestAnimationFrame(step);
+    };
+    const pause = () => {
+      cancelAnimationFrame(frame);
+      last = 0;
+    };
+    const stop = () => {
+      stopped = true;
+      pause();
+    };
+    ["pointerdown", "keydown", "input"].forEach((type) => box.addEventListener(type, stop, { once: true }));
+    (box as HTMLElement & { _sweep?: (on: boolean) => void })._sweep = (on) => {
+      if (stopped) return;
+      pause();
+      if (on) frame = requestAnimationFrame(step);
+    };
+  });
+  // Starts once the slider is well into view, so the reader sees it begin
+  sweeper = new IntersectionObserver(
+    (entries) => entries.forEach(({ target, isIntersecting }) => (target as HTMLElement & { _sweep?: (on: boolean) => void })._sweep?.(isIntersecting)),
+    { threshold: 0.6 },
+  );
+  main.querySelectorAll(".compare").forEach((box) => sweeper!.observe(box));
+}
+
 function render() {
   const path = location.pathname.replace(/\/+$/, "") || "/";
   const slug = path.match(/^\/work\/([^/]+)$/)?.[1];
@@ -276,6 +320,7 @@ function render() {
   });
   setMenu(false);
   playVideos();
+  sweepCompares();
   shownSlug = currentSlug();
 }
 

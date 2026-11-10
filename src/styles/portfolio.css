@@ -948,3 +948,36 @@ h3,
 .story {
   padding-bottom: 64px;
 }
+
+/* A screenshot inset on a painting, like the recordings' stages */
+.story-figure--staged > button {
+  padding: 7% 8%;
+  background-position: center;
+  background-size: cover;
+}
+
+.story-figure--staged img {
+  border-radius: 6px;
+  box-shadow: 0 12px 40px rgb(40 36 20 / 0.18);
+}
+
+@media (max-width: 760px) {
+  .story-figure--staged > button {
+    padding: 6% 4%;
+  }
+}
+
+/* A recording shown whole, at its own proportions */
+.media-stage--native video {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 760px) {
+  .media-stage--native video {
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
