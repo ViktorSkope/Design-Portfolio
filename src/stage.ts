@@ -176,12 +176,18 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   // The slides move with the scroll itself, frame for frame: between two paragraphs
   // the outgoing image and the incoming one share the frame in proportion to how far
   // the page has gone from one to the other
+  // The next-project footer is a stop of its own only when it isn't already part of
+  // the last section
+  const footer = () => {
+    const el = document.querySelector<HTMLElement>(".case-side__next");
+    return el && !el.closest("[data-scene]") ? el : null;
+  };
   const markOf = (el: HTMLElement) => el.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0);
   const anchors = (): [number, number][] => {
     const last = Number(blocks[blocks.length - 1]?.dataset.scene ?? 0);
     if (narrow() && track) return cards.map((card) => [leftOf(card), sceneOfCard(card)]);
     const max = document.documentElement.scrollHeight - innerHeight;
-    const next = document.querySelector<HTMLElement>(".case-side__next");
+    const next = footer();
     const points: [number, number][] = [[0, 0], ...blocks.map((b): [number, number] => [markOf(b), Number(b.dataset.scene)])];
     if (next) points.push([markOf(next), last]);
     return points.map(([y, scene]): [number, number] => [Math.min(max, Math.max(0, y)), scene]);
@@ -269,7 +275,7 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   // (its scroll-margin-top), the next-project footer and the very bottom
   const stops = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
-    const marks = [...blocks, document.querySelector<HTMLElement>(".case-side__next")]
+    const marks = [...blocks, footer()]
       .filter((el): el is HTMLElement => Boolean(el))
       .map(markOf);
     return [0, ...marks, max].map((y) => Math.round(Math.min(max, Math.max(0, y)))).filter((y, i, all) => i === 0 || y > all[i - 1] + 8);

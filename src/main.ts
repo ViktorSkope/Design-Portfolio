@@ -32,7 +32,7 @@ const stage = (slug: string) => {
   const card = VK_CARDS[slug];
   return `
   <div class="media-stage media-stage--${slug} media-stage--card">
-    <video data-autoplay muted loop playsinline preload="none" poster="${card.poster}" width="1280" height="664" aria-hidden="true">
+    <video data-autoplay muted loop playsinline preload="none" poster="${card.poster}" width="${card.width ?? 1280}" height="${card.height ?? 664}" aria-hidden="true">
       <source src="${card.video}.webm" type="video/webm" />
       <source src="${card.video}.mp4" type="video/mp4" />
     </video>
@@ -228,10 +228,11 @@ const sceneMedia = (m: StoryMedia) => {
 };
 
 // One section under its label: every headline and paragraph that shares it
-const caseSection = (section: StoryBlock[], scene: number) => `
+const caseSection = (section: StoryBlock[], scene: number, end = "") => `
   <section class="case-side__block" data-scene="${scene}">
     ${section[0].label ? `<p class="case-side__label">${esc(section[0].label)}</p>` : ""}
     ${section.map(caseBlock).join("")}
+    ${end}
   </section>`;
 
 const caseBlock = (b: StoryBlock) => `
@@ -261,6 +262,7 @@ function casePage(p: Project) {
     if (media) scenes.push(sceneMedia(media));
     return scenes.length - 1;
   });
+  const nextLink = nextProject(next);
   const facts = story?.facts ?? [{ label: "Role", value: p.role }, { label: "Year", value: p.year }];
 
   return `
@@ -285,15 +287,19 @@ function casePage(p: Project) {
         ${story?.link ? `<a href="${esc(story.link.href)}" class="pill pill--dark" target="_blank" rel="noopener" data-external>${esc(story.link.label)}</a>` : ""}
         <dl class="case-side__facts">${facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join("")}</dl>
         </section>
-        ${sections.map((section, i) => caseSection(section, sceneOf[i])).join("")}
+        ${sections.map((section, i) => caseSection(section, sceneOf[i], i === sections.length - 1 ? nextLink : "")).join("")}
+        ${sections.length ? "" : nextLink}
+      </article>
+    </div>`;
+}
+
+// The way on to the next project closes the last section, on the same screen as it
+const nextProject = (next: Project) => `
         <footer class="case-side__next">
           <p>Next Project</p>
           <p>${esc(next.name)}</p>
           <a class="pill pill--dark pill--wide" href="/work/${esc(next.slug)}/">Go to Next Project <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
-        </footer>
-      </article>
-    </div>`;
-}
+        </footer>`;
 
 // ─── Routing ─────────────────────────────────────────────────────────────────
 

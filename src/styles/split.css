@@ -789,6 +789,23 @@ body.is-split #main {
   scroll-margin-top: var(--edge);
 }
 
+/* The last section closes with the way on to the next project, on the same screen:
+   it fills the rest of the viewport and the footer sits at its foot */
+.case-side__block:has(.case-side__next) {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 2 * var(--edge));
+}
+
+.case-side__block > .case-side__next {
+  margin-top: auto;
+}
+
+/* At least this much room above it when the section is long */
+.case-side__block > :nth-last-child(2):has(+ .case-side__next) {
+  margin-bottom: 56px;
+}
+
 /* The stage holds still beside the text on a case study */
 @media (min-width: 901px) {
   .split--case .stage {
@@ -1004,13 +1021,11 @@ body.is-split #main {
     display: flex;
     flex: 1;
     min-height: 0;
-    gap: calc(2 * var(--edge));
     margin: 14px calc(-1 * var(--edge)) 0;
-    padding: 0 var(--edge);
+    padding: 0;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--edge);
     overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
@@ -1019,13 +1034,14 @@ body.is-split #main {
     display: none;
   }
 
-  /* Each section is plain text on the page, one screen wide; a long one scrolls
-     on its own rather than being cut off */
+  /* Each section is plain text on the page, one screen wide, carrying the page's
+     side margins itself so both sides always match; a long one scrolls on its own
+     rather than being cut off */
   .case-side > * {
     flex: 0 0 100%;
     min-height: 0;
     margin: 0;
-    padding: 4px 0 24px;
+    padding: 4px var(--edge) 24px;
     overflow-y: auto;
     overscroll-behavior-y: contain;
     border: 0;
@@ -1040,8 +1056,13 @@ body.is-split #main {
     display: none;
   }
 
-  .case-side > .case-side__block {
+  .case-side > .case-side__block,
+  .case-side > .case-side__block:has(.case-side__next) {
     min-height: 0;
+  }
+
+  .case-side__block > :nth-last-child(2):has(+ .case-side__next) {
+    margin-bottom: 18px;
   }
 
   .case-side > .case-side__next {
@@ -1105,8 +1126,19 @@ body.is-split #main {
     margin-top: 0;
   }
 
+  /* On phones the footer is one row: the next project beside its button */
+  .case-side__next {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 12px;
+    padding-top: 14px;
+  }
+
   .case-side__next .pill {
-    margin-top: 24px;
+    grid-row: 1 / 3;
+    grid-column: 2;
+    margin-top: 0;
   }
 
   .case-side__block > p:not(.case-side__label),

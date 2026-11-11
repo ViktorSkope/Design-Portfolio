@@ -88,11 +88,11 @@ export const STORIES: Record<string, Story> = {
     ],
     cover: rec(
       "watchson",
-      "watchson-team",
-      "watchson-team-poster.webp",
-      1280,
-      664,
-      "Watchson in use: a project team table with cost, billing and fit scores, beside a radar chart comparing the team with the project baseline",
+      "watchson-intro",
+      "watchson-intro-poster.webp",
+      1556,
+      986,
+      "Watchson in use: a project team with each person's fit score and skills radar, the costs per project, and the team drawn as a board",
     ),
     blocks: [
       {
@@ -148,11 +148,11 @@ export const STORIES: Record<string, Story> = {
     ],
     cover: rec(
       "ingrid",
-      "ingrid-fleet",
-      "ingrid-poster.webp",
-      1280,
-      664,
-      "Ingrid in use: a fleet list beside a satellite map, with a truck's route, status and warnings",
+      "ingrid-intro",
+      "ingrid-intro-poster.webp",
+      1560,
+      986,
+      "Ingrid in use: the fleet dashboard, then the mine map with each truck's card, status and truck log",
     ),
     blocks: [
       {
@@ -174,19 +174,19 @@ export const STORIES: Record<string, Story> = {
         label: "Setup",
         headline: "Help technicians react to a problem without decoding it first.",
         text: "We made prototypes in Figma and tested them with their users in a 4-week discovery process, to discover which triggers were important for technicians in the field, and remotely, to verify before making a decision.",
-        media: [{ src: "/ingrid/workshop-board.webp", alt: "The discovery workshop board: an agenda and the business impacts and blockers on sticky notes, then the user journey drawn as a map." }],
+        media: [rec("ingrid", "ingrid-setup", "ingrid-setup-poster.webp", 1560, 986, "Ingrid's guided tour: step by step through the fleet map, the dashboard and its reports, and what to do after a warning")],
       },
       {
         label: "Hypothesis",
         headline: "The higher the warning, the less required decisions.",
         text: "Emergencies start a countdown to shutdown that the technician can cancel. Major errors can wait until they know more, and recurring ones stay on screen without interrupting work.",
-        media: [rec("native", "ingrid-truck-card", "ingrid-truck-card-poster.webp", 946, 430, "Ingrid in use: a truck's status card over a satellite map, showing its speed, payload and arrival time")],
+        media: [rec("ingrid", "ingrid-hypothesis", "ingrid-hypothesis-poster.webp", 1560, 986, "Ingrid in an emergency: a frame crack counts down to shutdown, the technician can send the truck to maintenance or keep it running, and the truck log records what happened")],
       },
       {
         label: "Outcome",
         headline: "Onboarding went from an hour-long workshop to eight minutes",
         text: "Controlled studies showed full adoption within two sessions, and the MVP replaced other training and monitoring software.",
-        media: [rec("ingrid", "ingrid-onboarding", "ingrid-onboarding-poster.webp", 1280, 664, "Ingrid's guided onboarding: a step-by-step panel explains the fleet cards and their status dots beside the map")],
+        media: [rec("ingrid", "ingrid-outcome", "ingrid-outcome-poster.webp", 1016, 722, "Ingrid in use: a truck on the mine map opens its card, with the truck drawn in outline")],
       },
       {
         headline: "1.5 M USD each year saved in licensing fees",
@@ -198,6 +198,7 @@ export const STORIES: Record<string, Story> = {
     title: "Rebuilding a 20-year-old merchandising console without losing its users",
     summary:
       "Athos Commerce helps online shops tune search and merchandising. Hundreds of people use it daily, so the redesign had to respect how they already work.",
+    panorama: "/images/work/athos-panorama.webp",
     facts: [
       { label: "Role", value: "Lead Product Designer" },
       { label: "Team", value: "PM, engineers, a design assistant and me" },
