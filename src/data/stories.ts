@@ -26,8 +26,8 @@ export interface StoryRecording {
 export type StoryMedia = StoryImage | StoryRecording;
 
 export interface StoryBlock {
-  // The short label above the headline, also used in the side contents
-  label: string;
+  // The short label above the headline; left out on the headlines that continue a section
+  label?: string;
   headline: string;
   text?: string;
   points?: string[];
@@ -137,9 +137,7 @@ export const STORIES: Record<string, Story> = {
     note: "This is an NDA protected project. Names and brands have been changed to preserve the real product.",
     facts: [
       { label: "Role", value: "Product Design Lead" },
-      { label: "Team", value: "A researcher, two field technicians and me" },
       { label: "Scope", value: "Product design, UX research, visual identity" },
-      { label: "Year", value: "2022" },
     ],
     cover: rec(
       "ingrid",
@@ -152,21 +150,27 @@ export const STORIES: Record<string, Story> = {
     blocks: [
       {
         label: "Overview",
-        headline: "Technicians watch autonomous harvesters from afar, with seconds to react",
+        headline: "Mistakes are costly in the mining industry",
+        text: "A 50k USD flat tire in one of these giant haulers is very cheap to fix if you compare with the production time that it costs the company to deal with a non-productive truck.",
+      },
+      {
+        headline: "Preventive maintenance meant to watch for signals and know when to do pit-stops",
+        text: "For Ingrid, that meant knowing when to stop and when to keep the machines running to maximize production and avoid critical errors that could impact production.",
+      },
+      {
+        headline: "But there was too much noise in the information technicians were receiving",
         text: "Every problem reached them as an error code. Understanding one meant reading the full log or a cheat sheet, and some codes were only signal noise.",
-        split: true,
         media: [{ src: "/ingrid/time-to-reaction.png", alt: "Time to reaction: a code log splits into error, monitoring and health signals, which lead to danger, warning and position states." }],
       },
       {
-        label: "Challenge",
+        label: "Setup",
         headline: "Help technicians react to a problem without decoding it first.",
-        text: "A four-week discovery mapped their day with a researcher and two field technicians, then we tested prototypes against the decisions they make in the field.",
-        split: true,
+        text: "We made prototypes in Figma and tested them with their users in a 4-week discovery process, to discover which triggers were important for technicians in the field, and remotely, to verify before making a decision.",
         media: [{ src: "/ingrid/workshop-board.webp", alt: "The discovery workshop board: an agenda and the business impacts and blockers on sticky notes, then the user journey drawn as a map." }],
       },
       {
-        label: "Solution",
-        headline: "Every warning is tiered by how urgent it is",
+        label: "Hypothesis",
+        headline: "The higher the warning, the less required decisions.",
         text: "Emergencies start a countdown to shutdown that the technician can cancel. Major errors can wait until they know more, and recurring ones stay on screen without interrupting work.",
         media: [rec("native", "ingrid-truck-card", "ingrid-truck-card-poster.webp", 946, 430, "Ingrid in use: a truck's status card over a satellite map, showing its speed, payload and arrival time")],
       },
@@ -174,16 +178,14 @@ export const STORIES: Record<string, Story> = {
         label: "Outcome",
         headline: "Onboarding went from an hour-long workshop to eight minutes",
         text: "Controlled studies showed full adoption within two sessions, and the MVP replaced other training and monitoring software.",
-        stats: [
-          { value: "8 min", label: "Onboarding, down from an hour" },
-          { value: "100%", label: "Adoption within two sessions" },
-          { value: "$1.5M", label: "Saved each year in licensing fees" },
-        ],
         media: [rec("ingrid", "ingrid-onboarding", "ingrid-onboarding-poster.webp", 1280, 664, "Ingrid's guided onboarding: a step-by-step panel explains the fleet cards and their status dots beside the map")],
+      },
+      {
+        headline: "1.5 M USD each year saved in licensing fees",
+        text: "Creating their proprietary product helped them save costs in third-party programs that we were able to incorporate into their product.",
       },
     ],
   },
-
   "athos-commerce": {
     title: "Rebuilding a 20-year-old merchandising console without losing its users",
     summary:

@@ -140,6 +140,29 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   const blocks = [...document.querySelectorAll<HTMLElement>("[data-scene]")];
   const frameEl = root.querySelector<HTMLElement>(".stage__frame")!;
 
+  // On phones the page doesn't scroll: the paragraphs are cards in a row under the
+  // stage, swiped sideways, and the card in view picks the slide
+  const narrow = () => matchMedia("(max-width: 900px)").matches;
+  const track = document.querySelector<HTMLElement>(".case-side");
+  const cards = track ? ([...track.children] as HTMLElement[]) : [];
+  const sceneOfCard = (card: HTMLElement | undefined) =>
+    card?.dataset.scene ? Number(card.dataset.scene) : card === cards[0] ? 0 : Number(blocks[blocks.length - 1]?.dataset.scene ?? 0);
+  // Where a card sits in the row, as the row's scroll position that brings it in
+  const leftOf = (card: HTMLElement) => card.offsetLeft - (parseFloat(getComputedStyle(track!).paddingLeft) || 0);
+  const cardAt = () => {
+    if (!track) return 0;
+    const at = (i: number) => Math.abs(leftOf(cards[i]) - track.scrollLeft);
+    return cards.reduce((best, _, i) => (at(i) < at(best) ? i : best), 0);
+  };
+  const followCards = () => {
+    show(sceneOfCard(cards[cardAt()]));
+    fill(1);
+  };
+  const toCard = (index: number) => {
+    const card = cards[Math.max(0, Math.min(cards.length - 1, index))];
+    if (track && card) track.scrollTo({ left: leftOf(card), behavior: reducedMotion() ? "instant" : "smooth" });
+  };
+
   // The line a paragraph has to reach to take over: mid-screen beside the stage,
   // and on phones a little below the stage pinned at the top
   const readingLine = () => {
@@ -151,6 +174,10 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   const follow = () => {
     frame = 0;
     if (stopped) return;
+    if (narrow()) {
+      followCards();
+      return;
+    }
     const line = readingLine();
     const atEnd = scrollY + innerHeight >= document.documentElement.scrollHeight - 2;
     let index = -1;
@@ -174,6 +201,7 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   };
   on(window, "scroll", schedule);
   on(window, "resize", schedule);
+  if (track) on(track, "scroll", schedule);
   cleanups.push(() => cancelAnimationFrame(frame));
   follow();
 
@@ -233,7 +261,7 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   let lastDir = 0;
   let used = false;
   const onWheel = (e: WheelEvent) => {
-    if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX) || inside(e, "dialog")) return;
+    if (narrow() || e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX) || inside(e, "dialog")) return;
     e.preventDefault();
     const delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
     const size = Math.abs(delta);
@@ -253,7 +281,7 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
 
   const KEYS: Record<string, number> = { ArrowDown: 1, PageDown: 1, " ": 1, ArrowUp: -1, PageUp: -1 };
   const onKey = (e: KeyboardEvent) => {
-    if (inside(e, "input, textarea, select, dialog, [contenteditable]") || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (narrow() || inside(e, "input, textarea, select, dialog, [contenteditable]") || e.metaKey || e.ctrlKey || e.altKey) return;
     const dir = e.key === " " && e.shiftKey ? -1 : KEYS[e.key];
     if (dir) {
       e.preventDefault();
@@ -270,7 +298,7 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   // Touch: a swipe is one step, the page doesn't follow the finger in between
   let touchY: number | null = null;
   const onTouchStart = (e: TouchEvent) => {
-    touchY = inside(e, "dialog") ? null : e.touches[0].clientY;
+    touchY = narrow() || inside(e, "dialog") ? null : e.touches[0].clientY;
   };
   const onTouchMove = (e: TouchEvent) => {
     if (touchY !== null) e.preventDefault();
@@ -294,6 +322,7 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
   let settleTimer = 0;
   on(window, "scroll", () => {
     clearTimeout(settleTimer);
+    if (narrow()) return;
     if (performance.now() < glideEnd + 50) return;
     settleTimer = window.setTimeout(() => {
       if (performance.now() < glideEnd + 50) return;
@@ -320,6 +349,13 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
       return;
     }
     const wrapped = (scene + slides.length) % slides.length;
+    if (narrow()) {
+      // The first card about that slide, or the next card when the slide doesn't change
+      const here = cardAt();
+      const found = cards.findIndex((card) => sceneOfCard(card) === wrapped);
+      toCard(Number(step.dataset.step) > 0 && found <= here ? here + 1 : found < 0 ? here - 1 : found);
+      return;
+    }
     const block = blocks.find((b) => Number(b.dataset.scene) === wrapped);
     glideTo(block && wrapped > 0 ? Math.max(0, Math.round(markOf(block))) : 0);
   });

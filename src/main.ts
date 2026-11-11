@@ -225,27 +225,37 @@ const sceneMedia = (m: StoryMedia) => {
   return `<button type="button" class="cover cover--scene${m.backdrop ? " cover--backdrop" : ""}" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"${backdrop}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`;
 };
 
-const caseBlock = (b: StoryBlock, scene: number) => `
+// One section under its label: every headline and paragraph that shares it
+const caseSection = (section: StoryBlock[], scene: number) => `
   <section class="case-side__block" data-scene="${scene}">
-    <p class="case-side__label">${esc(b.label)}</p>
+    ${section[0].label ? `<p class="case-side__label">${esc(section[0].label)}</p>` : ""}
+    ${section.map(caseBlock).join("")}
+  </section>`;
+
+const caseBlock = (b: StoryBlock) => `
     <h2>${esc(b.headline)}</h2>
     ${b.text ? `<p>${esc(b.text)}</p>` : ""}
     ${b.points ? `<ul>${b.points.map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul>` : ""}
     ${b.versus ? b.versus.map((v) => `<p><strong>${esc(v.label)}.</strong> ${esc(v.text)}</p>`).join("") : ""}
-    ${b.stats ? `<dl class="case-side__stats">${b.stats.map((st) => `<div><dt>${esc(st.value)}</dt><dd>${esc(st.label)}</dd></div>`).join("")}</dl>` : ""}
-  </section>`;
+    ${b.stats ? `<dl class="case-side__stats">${b.stats.map((st) => `<div><dt>${esc(st.value)}</dt><dd>${esc(st.label)}</dd></div>`).join("")}</dl>` : ""}`;
 
 function casePage(p: Project) {
   const next = list[(list.indexOf(p) + 1) % list.length];
   const story = STORIES[p.slug];
   const blocks = story?.blocks ?? [];
 
+  // Headlines without a label continue the section before them, so a section is
+  // read, scrolled to and swiped to as one
+  const sections: StoryBlock[][] = [];
+  blocks.forEach((b) => (b.label || !sections.length ? sections.push([b]) : sections[sections.length - 1].push(b)));
+
   // Slide 0 is the same image the landing page showed, so opening the project keeps
-  // it in place; each paragraph with media of its own adds the next one, and a
-  // paragraph without keeps the slide before it
+  // it in place; each section with media of its own adds the next one, and a
+  // section without keeps the slide before it
   const scenes = [slideMedia(p)];
-  const sceneOf = blocks.map((b) => {
-    const media: StoryMedia | undefined = b.media?.[0] ?? (b.compare ? { src: b.compare.after, alt: b.compare.afterAlt } : undefined);
+  const sceneOf = sections.map((section) => {
+    const b = section.find((x) => x.media?.length || x.compare);
+    const media: StoryMedia | undefined = b?.media?.[0] ?? (b?.compare ? { src: b.compare.after, alt: b.compare.afterAlt } : undefined);
     if (media) scenes.push(sceneMedia(media));
     return scenes.length - 1;
   });
@@ -264,13 +274,15 @@ function casePage(p: Project) {
       </div>
 
       <article class="split__side case-side">
+        <section class="case-side__intro">
         <p class="case-side__crumb"><a href="/work/">Work</a> / ${esc(p.name)}</p>
         <h1>${esc(story?.title ?? p.tagline)}</h1>
         <p class="case-side__summary">${esc(story?.summary ?? p.overview)}</p>
         ${story?.note ? `<p class="case-side__note">${esc(story.note)}</p>` : ""}
         ${story?.link ? `<a href="${esc(story.link.href)}" class="pill pill--dark" target="_blank" rel="noopener" data-external>${esc(story.link.label)}</a>` : ""}
         <dl class="case-side__facts">${facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join("")}</dl>
-        ${blocks.map((b, i) => caseBlock(b, sceneOf[i])).join("")}
+        </section>
+        ${sections.map((section, i) => caseSection(section, sceneOf[i])).join("")}
         <footer class="case-side__next">
           <p>Next Project</p>
           <p>${esc(next.name)}</p>

@@ -12,6 +12,10 @@ body.is-split .nav {
   display: none;
 }
 
+body.is-split #main {
+  padding-bottom: 0;
+}
+
 .split {
   --side: clamp(300px, 24vw, 400px);
   --gutter: clamp(32px, 4vw, 64px);
@@ -715,7 +719,7 @@ span.cover--scene {
   scroll-margin-top: var(--edge);
 }
 
-.case-side__facts + .case-side__block {
+.case-side__intro + .case-side__block {
   margin-top: clamp(56px, 12vh, 120px);
 }
 
@@ -744,6 +748,11 @@ span.cover--scene {
   line-height: 1.18;
   letter-spacing: -0.035em;
   color: var(--color-ink);
+}
+
+/* A section's later headlines sit further down, so each pair reads as one point */
+.case-side__block > h2:not(:first-of-type) {
+  margin-top: 56px;
 }
 
 .case-side__block > p:not(.case-side__label),
@@ -901,21 +910,75 @@ span.cover--scene {
     height: 46px;
   }
 
-  /* On a case study it stays pinned at the top while the text scrolls under it */
+  /* A case study fills the screen without scrolling: the stage at the top, and the
+     paragraphs as cards in a row below it, swiped sideways */
+  html:has(.split--case),
+  body:has(.split--case) {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .split--case {
+    display: flex;
+    flex-direction: column;
+    height: 100svh;
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+
   .split--case .stage {
-    top: 0;
-    z-index: 5;
-    width: auto;
-    margin-inline: calc(-1 * var(--edge));
-    padding: 12px var(--edge) 12px;
-    background: var(--color-canvas);
+    position: static;
+    flex: none;
   }
 
   .split--case .stage__frame {
-    aspect-ratio: auto;
-    height: min(46svh, 70vw);
+    height: min(42svh, 72vw);
     min-height: 0;
     border-radius: 18px;
+  }
+
+  .case-side {
+    position: relative;
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    min-height: 0;
+    margin: 14px calc(-1 * var(--edge)) 0;
+    padding: 0 var(--edge);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--edge);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .case-side::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Each card is a little narrower than the screen, so the next one peeks in */
+  .case-side > * {
+    flex: 0 0 calc(100% - 28px);
+    min-height: 0;
+    margin: 0;
+    padding: 22px;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 20px;
+    background: var(--color-surface-card);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .case-side > .case-side__block {
+    min-height: 0;
+  }
+
+  .case-side > .case-side__next {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
   .stage__back {
@@ -949,7 +1012,8 @@ span.cover--scene {
   }
 
   .case-side h1 {
-    margin-top: 24px;
+    margin-top: 16px;
+    font-size: 24px;
   }
 
   .case-side__summary,
@@ -958,18 +1022,21 @@ span.cover--scene {
     margin-top: 24px;
   }
 
-  .case-side__block {
-    min-height: calc(100svh - min(46svh, 70vw) - 110px);
-  }
-
-  /* On phones the paragraph settles just under the pinned stage */
-  .case-side__block,
-  .case-side__next {
-    scroll-margin-top: calc(min(46svh, 70vw) + 110px);
-  }
-
   .case-side__block h2 {
-    margin-top: 16px;
+    margin-top: 14px;
+    font-size: 22px;
+  }
+
+  .case-side__block > h2:not(:first-of-type) {
+    margin-top: 32px;
+  }
+
+  .case-side__intro + .case-side__block {
+    margin-top: 0;
+  }
+
+  .case-side__next .pill {
+    margin-top: 24px;
   }
 
   .case-side__block > p:not(.case-side__label),
