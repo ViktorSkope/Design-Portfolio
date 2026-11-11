@@ -9,6 +9,8 @@ export interface StoryImage {
   plain?: boolean;
   // A painting the screenshot sits on, like the recordings' stages
   backdrop?: string;
+  // A finished composition with its own background: fills the stage edge to edge
+  full?: boolean;
   caption?: string;
 }
 
@@ -55,6 +57,9 @@ export interface Story {
   note?: string;
   // A recording shown in place of the cover image
   cover?: StoryRecording;
+  // A wide painting behind every slide of the case study, panning from the first
+  // slide to the last while the images slide over it
+  panorama?: string;
   blocks: StoryBlock[];
 }
 
@@ -66,13 +71,14 @@ const rec = (
   height: number,
   label: string,
   caption?: string,
-): StoryRecording => ({ stage, video: `/videos/${name}`, poster: `/images/work/${poster}`, width, height, label, caption });
+): StoryRecording => ({ stage, video: `/videos/${name}`, poster: poster ? `/images/work/${poster}` : "", width, height, label, caption });
 
 export const STORIES: Record<string, Story> = {
   watchson: {
     title: "Gamifying an HR form into a complete people management system",
     summary:
       "Watchson turned a skills form nobody filled in into a game collaborators play and a source of truth leaders plan with.",
+    panorama: "/images/work/watchson-panorama.webp",
     facts: [
       { label: "Role", value: "Product Designer" },
       { label: "Collaborator", value: "Lauri Jr." },
@@ -135,6 +141,7 @@ export const STORIES: Record<string, Story> = {
     summary:
       "Ingrid lets field technicians monitor autonomous harvesters remotely. I redesigned it so they could use it without a manual.",
     note: "This is an NDA protected project. Names and brands have been changed to preserve the real product.",
+    panorama: "/images/work/ingrid-panorama.webp",
     facts: [
       { label: "Role", value: "Product Design Lead" },
       { label: "Scope", value: "Product design, UX research, visual identity" },
@@ -152,6 +159,7 @@ export const STORIES: Record<string, Story> = {
         label: "Overview",
         headline: "Mistakes are costly in the mining industry",
         text: "A 50k USD flat tire in one of these giant haulers is very cheap to fix if you compare with the production time that it costs the company to deal with a non-productive truck.",
+        media: [rec("ingrid", "ingrid-overview", "ingrid-overview-poster.webp", 1562, 992, "Ingrid in use: a truck flagged on the fleet list opens its card on the map, with a brake warning offering to send it to maintenance")],
       },
       {
         headline: "Preventive maintenance meant to watch for signals and know when to do pit-stops",
@@ -292,6 +300,7 @@ export const STORIES: Record<string, Story> = {
   whirl: {
     title: "An AI assistant for finding where to eat and what to do",
     summary: "A concept for connecting new restaurants with the people of their city, through conversation instead of filters.",
+    panorama: "/images/work/whirl-panorama.webp",
     facts: [
       { label: "Role", value: "Product Designer" },
       { label: "Type", value: "Concept" },
@@ -332,6 +341,7 @@ export const STORIES: Record<string, Story> = {
     title: "A shared workspace where writers and AI agents build stories",
     summary:
       "Rho Engine, from a16z-backed Series AI, lets small teams build game worlds. I designed where writers and AI agents work together.",
+    panorama: "/images/work/rho-panorama.webp",
     facts: [
       { label: "Role", value: "Sole Product Designer" },
       { label: "Team", value: "Founder, Creative Director, front-end team" },
@@ -380,6 +390,7 @@ export const STORIES: Record<string, Story> = {
   liliworld: {
     title: "A cozy island game that teaches families about nutrition",
     summary: "A life-sim concept for a children's clothing brand entering family nutrition.",
+    panorama: "/images/work/liliworld-panorama.webp",
     facts: [
       { label: "Role", value: "Lead Product Designer, game design" },
       { label: "Team", value: "A mid-level designer and me, at an agency" },

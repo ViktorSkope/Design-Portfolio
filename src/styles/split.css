@@ -496,12 +496,39 @@ body.is-split #main {
   object-fit: cover;
 }
 
+/* One wide painting behind all of a case study's slides. Only the images slide;
+   the painting pans across underneath with the scroll, from its left edge at the
+   top of the page to its right edge at the end (stage.ts sets --pan) */
+.stage__panorama {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+  min-width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  transform: translateX(calc(var(--pan, 0) * (100cqw - 100%)));
+  pointer-events: none;
+  will-change: transform;
+}
+
+.stage__frame--panorama .media-stage,
+.stage__frame--panorama .cover--scene {
+  background: none;
+}
+
+/* A screenshot's own painting gives way to the panorama (it is set inline) */
+.stage__frame--panorama .cover--backdrop,
+.stage__frame--panorama .stage__slide > .cover {
+  background: none !important;
+}
+
 /* A case study's screenshots and recordings, whole, on the paper tone */
 .cover--scene {
   display: grid;
   place-items: center;
   background: var(--color-surface-paper);
-  cursor: zoom-in;
 }
 
 .cover--scene img,
@@ -512,8 +539,32 @@ body.is-split #main {
   object-fit: contain;
 }
 
-span.cover--scene {
-  cursor: default;
+/* A composition with its own background fills the frame: the whole image stays in
+   view, standing on a stretched copy of itself */
+.cover--full {
+  position: relative;
+  overflow: hidden;
+  background-color: #3a3833;
+  background-size: 0;
+}
+
+.cover--full::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background: inherit;
+  background-position: center;
+  background-size: cover;
+  filter: blur(48px);
+}
+
+.cover--full img {
+  position: relative;
+  padding: 0;
+  /* Its edges melt into the blur, so no seam shows */
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent),
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
 }
 
 .cover--backdrop {
@@ -639,6 +690,17 @@ span.cover--scene {
 
 .player__seg:not(.is-active) i {
   transform: scaleX(0);
+}
+
+/* On a case study the slides follow the reading, so the player is only dots, the
+   current one in ink */
+.split--case .player__seg.is-active {
+  width: var(--dot, 9px);
+  background: var(--color-ink);
+}
+
+.split--case .player__seg i {
+  display: none;
 }
 
 .stage__arrows {
@@ -941,8 +1003,8 @@ span.cover--scene {
     position: relative;
     display: flex;
     flex: 1;
-    gap: 10px;
     min-height: 0;
+    gap: calc(2 * var(--edge));
     margin: 14px calc(-1 * var(--edge)) 0;
     padding: 0 var(--edge);
     overflow-x: auto;
@@ -957,18 +1019,25 @@ span.cover--scene {
     display: none;
   }
 
-  /* Each card is a little narrower than the screen, so the next one peeks in */
+  /* Each section is plain text on the page, one screen wide; a long one scrolls
+     on its own rather than being cut off */
   .case-side > * {
-    flex: 0 0 calc(100% - 28px);
+    flex: 0 0 100%;
     min-height: 0;
     margin: 0;
-    padding: 22px;
+    padding: 4px 0 24px;
     overflow-y: auto;
+    overscroll-behavior-y: contain;
     border: 0;
-    border-radius: 20px;
-    background: var(--color-surface-card);
+    border-radius: 0;
+    background: none;
     scroll-snap-align: start;
     scroll-snap-stop: always;
+    scrollbar-width: none;
+  }
+
+  .case-side > *::-webkit-scrollbar {
+    display: none;
   }
 
   .case-side > .case-side__block {
@@ -999,6 +1068,7 @@ span.cover--scene {
   }
 
   .player__seg {
+    --dot: 6px;
     width: 6px;
     height: 6px;
   }

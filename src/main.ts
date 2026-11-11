@@ -13,7 +13,6 @@ const list = ORDER.map((slug) => projects.find((p) => p.slug === slug)).filter((
 const SITE_TITLE = "Viktor Dopke – Product Designer";
 
 const main = document.querySelector<HTMLElement>("#main")!;
-const lightbox = document.querySelector<HTMLDialogElement>("#lightbox")!;
 const about = document.querySelector<HTMLDialogElement>("#about")!;
 const navLinks = document.querySelector<HTMLElement>(".nav__links")!;
 const navToggle = document.querySelector<HTMLElement>(".nav__toggle")!;
@@ -215,14 +214,17 @@ function aboutPage() {
 // A case study's slides: its cover, then the media each paragraph talks about
 const sceneMedia = (m: StoryMedia) => {
   if ("stage" in m) {
-    const video = `<video muted loop playsinline preload="none" poster="${m.poster}" width="${m.width}" height="${m.height}" aria-label="${esc(m.label)}">
+    // Without a poster, the recording loads enough to show its first frame
+    const video = `<video muted loop playsinline ${m.poster ? `preload="none" poster="${m.poster}"` : `preload="metadata"`} width="${m.width}" height="${m.height}" aria-label="${esc(m.label)}">
         <source src="${m.video}.webm" type="video/webm" />
         <source src="${m.video}.mp4" type="video/mp4" />
       </video>`;
     return m.stage === "native" ? `<span class="cover cover--scene">${video}</span>` : `<div class="media-stage media-stage--${m.stage}">${video}</div>`;
   }
-  const backdrop = m.backdrop ? ` style="background-image:url('${esc(m.backdrop)}')"` : "";
-  return `<button type="button" class="cover cover--scene${m.backdrop ? " cover--backdrop" : ""}" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"${backdrop}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`;
+  // A full composition stands on a stretched copy of itself, so it never crops
+  const fill = m.backdrop ?? (m.full ? m.src : "");
+  const backdrop = fill ? ` style="background-image:url('${esc(fill)}')"` : "";
+  return `<span class="cover cover--scene${m.backdrop ? " cover--backdrop" : ""}${m.full ? " cover--full" : ""}"${backdrop}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></span>`;
 };
 
 // One section under its label: every headline and paragraph that shares it
@@ -265,7 +267,8 @@ function casePage(p: Project) {
     <div class="split split--case">
       <div class="split__main">
         <div class="stage" data-stage="scroll">
-          <div class="stage__frame">
+          <div class="stage__frame${story?.panorama ? " stage__frame--panorama" : ""}">
+            ${story?.panorama ? `<img class="stage__panorama" src="${esc(story.panorama)}" alt="" aria-hidden="true" />` : ""}
             ${scenes.map((media) => `<div class="stage__slide">${media}</div>`).join("")}
             <a class="pill pill--dark stage__back" href="/" data-back><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg> Back to Main</a>
           </div>
@@ -415,15 +418,6 @@ document.addEventListener("click", (e) => {
     return;
   }
 
-  const zoom = target.closest<HTMLElement>("[data-zoom]");
-  if (zoom) {
-    const big = lightbox.querySelector("img")!;
-    big.src = zoom.dataset.zoom!;
-    big.alt = zoom.querySelector("img")?.alt ?? "";
-    openPopover(lightbox, zoom);
-    return;
-  }
-
   const filter = target.closest<HTMLElement>("[data-filter]");
   if (filter) {
     const group = filter.dataset.filter!;
@@ -455,12 +449,10 @@ document.addEventListener("click", (e) => {
 });
 
 
-animateDialog(lightbox);
 animateDialog(about);
 about.addEventListener("click", (e) => {
   if (e.target === about || (e.target as HTMLElement).closest(".contact__close")) closePopover(about);
 });
-lightbox.addEventListener("click", () => closePopover(lightbox));
 
 // Going back, the stage moves back too, or a case study's media returns to its card
 let shownSlug = currentSlug();

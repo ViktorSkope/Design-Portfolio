@@ -54,7 +54,12 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
       }),
     );
 
-  const show = (index: number, direction?: number) => {
+  // A panorama behind the slides travels from its left edge on the first slide to its
+  // right edge on the last, slower than the slides moving over it
+  const panFrame = root.querySelector<HTMLElement>(".stage__frame--panorama");
+  const pan = () => panFrame?.style.setProperty("--pan", String(slides.length > 1 ? current / (slides.length - 1) : 0));
+
+  const show = (index: number, direction?: number, animate = true) => {
     const next = (index + slides.length) % slides.length;
     if (next === current) return;
     const dir = direction ?? Math.sign(next - current);
@@ -62,11 +67,12 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
     current = next;
     const entering = slides[current];
     slides.forEach((slide) => slide.classList.toggle("is-active", slide === entering));
+    if (mode === "timer") pan();
     segs.forEach((seg, i) => {
       seg.classList.toggle("is-active", i === current);
       seg.style.setProperty("--fill", "0");
     });
-    if (leaving && !reducedMotion() && !document.hidden) {
+    if (animate && leaving && !reducedMotion() && !document.hidden) {
       // The outgoing slide moves off to one side while the next one follows it in
       leaving.classList.add("is-leaving");
       const out = leaving.animate([{ transform: "none" }, { transform: `translateX(${-dir * 100}%)` }], { duration: SLIDE_MS, easing: EASE });
@@ -154,10 +160,7 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
     const at = (i: number) => Math.abs(leftOf(cards[i]) - track.scrollLeft);
     return cards.reduce((best, _, i) => (at(i) < at(best) ? i : best), 0);
   };
-  const followCards = () => {
-    show(sceneOfCard(cards[cardAt()]));
-    fill(1);
-  };
+  const followCards = () => fill(1);
   const toCard = (index: number) => {
     const card = cards[Math.max(0, Math.min(cards.length - 1, index))];
     if (track && card) track.scrollTo({ left: leftOf(card), behavior: reducedMotion() ? "instant" : "smooth" });
@@ -170,10 +173,52 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
     return matchMedia("(max-width: 900px)").matches ? below + (innerHeight - below) * 0.3 : innerHeight * 0.45;
   };
 
+  // The slides move with the scroll itself, frame for frame: between two paragraphs
+  // the outgoing image and the incoming one share the frame in proportion to how far
+  // the page has gone from one to the other
+  const markOf = (el: HTMLElement) => el.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0);
+  const anchors = (): [number, number][] => {
+    const last = Number(blocks[blocks.length - 1]?.dataset.scene ?? 0);
+    if (narrow() && track) return cards.map((card) => [leftOf(card), sceneOfCard(card)]);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const next = document.querySelector<HTMLElement>(".case-side__next");
+    const points: [number, number][] = [[0, 0], ...blocks.map((b): [number, number] => [markOf(b), Number(b.dataset.scene)])];
+    if (next) points.push([markOf(next), last]);
+    return points.map(([y, scene]): [number, number] => [Math.min(max, Math.max(0, y)), scene]);
+  };
+  const position = () => {
+    const at = narrow() && track ? track.scrollLeft : scrollY;
+    const points = anchors();
+    if (!points.length) return 0;
+    if (at <= points[0][0]) return points[0][1];
+    for (let i = 1; i < points.length; i++) {
+      const [y0, s0] = points[i - 1];
+      const [y1, s1] = points[i];
+      if (at <= y1) return y1 - y0 < 1 ? s1 : s0 + ((s1 - s0) * (at - y0)) / (y1 - y0);
+    }
+    return points[points.length - 1][1];
+  };
+  const release = () =>
+    slides.forEach((slide) => {
+      slide.style.transform = "";
+      slide.style.visibility = "";
+    });
+  const scrub = () => {
+    const at = position();
+    show(Math.round(at), undefined, false);
+    slides.forEach((slide, i) => {
+      const offset = i - at;
+      const inView = Math.abs(offset) < 0.995;
+      slide.style.visibility = inView ? "visible" : "hidden";
+      slide.style.transform = inView && Math.abs(offset) > 0.001 ? `translateX(${offset * 100}%)` : "";
+    });
+  };
+
   let frame = 0;
   const follow = () => {
     frame = 0;
     if (stopped) return;
+    scrub();
     if (narrow()) {
       followCards();
       return;
@@ -186,7 +231,6 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
     });
     if (atEnd) index = blocks.length - 1;
     const block = blocks[index];
-    show(block ? Number(block.dataset.scene) : 0);
     // The bar fills as the paragraph is read
     if (!block) {
       fill(0);
@@ -196,19 +240,33 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
     const end = blocks[index + 1]?.getBoundingClientRect().top ?? block.getBoundingClientRect().bottom;
     fill(atEnd ? 1 : (line - top) / Math.max(1, end - top));
   };
-  const schedule = () => {
-    if (!frame) frame = requestAnimationFrame(follow);
-  };
+  const schedule = () => follow();
   on(window, "scroll", schedule);
   on(window, "resize", schedule);
   if (track) on(track, "scroll", schedule);
+
+  // The panorama moves with the scroll itself, frame for frame: the top of the page
+  // shows its left edge, the end of the page its right edge
+  const panWithScroll = () => {
+    if (!panFrame) return;
+    const progress =
+      narrow() && track
+        ? track.scrollLeft / Math.max(1, track.scrollWidth - track.clientWidth)
+        : scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    panFrame.style.setProperty("--pan", String(Math.min(1, Math.max(0, progress))));
+  };
+  if (panFrame) {
+    on(window, "scroll", panWithScroll);
+    on(window, "resize", panWithScroll);
+    if (track) on(track, "scroll", panWithScroll);
+    panWithScroll();
+  }
   cleanups.push(() => cancelAnimationFrame(frame));
   follow();
 
   // ─── Scrolling steps from paragraph to paragraph, never resting in between ───
   // Where the page rests: the top, each paragraph at the line where it takes over
   // (its scroll-margin-top), the next-project footer and the very bottom
-  const markOf = (el: HTMLElement) => el.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0);
   const stops = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
     const marks = [...blocks, document.querySelector<HTMLElement>(".case-side__next")]
@@ -337,7 +395,8 @@ export function mountStage(root: HTMLElement, { mode, start = 0, onChange }: Opt
     const target = e.target as HTMLElement;
     if (target.closest("[data-toggle]")) {
       setStopped(!stopped);
-      if (!stopped) follow();
+      if (stopped) release();
+      else follow();
       return;
     }
     const step = target.closest<HTMLElement>("[data-step]");
