@@ -3,7 +3,7 @@ import { STORIES, type StoryBlock, type StoryMedia } from "./data/stories";
 import { VK_CARDS } from "./data/vkCases";
 import "./contact";
 import { inWorkGroup, WORK_GROUPS, type WorkGroup } from "./data/workFilter";
-import { animateDialog, closePopover, openPopover, settle, toggleDropdown, transitionPage } from "./motion";
+import { animateDialog, closePopover, openPopover, reducedMotion, settle, toggleDropdown, transitionPage } from "./motion";
 import { mountStage, stageControls } from "./stage";
 
 // Watchson and Ingrid lead, then newest first
@@ -27,11 +27,18 @@ const cover = (p: Project, className = "") => `
     <img src="${esc(p.coverImage)}" alt="${esc(p.coverImageAlt)}" />
   </span>`;
 
+// A project with a panorama shows its screens on the start of it everywhere: the
+// thumbnail, the landing carousel and the case study's first slide all match
+const onPanorama = (slug: string) => {
+  const panorama = STORIES[slug]?.panorama;
+  return panorama ? { cls: " has-panorama", style: ` style="background-image:url('${esc(panorama)}')"` } : { cls: "", style: "" };
+};
+
 // A project's recording on its backdrop, where it has one
 const stage = (slug: string) => {
   const card = VK_CARDS[slug];
   return `
-  <div class="media-stage media-stage--${slug} media-stage--card">
+  <div class="media-stage media-stage--${slug} media-stage--card${onPanorama(slug).cls}"${onPanorama(slug).style}>
     <video data-autoplay muted loop playsinline preload="none" poster="${card.poster}" width="${card.width ?? 1280}" height="${card.height ?? 664}" aria-hidden="true">
       <source src="${card.video}.webm" type="video/webm" />
       <source src="${card.video}.mp4" type="video/mp4" />
@@ -56,12 +63,22 @@ const cardVideo = (slug: string) => {
 };
 
 // Thumbnails composed with their own background, cropped to fill the card
-const CARD_IMAGES: Record<string, { src: string; alt: string; width: number; height: number }> = {
+// (a screen marks a product screenshot with no background of its own: it stands on
+// the project's panorama instead)
+const CARD_IMAGES: Record<string, { src: string; alt: string; width: number; height: number; screen?: boolean }> = {
   "athos-commerce": {
-    src: "/images/work/athos-card.webp",
-    alt: "The Athos Commerce dashboard over a soft watercolour background, showing search performance, catalog sync and category performance.",
+    src: "/images/work/athos-screen.webp",
+    alt: "The Athos Commerce dashboard: a welcome back, shortcuts to campaigns, synonyms, redirects and filtering, then search performance, catalog sync and category performance.",
     width: 2000,
-    height: 1260,
+    height: 1235,
+    screen: true,
+  },
+  "rho-studio": {
+    src: "/images/work/rho-screen.webp",
+    alt: "Rho Studio's home in dark mode: a welcome, shortcuts to agents, and a feed of team updates with an AI-generated jungle ruin.",
+    width: 1440,
+    height: 1030,
+    screen: true,
   },
   liliworld: {
     src: "/images/work/liliworld-card.webp",
@@ -73,6 +90,12 @@ const CARD_IMAGES: Record<string, { src: string; alt: string; width: number; hei
 
 const cardImage = (slug: string, className = "") => {
   const card = CARD_IMAGES[slug];
+  const bg = onPanorama(slug);
+  if (card.screen)
+    return `
+  <span class="cover cover--scene cover--screen${bg.cls} ${className}"${bg.style}>
+    <img src="${card.src}" alt="${esc(card.alt)}" width="${card.width}" height="${card.height}" />
+  </span>`;
   return `
   <span class="cover cover--fill ${className}">
     <img src="${card.src}" alt="${esc(card.alt)}" width="${card.width}" height="${card.height}" />
@@ -98,7 +121,7 @@ const slideMedia = (p: Project) => {
   const card = VK_CARDS[p.slug];
   if (card)
     return `
-    <div class="media-stage media-stage--${p.slug}">
+    <div class="media-stage media-stage--${p.slug}${onPanorama(p.slug).cls}"${onPanorama(p.slug).style}>
       <video muted loop playsinline preload="none" poster="${card.poster}" width="1280" height="664" aria-hidden="true">
         <source src="${card.video}.webm" type="video/webm" />
         <source src="${card.video}.mp4" type="video/mp4" />
@@ -112,7 +135,9 @@ const slideMedia = (p: Project) => {
 // The same, still, for the small thumbnails under All Work
 const thumbMedia = (p: Project) => {
   const card = VK_CARDS[p.slug];
-  if (card) return `<span class="media-stage media-stage--${p.slug}"><img src="${card.poster}" alt="" loading="lazy" /></span>`;
+  if (card?.thumbVideo)
+    return `<span class="media-stage media-stage--${p.slug}${onPanorama(p.slug).cls}"${onPanorama(p.slug).style}><video muted loop playsinline ${reducedMotion() ? "" : "autoplay"} preload="metadata" poster="${card.poster}" width="${card.width ?? 1280}" height="${card.height ?? 664}" aria-hidden="true"><source src="${card.video}.webm" type="video/webm" /><source src="${card.video}.mp4" type="video/mp4" /></video></span>`;
+  if (card) return `<span class="media-stage media-stage--${p.slug}${onPanorama(p.slug).cls}"${onPanorama(p.slug).style}><img src="${card.poster}" alt="" loading="lazy" /></span>`;
   const video = CARD_VIDEOS[p.slug];
   if (video) return `<span class="cover cover--fill"><img src="${video.poster}" alt="" loading="lazy" /></span>`;
   if (CARD_IMAGES[p.slug]) return cardImage(p.slug).replace("<img ", '<img loading="lazy" ');
@@ -221,10 +246,8 @@ const sceneMedia = (m: StoryMedia) => {
       </video>`;
     return m.stage === "native" ? `<span class="cover cover--scene">${video}</span>` : `<div class="media-stage media-stage--${m.stage}">${video}</div>`;
   }
-  // A full composition stands on a stretched copy of itself, so it never crops
-  const fill = m.backdrop ?? (m.full ? m.src : "");
-  const backdrop = fill ? ` style="background-image:url('${esc(fill)}')"` : "";
-  return `<span class="cover cover--scene${m.backdrop ? " cover--backdrop" : ""}${m.full ? " cover--full" : ""}"${backdrop}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></span>`;
+  const backdrop = m.backdrop ? ` style="background-image:url('${esc(m.backdrop)}')"` : "";
+  return `<span class="cover cover--scene${m.backdrop ? " cover--backdrop" : ""}${m.full ? " cover--full" : ""}"${backdrop}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy"${m.focus ? ` style="object-position:${esc(m.focus)}"` : ""} /></span>`;
 };
 
 // One section under its label: every headline and paragraph that shares it

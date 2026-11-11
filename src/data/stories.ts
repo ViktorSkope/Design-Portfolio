@@ -9,8 +9,11 @@ export interface StoryImage {
   plain?: boolean;
   // A painting the screenshot sits on, like the recordings' stages
   backdrop?: string;
-  // A finished composition with its own background: fills the stage edge to edge
+  // A finished composition with its own background: fills the whole stage, edge to
+  // edge, covering the panorama
   full?: boolean;
+  // Where a full image keeps its subject when it has to crop (an object-position)
+  focus?: string;
   caption?: string;
 }
 
@@ -312,32 +315,33 @@ export const STORIES: Record<string, Story> = {
       {
         label: "Overview",
         headline: "New restaurants struggle to reach the people nearby",
-        text: "Star Sales wanted a coupon partner program to connect them. Whirl is my concept for how AI could make that journey better.",
+        text: "Star Sales wanted to rebrand themselves as a coupon partner program to connect people with restaurants. Whirl is my concept for the look and feel, and some product insights in between.",
         split: true,
-        media: [{ src: "/whirl/logo-identity.webp", alt: "Whirl logo construction, with a handwritten spiral sketch and proportions, shown as an app icon in the App Store and on an iPhone home screen." }],
+        media: [{ src: "/whirl/coffee-chat.webp", full: true, focus: "28% 50%", alt: "Two friends sharing coffee, with a Whirl chat over the photo: asked for a place nearby, it suggests Alfredo's Cafe, pet friendly with parking, and offers to show the menu." }],
       },
       {
         label: "Challenge",
-        headline: "Make choosing a place feel lighter than setting filters.",
-        text: "Cards show places, you discard what you don't want, and the app learns your taste from what's left.",
+        headline: "Whirl is the spiralling we all do when looking for things to do and places to go without planning",
+        text: "Deciding what to do on an early Thursday evening on a whim can be a bit overwhelming to some people. That's why we built a brand that looks fresh, social and outgoing.",
         split: true,
-        media: [{ src: "/whirl/sorting-home.webp", alt: "Whirl home screen with an Around you carousel and card sorting categories, surrounded by tilted City Tour, Gallery, Coffee Place and Outdoors Restaurant cards." }],
+        media: [{ src: "/whirl/app-icon.webp", alt: "The Whirl logo: a handwritten spiral sketch, the wordmark on its construction grid, then the app icon on an iPhone home screen and in its App Store listing." }],
+      },
+      {
+        headline: "Decision-making made light and easy",
+        text: "With card sorting, Whirl makes you feel confident about what to do by eliminating what not to do in your free time.",
       },
       {
         label: "Solution",
+        headline: "Boosting your local community",
+        text: "Helping people get the best of the city they're in, using natural language search and the help of online search to find the best spots for their current context.",
+        media: [{ src: "/whirl/app-screens.webp", alt: "Four Whirl screens: a Feeling undecided? welcome, a home with places around you and card categories, a salad shop with what it offers, and the assistant suggesting a pet-friendly sushi place." }],
+      },
+      {
         headline: "Ask in plain language, and get a match with a next step",
         text: "Dietary needs, pets, parking: the assistant suggests a place and what to do next, like seeing the menu before you go.",
-        media: [
-          {
-            src: "/whirl/chat-screens.webp",
-            alt: "Two Whirl chat screens: suggested prompts, and a pet-friendly restaurant recommendation with a reservation prompt.",
-            backdrop: "/images/work/sky-backdrop.webp",
-          },
-        ],
       },
     ],
   },
-
   "rho-studio": {
     title: "A shared workspace where writers and AI agents build stories",
     summary:
