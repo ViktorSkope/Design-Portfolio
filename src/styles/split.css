@@ -1,0 +1,986 @@
+/*
+ * The landing page and case studies: text in a narrow column beside a big rounded
+ * stage. On the landing page the stage is on the right and runs a timed carousel of
+ * projects; on a case study it moves to the left and follows the reading.
+ */
+
+:root {
+  --color-canvas: #f3f3f3;
+}
+
+body.is-split .nav {
+  display: none;
+}
+
+.split {
+  --side: clamp(300px, 24vw, 400px);
+  --gutter: clamp(32px, 4vw, 64px);
+  --edge: clamp(20px, 2.6vw, 48px);
+  --stage-gap: 20px;
+  --controls: 60px;
+  display: grid;
+  grid-template-columns: var(--side) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "intro main"
+    "work main";
+  column-gap: var(--gutter);
+  max-width: 2000px;
+  margin-inline: auto;
+  padding: var(--edge);
+}
+
+.split--case {
+  grid-template-columns: minmax(0, 1fr) var(--side);
+  grid-template-rows: auto;
+  grid-template-areas: "main side";
+}
+
+.split__intro { grid-area: intro; }
+.split__work { grid-area: work; }
+.split__side { grid-area: side; }
+.split__main { grid-area: main; }
+
+/* ─── Pills and round buttons ─────────────────────────────────────────────── */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--text-button);
+  font-weight: 500;
+  letter-spacing: var(--tracking-ui);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 120ms ease;
+}
+
+.pill:active {
+  transform: scale(var(--press-scale, 0.97));
+}
+
+.pill--dark {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.pill--dark:hover {
+  background: var(--color-primary-hover);
+}
+
+.pill--light {
+  background: var(--color-surface-card);
+  color: var(--color-ink);
+}
+
+.pill--light:hover {
+  background: #f8f7f4;
+}
+
+.pill--wide {
+  width: 100%;
+}
+
+.round-btn {
+  display: grid;
+  place-items: center;
+  width: var(--controls);
+  height: var(--controls);
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-surface-card);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.round-btn:hover {
+  background: #f8f7f4;
+}
+
+/* ─── Landing page: the column on the left ────────────────────────────────── */
+
+.split__avatar {
+  display: block;
+  width: 70px;
+  height: 70px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-surface-paper);
+  cursor: pointer;
+}
+
+.split__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.split__avatar:hover img {
+  transform: scale(1.06);
+}
+
+/* The About that opens from the avatar, and Lets Talk in the same style: a soft
+   rounded card with a portrait, a name line and pill-shaped controls */
+.contact {
+  width: min(460px, calc(100vw - 32px));
+  border: 0;
+  border-radius: 24px;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.25);
+}
+
+.contact::backdrop {
+  background: rgb(15 21 29 / 0.45);
+}
+
+.contact .contact__panel {
+  padding: 28px;
+}
+
+.contact .contact__close {
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-canvas);
+}
+
+.contact .contact__intro {
+  margin: 2px 0 20px;
+  color: var(--color-muted);
+  font-size: var(--text-body-sm);
+  line-height: 1.5;
+}
+
+.contact .contact__row {
+  padding: 12px 16px;
+  border-radius: 16px;
+}
+
+.contact .contact__row + .contact__email,
+.contact__email {
+  margin-top: 6px;
+}
+
+.contact .contact__row,
+.contact .contact__email {
+  background: var(--color-canvas);
+}
+
+.contact .contact__email {
+  border-radius: 16px;
+}
+
+.contact .contact__email .contact__row {
+  background: none;
+}
+
+.contact .contact__row:hover,
+.contact .contact__close:hover {
+  background: #e9e9e9;
+}
+
+.contact .contact__copy {
+  margin-right: 10px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-card);
+}
+
+.contact .contact__copy:hover {
+  background: #fafafa;
+}
+
+.contact hr {
+  margin: 22px 0 18px;
+}
+
+.contact .contact__form,
+.contact .contact__sent {
+  gap: 10px;
+  padding: 0;
+  font-size: var(--text-body-sm);
+}
+
+.contact .contact__form label {
+  color: var(--color-ink);
+}
+
+.contact .contact__form textarea,
+.contact .contact__form input {
+  padding: 12px 16px;
+  border-color: transparent;
+  border-radius: 16px;
+  font-size: var(--text-body-sm);
+}
+
+.contact .contact__form textarea:focus,
+.contact .contact__form input:focus {
+  border-color: var(--color-slate);
+  outline: none;
+}
+
+.contact .contact__foot .pill {
+  height: 40px;
+  padding: 0 24px;
+  font-size: var(--text-caption);
+}
+
+.contact .contact__foot .pill:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.contact .contact__again {
+  margin-top: 4px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.about-pop__panel {
+  padding: 28px;
+  font-size: var(--text-body-sm);
+  line-height: 1.5;
+  letter-spacing: var(--tracking-ui);
+  color: var(--color-muted);
+}
+
+.about-pop__panel > p + p {
+  margin-top: 12px;
+}
+
+.about-pop__photo {
+  width: 88px;
+  height: 88px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.about-pop__name {
+  font-size: var(--text-title-md);
+  color: var(--color-ink);
+}
+
+.about-pop__panel > .about-pop__role {
+  margin-top: 2px;
+}
+
+.about-pop__panel > .about-pop__lead {
+  margin-top: 20px;
+  color: var(--color-ink);
+}
+
+.about-pop__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.about-pop__links .pill {
+  height: 40px;
+  padding: 0 18px;
+  background: var(--color-canvas);
+  font-size: var(--text-caption);
+}
+
+/* Three levels: the headline, then the bio as body text, then small labels for
+   what follows (Currently, All Work) over their content in ink */
+.split__title {
+  margin-top: clamp(40px, 6vh, 72px);
+  font-size: clamp(34px, 2.75vw, 48px);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.05em;
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+
+.split__title span {
+  color: var(--color-slate);
+}
+
+.split__bio {
+  max-width: 34ch;
+  margin-top: clamp(24px, 4vh, 40px);
+  font-size: var(--text-body-sm);
+  line-height: 1.55;
+  letter-spacing: var(--tracking-ui);
+  color: var(--color-muted);
+  text-wrap: pretty;
+}
+
+.split__label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-hairline);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--color-slate);
+}
+
+.split__now {
+  margin-top: clamp(32px, 5vh, 48px);
+}
+
+.split__now-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: var(--text-body-md);
+  font-weight: 500;
+  letter-spacing: var(--tracking-ui);
+  color: var(--color-ink);
+}
+
+/* A small live dot: this is what I am doing now */
+.split__live {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-semantic-success);
+  box-shadow: 0 0 0 3px rgb(10 137 65 / 0.15);
+}
+
+.split__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: clamp(28px, 4vh, 40px);
+}
+
+.split__actions .pill {
+  padding: 0 16px;
+}
+
+.split__work {
+  padding-top: 56px;
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.3;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-surface-paper);
+  cursor: pointer;
+}
+
+/* The project on the stage is outlined */
+.thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: inherit;
+  transition: border-color 0.2s ease;
+  pointer-events: none;
+}
+
+.thumb[aria-pressed="true"]::after {
+  border-color: var(--color-ink);
+}
+
+.thumb > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  border-radius: 0;
+  transition: transform 0.4s ease;
+}
+
+.thumb:hover > * {
+  transform: scale(1.04);
+}
+
+.thumb .media-stage img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 84%;
+  height: auto;
+  transform: translate(-50%, -50%);
+}
+
+/* ─── The stage ───────────────────────────────────────────────────────────── */
+
+/* Held in view while the column beside it scrolls, stretched between the page
+   margins and as tall as the screen allows */
+.stage {
+  position: sticky;
+  top: var(--edge);
+}
+
+.stage__frame {
+  position: relative;
+  height: calc(100svh - 2 * var(--edge) - var(--controls) - var(--stage-gap));
+  min-height: 420px;
+  container-type: size;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--color-surface-paper);
+  isolation: isolate;
+}
+
+.stage__slide {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+}
+
+.stage__slide.is-active,
+.stage__slide.is-leaving {
+  visibility: visible;
+}
+
+.stage__slide > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Recordings on their painted backdrop keep their size, centred, whatever the
+   frame's width; they only shrink when the frame is too narrow to hold them */
+.stage__slide .media-stage video {
+  top: 46%;
+  left: 50%;
+  width: min(95cqh, 88cqw);
+  height: auto;
+  transform: translate(-50%, -50%);
+  border-radius: 6px;
+}
+
+.stage__slide .cover--video video {
+  object-fit: cover;
+}
+
+/* A case study's screenshots and recordings, whole, on the paper tone */
+.cover--scene {
+  display: grid;
+  place-items: center;
+  background: var(--color-surface-paper);
+  cursor: zoom-in;
+}
+
+.cover--scene img,
+.cover--scene video {
+  width: 100%;
+  height: 100%;
+  padding: 7%;
+  object-fit: contain;
+}
+
+span.cover--scene {
+  cursor: default;
+}
+
+.cover--backdrop {
+  background-size: cover;
+  background-position: center;
+}
+
+.stage__back {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  height: 40px;
+  padding: 0 20px;
+  font-size: var(--text-caption);
+}
+
+/* The project in front: a frosted bar along the bottom of the frame */
+.stage__bar {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 12px 12px 22px;
+  border-radius: 20px;
+  background: rgb(240 238 234 / 0.78);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
+}
+
+.stage__info {
+  min-width: 0;
+}
+
+.stage__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 13px;
+  letter-spacing: var(--tracking-ui);
+  color: var(--color-muted);
+}
+
+.stage__headline {
+  margin-top: 6px;
+  font-size: clamp(16px, 1.15vw, 19px);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  color: var(--color-ink);
+}
+
+.stage__bar .pill {
+  height: 46px;
+  padding: 0 26px;
+  font-size: var(--text-caption);
+}
+
+/* ─── The player under the stage ──────────────────────────────────────────── */
+
+.stage__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--stage-gap);
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: var(--controls);
+  padding: 0 26px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-card);
+}
+
+.player__toggle {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.player__track {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+/* Every slide is a dot; the one in front stretches into a bar that fills */
+.player__seg {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: #d4d2ce;
+  transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.player__seg.is-active {
+  width: clamp(72px, 9vw, 134px);
+}
+
+.player__seg i {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-ink);
+  transform: scaleX(var(--fill, 0));
+  transform-origin: left;
+}
+
+.player__seg:not(.is-active) i {
+  transform: scaleX(0);
+}
+
+.stage__arrows {
+  display: flex;
+  gap: 10px;
+}
+
+/* ─── Case study: the column on the right ─────────────────────────────────── */
+
+.case-side {
+  padding-top: 12px;
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-ui);
+}
+
+.case-side__crumb {
+  color: var(--color-muted);
+}
+
+.case-side__crumb a:hover {
+  color: var(--color-ink);
+}
+
+.case-side h1 {
+  margin-top: 44px;
+  font-size: clamp(26px, 2vw, 32px);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.045em;
+  color: var(--color-ink);
+}
+
+.case-side__summary {
+  margin-top: 40px;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.case-side__note {
+  margin-top: 36px;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: #f5ddd0;
+  color: #c2552f;
+  line-height: 1.5;
+}
+
+.case-side > .pill {
+  margin-top: 28px;
+}
+
+.case-side__facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.case-side__facts dt,
+.case-side__facts dd {
+  color: var(--color-ink);
+  line-height: 1.45;
+}
+
+.case-side__facts dd,
+.case-side__stats dd {
+  margin: 4px 0 0;
+}
+
+/* Each paragraph holds the screen for a while, so its image has time on the stage
+   before the next one takes over. Scrolling steps from one to the next, resting
+   where scroll-margin-top says, at the top of the column (stage.ts reads it). Each
+   one fills the screen, so the next only comes in with the next step. */
+.case-side__block {
+  min-height: 100svh;
+  scroll-margin-top: var(--edge);
+}
+
+.case-side__facts + .case-side__block {
+  margin-top: clamp(56px, 12vh, 120px);
+}
+
+.case-side__next {
+  scroll-margin-top: var(--edge);
+}
+
+/* The stage holds still beside the text on a case study */
+@media (min-width: 901px) {
+  .split--case .stage {
+    position: fixed;
+    top: var(--edge);
+    left: var(--edge);
+    right: calc(var(--edge) + var(--side) + var(--gutter));
+  }
+}
+
+.case-side__label {
+  color: var(--color-muted);
+}
+
+.case-side__block h2 {
+  margin-top: 28px;
+  font-size: clamp(24px, 1.9vw, 30px);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+  color: var(--color-ink);
+}
+
+.case-side__block > p:not(.case-side__label),
+.case-side__block ul {
+  margin-top: 28px;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.case-side__block ul {
+  padding-left: 1.1em;
+}
+
+.case-side__block li + li {
+  margin-top: 8px;
+}
+
+.case-side__block strong {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.case-side__stats {
+  display: grid;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.case-side__stats dt {
+  font-size: clamp(18px, 1.35vw, 21px);
+  letter-spacing: -0.035em;
+  color: var(--color-ink);
+}
+
+.case-side__stats dd {
+  color: var(--color-muted);
+}
+
+.case-side__next {
+  padding-top: 20px;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.case-side__next p:first-child {
+  color: var(--color-muted);
+}
+
+.case-side__next p:nth-child(2) {
+  margin-top: 4px;
+  color: var(--color-ink);
+}
+
+.case-side__next .pill {
+  margin-top: 56px;
+}
+
+/* ─── The carousel carries over between pages ─────────────────────────────── */
+
+/* The frame moves across the screen, keeping the same image */
+::view-transition-group(project-media) {
+  animation-duration: 640ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ─── Phones and narrow windows ───────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .split,
+  .split--case {
+    --controls: 48px;
+    --stage-gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "intro"
+      "main"
+      "work";
+  }
+
+  .split--case {
+    grid-template-areas:
+      "main"
+      "side";
+  }
+
+  .split__main {
+    margin-top: 40px;
+  }
+
+  .split--case .split__main {
+    margin-top: 0;
+  }
+
+  .split__title {
+    margin-top: 32px;
+  }
+
+  .split__bio {
+    margin-top: 24px;
+  }
+
+  .split__now,
+  .split__actions {
+    margin-top: 28px;
+  }
+
+  .split__work {
+    padding-top: 48px;
+  }
+
+  .thumbs {
+    margin-top: 20px;
+    gap: 12px;
+  }
+
+  /* On the landing page the stage simply sits in the page */
+  .split--home .stage {
+    position: static;
+    width: 100%;
+  }
+
+  .split--home .stage__frame {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    border-radius: 22px;
+  }
+
+  .split--home .stage__slide .media-stage video {
+    top: 34%;
+    width: 86%;
+  }
+
+  .stage__bar {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .stage__tags {
+    display: none;
+  }
+
+  .stage__headline {
+    margin-top: 0;
+    font-size: 17px;
+  }
+
+  .stage__bar .pill {
+    height: 46px;
+  }
+
+  /* On a case study it stays pinned at the top while the text scrolls under it */
+  .split--case .stage {
+    top: 0;
+    z-index: 5;
+    width: auto;
+    margin-inline: calc(-1 * var(--edge));
+    padding: 12px var(--edge) 12px;
+    background: var(--color-canvas);
+  }
+
+  .split--case .stage__frame {
+    aspect-ratio: auto;
+    height: min(46svh, 70vw);
+    min-height: 0;
+    border-radius: 18px;
+  }
+
+  .stage__back {
+    top: 10px;
+    left: 10px;
+    height: 34px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  .player {
+    gap: 10px;
+    padding: 0 14px;
+  }
+
+  .player__track {
+    gap: 5px;
+  }
+
+  .player__seg {
+    width: 6px;
+    height: 6px;
+  }
+
+  .player__seg.is-active {
+    width: 40px;
+  }
+
+  .stage__arrows {
+    gap: 8px;
+  }
+
+  .case-side h1 {
+    margin-top: 24px;
+  }
+
+  .case-side__summary,
+  .case-side__note,
+  .case-side__facts {
+    margin-top: 24px;
+  }
+
+  .case-side__block {
+    min-height: calc(100svh - min(46svh, 70vw) - 110px);
+  }
+
+  /* On phones the paragraph settles just under the pinned stage */
+  .case-side__block,
+  .case-side__next {
+    scroll-margin-top: calc(min(46svh, 70vw) + 110px);
+  }
+
+  .case-side__block h2 {
+    margin-top: 16px;
+  }
+
+  .case-side__block > p:not(.case-side__label),
+  .case-side__block ul {
+    margin-top: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player__seg,
+  .thumb > * {
+    transition: none;
+  }
+}

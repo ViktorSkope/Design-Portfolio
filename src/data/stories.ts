@@ -51,6 +51,8 @@ export interface Story {
   summary: string;
   facts: { label: string; value: string }[];
   link?: { href: string; label: string };
+  // A short notice set apart under the summary, like an NDA
+  note?: string;
   // A recording shown in place of the cover image
   cover?: StoryRecording;
   blocks: StoryBlock[];
@@ -132,6 +134,7 @@ export const STORIES: Record<string, Story> = {
     title: "Turning machine error codes into warnings technicians can act on",
     summary:
       "Ingrid lets field technicians monitor autonomous harvesters remotely. I redesigned it so they could use it without a manual.",
+    note: "This is an NDA protected project. Names and brands have been changed to preserve the real product.",
     facts: [
       { label: "Role", value: "Product Design Lead" },
       { label: "Team", value: "A researcher, two field technicians and me" },

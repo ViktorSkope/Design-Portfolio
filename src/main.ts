@@ -1,9 +1,10 @@
 import { getCoverBackground, projects, type Project } from "./data/projects";
-import { STORIES, type StoryBlock, type StoryMedia, type StoryRecording } from "./data/stories";
+import { STORIES, type StoryBlock, type StoryMedia } from "./data/stories";
 import { VK_CARDS } from "./data/vkCases";
 import "./contact";
 import { inWorkGroup, WORK_GROUPS, type WorkGroup } from "./data/workFilter";
 import { animateDialog, closePopover, openPopover, settle, toggleDropdown, transitionPage } from "./motion";
+import { mountStage, stageControls } from "./stage";
 
 // Watchson and Ingrid lead, then newest first
 const ORDER = ["watchson", "ingrid", "athos-commerce", "whirl", "rho-studio", "liliworld", "pewee-diary", "blindspot", "plywood"];
@@ -13,6 +14,7 @@ const SITE_TITLE = "Viktor Dopke – Product Designer";
 
 const main = document.querySelector<HTMLElement>("#main")!;
 const lightbox = document.querySelector<HTMLDialogElement>("#lightbox")!;
+const about = document.querySelector<HTMLDialogElement>("#about")!;
 const navLinks = document.querySelector<HTMLElement>(".nav__links")!;
 const navToggle = document.querySelector<HTMLElement>(".nav__toggle")!;
 
@@ -90,18 +92,90 @@ const workCard = (p: Project) => `
 
 // ─── Pages ───────────────────────────────────────────────────────────────────
 
-function homePage() {
-  return `
-    <section class="hero container">
-      <h1 class="hero__title">
-        <span class="hero__title-setup">Multidisciplinary product designer with 10+ YOE</span>
-        driving design strategy for B2B&nbsp;SaaS, Startups and&nbsp;Games.<span class="hero__chip" aria-hidden="true"><img src="/avatar-pixel.webp" alt="" width="50" height="50" /></span>
-      </h1>
-    </section>
+// ─── Landing page and case studies: text beside a big stage ──────────────────
 
-    <section class="section container home-work" aria-label="Selected work">
-      <ul class="card-grid">${list.slice(0, 6).map(workCard).join("")}</ul>
-    </section>`;
+// What a project shows on the stage: its recording or image, filling the frame
+const slideMedia = (p: Project) => {
+  const card = VK_CARDS[p.slug];
+  if (card)
+    return `
+    <div class="media-stage media-stage--${p.slug}">
+      <video muted loop playsinline preload="none" poster="${card.poster}" width="1280" height="664" aria-hidden="true">
+        <source src="${card.video}.webm" type="video/webm" />
+        <source src="${card.video}.mp4" type="video/mp4" />
+      </video>
+    </div>`;
+  if (CARD_VIDEOS[p.slug]) return cardVideo(p.slug).replace(" data-autoplay", "");
+  if (CARD_IMAGES[p.slug]) return cardImage(p.slug);
+  return cover(p);
+};
+
+// The same, still, for the small thumbnails under All Work
+const thumbMedia = (p: Project) => {
+  const card = VK_CARDS[p.slug];
+  if (card) return `<span class="media-stage media-stage--${p.slug}"><img src="${card.poster}" alt="" loading="lazy" /></span>`;
+  const video = CARD_VIDEOS[p.slug];
+  if (video) return `<span class="cover cover--fill"><img src="${video.poster}" alt="" loading="lazy" /></span>`;
+  if (CARD_IMAGES[p.slug]) return cardImage(p.slug).replace("<img ", '<img loading="lazy" ');
+  return cover(p);
+};
+
+const headline = (p: Project) => STORIES[p.slug]?.title ?? p.tagline;
+
+// The project the landing page shows first: the one the visitor last came back from
+let featured = list[0].slug;
+
+function homePage() {
+  const start = Math.max(0, list.findIndex((p) => p.slug === featured));
+  const first = list[start];
+  return `
+    <div class="split split--home">
+      <div class="split__intro">
+        <button type="button" class="split__avatar" data-about aria-label="About Viktor"><img src="/avatar.png" alt="" width="70" height="70" /></button>
+        <h1 class="split__title"><span>I'm Vik, multidisciplinary designer</span> driving design strategy for B2B&nbsp;SaaS, Startups and&nbsp;Games</h1>
+        <p class="split__bio">I'm a product designer and builder with a love for games. I take inspiration from tabletop, virtual and offline games to understand how people adopt flows.</p>
+        <div class="split__now">
+          <p class="split__label">Currently</p>
+          <p class="split__now-value"><span class="split__live" aria-hidden="true"></span>Designing Athos Commerce from Brazil</p>
+        </div>
+        <div class="split__actions">
+          <button type="button" class="pill pill--dark" data-contact>Lets Talk</button>
+          <a class="pill pill--light" href="/Viktor-Dopke-Resume.pdf" download="Viktor-Dopke-Resume.pdf" data-external>Resume <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0-4-4m4 4 4-4" /><path d="M4 20h16" /></svg></a>
+        </div>
+      </div>
+
+      <section class="split__work" aria-label="All work">
+        <p class="split__label"><span>All Work</span><span>${list.length} projects</span></p>
+        <ul class="thumbs">${list
+          .map(
+            (p, i) => `
+          <li><button type="button" class="thumb" data-goto="${i}" aria-pressed="${i === start}" aria-label="Show ${esc(p.name)}">${thumbMedia(p)}</button></li>`,
+          )
+          .join("")}
+        </ul>
+      </section>
+
+      <div class="split__main">
+        <div class="stage" data-stage="timer" data-start="${start}" aria-roledescription="carousel" aria-label="Projects">
+          <div class="stage__frame">
+            ${list
+              .map(
+                (p, i) => `
+            <div class="stage__slide" data-slug="${esc(p.slug)}" data-tags="${esc(p.tags.slice(0, 3).join("|"))}" data-headline="${esc(headline(p))}" aria-roledescription="slide" aria-label="${i + 1} of ${list.length}: ${esc(p.name)}">${slideMedia(p)}</div>`,
+              )
+              .join("")}
+            <div class="stage__bar">
+              <div class="stage__info" aria-live="polite">
+                <p class="stage__tags">${first.tags.slice(0, 3).map((t) => `<span>${esc(t)}</span>`).join("")}</p>
+                <p class="stage__headline">${esc(headline(first))}</p>
+              </div>
+              <a class="pill pill--dark" href="/work/${esc(first.slug)}/" data-details>Project Details</a>
+            </div>
+          </div>
+          ${stageControls(list.length, "Pause")}
+        </div>
+      </div>
+    </div>`;
 }
 
 function workPage() {
@@ -138,89 +212,72 @@ function aboutPage() {
     </section>`;
 }
 
-const nextProject = (next: Project) => `
-  <section class="section container container--case">
-    <a class="next-project" href="/work/${esc(next.slug)}/">
-      <div><span>Next project</span><strong>${esc(next.name)}</strong></div>
-      <span class="text-link">View case study</span>
-    </a>
-  </section>`;
-
-const recording = (r: StoryRecording) => `
-  <div class="media-stage media-stage--${r.stage}"${r.stage === "native" ? ` style="aspect-ratio:${r.width}/${r.height}"` : ""}>
-    <video data-autoplay muted loop playsinline preload="none" poster="${r.poster}" width="${r.width}" height="${r.height}" aria-label="${esc(r.label)}">
-      <source src="${r.video}.webm" type="video/webm" />
-      <source src="${r.video}.mp4" type="video/mp4" />
-    </video>
-  </div>`;
-
-const figure = (m: StoryMedia) => `
-  <figure class="story-figure${"plain" in m && m.plain ? " story-figure--plain" : ""}${"backdrop" in m && m.backdrop ? " story-figure--staged" : ""}">
-    ${"stage" in m ? recording(m) : "plain" in m && m.plain ? `<img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" />` : `<button type="button" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"${"backdrop" in m && m.backdrop ? ` style="background-image:url('${esc(m.backdrop)}')"` : ""}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`}
-    ${m.caption ? `<figcaption>${esc(m.caption)}</figcaption>` : ""}
-  </figure>`;
-
-const anchor = (label: string) => "s-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-const storyBlock = (b: StoryBlock) => {
-  const text = `
-    <p class="story-block__label">${esc(b.label)}</p>
-    <h2>${esc(b.headline)}</h2>
-    ${b.text ? `<p class="story-block__text">${esc(b.text)}</p>` : ""}
-    ${b.points ? `<ul class="story-block__points">${b.points.map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul>` : ""}`;
-  const stats = b.stats
-    ? `<div class="stats story-stats">${b.stats.map((st) => `<div class="stat"><strong>${esc(st.value)}</strong><span>${esc(st.label)}</span></div>`).join("")}</div>`
-    : "";
-  const compare = b.compare
-    ? `<figure class="story-figure">
-        <div class="compare">
-          <img src="${esc(b.compare.before)}" alt="${esc(b.compare.beforeAlt)}" loading="lazy" />
-          <img class="compare__after" src="${esc(b.compare.after)}" alt="${esc(b.compare.afterAlt)}" loading="lazy" />
-          <span class="compare__line"></span>
-          <input type="range" min="0" max="100" value="50" aria-label="Compare before and after" />
-        </div>
-        ${b.compare.caption ? `<figcaption>${esc(b.compare.caption)}</figcaption>` : ""}
-      </figure>`
-    : "";
-  const media = b.media?.length ? `<div class="story-media${b.pair ? " story-media--pair" : ""}">${b.media.map(figure).join("")}</div>` : "";
-  const versus = b.versus
-    ? `<div class="story-versus">${b.versus.map((v) => `<div><p class="story-versus__label">${esc(v.label)}</p><p>${esc(v.text)}</p></div>`).join("")}</div>`
-    : "";
-  const kind = [b.split && "story-block--split", b.split && b.reverse && "story-block--reverse", b.emphasis && "story-block--emphasis"]
-    .filter(Boolean)
-    .join(" ");
-  return b.split
-    ? `<section class="story-block ${kind}" id="${anchor(b.label)}"><div>${text}${stats}${versus}</div>${media}</section>`
-    : `<section class="story-block ${kind}" id="${anchor(b.label)}">${text}${stats}${versus}${compare}${media}</section>`;
+// A case study's slides: its cover, then the media each paragraph talks about
+const sceneMedia = (m: StoryMedia) => {
+  if ("stage" in m) {
+    const video = `<video muted loop playsinline preload="none" poster="${m.poster}" width="${m.width}" height="${m.height}" aria-label="${esc(m.label)}">
+        <source src="${m.video}.webm" type="video/webm" />
+        <source src="${m.video}.mp4" type="video/mp4" />
+      </video>`;
+    return m.stage === "native" ? `<span class="cover cover--scene">${video}</span>` : `<div class="media-stage media-stage--${m.stage}">${video}</div>`;
+  }
+  const backdrop = m.backdrop ? ` style="background-image:url('${esc(m.backdrop)}')"` : "";
+  return `<button type="button" class="cover cover--scene${m.backdrop ? " cover--backdrop" : ""}" data-zoom="${esc(m.src)}" aria-label="Enlarge image: ${esc(m.alt)}"${backdrop}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy" /></button>`;
 };
+
+const caseBlock = (b: StoryBlock, scene: number) => `
+  <section class="case-side__block" data-scene="${scene}">
+    <p class="case-side__label">${esc(b.label)}</p>
+    <h2>${esc(b.headline)}</h2>
+    ${b.text ? `<p>${esc(b.text)}</p>` : ""}
+    ${b.points ? `<ul>${b.points.map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul>` : ""}
+    ${b.versus ? b.versus.map((v) => `<p><strong>${esc(v.label)}.</strong> ${esc(v.text)}</p>`).join("") : ""}
+    ${b.stats ? `<dl class="case-side__stats">${b.stats.map((st) => `<div><dt>${esc(st.value)}</dt><dd>${esc(st.label)}</dd></div>`).join("")}</dl>` : ""}
+  </section>`;
 
 function casePage(p: Project) {
   const next = list[(list.indexOf(p) + 1) % list.length];
   const story = STORIES[p.slug];
-  const coverMedia = story?.cover
-    ? recording(story.cover).replace('class="media-stage', 'class="case-cover media-stage')
-    : CARD_IMAGES[p.slug]
-      ? cardImage(p.slug, "case-cover")
-      : cover(p, "case-cover");
   const blocks = story?.blocks ?? [];
 
+  // Slide 0 is the same image the landing page showed, so opening the project keeps
+  // it in place; each paragraph with media of its own adds the next one, and a
+  // paragraph without keeps the slide before it
+  const scenes = [slideMedia(p)];
+  const sceneOf = blocks.map((b) => {
+    const media: StoryMedia | undefined = b.media?.[0] ?? (b.compare ? { src: b.compare.after, alt: b.compare.afterAlt } : undefined);
+    if (media) scenes.push(sceneMedia(media));
+    return scenes.length - 1;
+  });
+  const facts = story?.facts ?? [{ label: "Role", value: p.role }, { label: "Year", value: p.year }];
+
   return `
-    <section class="page-hero container container--case story-hero">
-      <p class="breadcrumb"><a href="/work/">Work</a> / ${esc(p.name)}</p>
-      <h1>${esc(story?.title ?? p.tagline)}</h1>
-      <p class="page-hero__lead">${esc(story?.summary ?? p.overview)}</p>
-      ${story?.link ? `<div class="page-hero__actions"><a href="${esc(story.link.href)}" class="btn btn--primary" target="_blank" rel="noopener" data-external>${esc(story.link.label)}</a></div>` : ""}
-      <dl class="case-meta">${(story?.facts ?? [{ label: "Role", value: p.role }, { label: "Year", value: p.year }])
-        .map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`)
-        .join("")}</dl>
-    </section>
-    <section class="container container--case" aria-label="${esc(p.name)} cover">${coverMedia}</section>
-    ${
-      blocks.length
-        ? `<div class="container container--case story">${blocks.map(storyBlock).join("")}</div>`
-        : ""
-    }
-    ${nextProject(next)}`;
+    <div class="split split--case">
+      <div class="split__main">
+        <div class="stage" data-stage="scroll">
+          <div class="stage__frame">
+            ${scenes.map((media) => `<div class="stage__slide">${media}</div>`).join("")}
+            <a class="pill pill--dark stage__back" href="/" data-back><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg> Back to Main</a>
+          </div>
+          ${stageControls(scenes.length, "Fix this image while scrolling")}
+        </div>
+      </div>
+
+      <article class="split__side case-side">
+        <p class="case-side__crumb"><a href="/work/">Work</a> / ${esc(p.name)}</p>
+        <h1>${esc(story?.title ?? p.tagline)}</h1>
+        <p class="case-side__summary">${esc(story?.summary ?? p.overview)}</p>
+        ${story?.note ? `<p class="case-side__note">${esc(story.note)}</p>` : ""}
+        ${story?.link ? `<a href="${esc(story.link.href)}" class="pill pill--dark" target="_blank" rel="noopener" data-external>${esc(story.link.label)}</a>` : ""}
+        <dl class="case-side__facts">${facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join("")}</dl>
+        ${blocks.map((b, i) => caseBlock(b, sceneOf[i])).join("")}
+        <footer class="case-side__next">
+          <p>Next Project</p>
+          <p>${esc(next.name)}</p>
+          <a class="pill pill--dark pill--wide" href="/work/${esc(next.slug)}/">Go to Next Project <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+        </footer>
+      </article>
+    </div>`;
 }
 
 // ─── Routing ─────────────────────────────────────────────────────────────────
@@ -245,51 +302,40 @@ function playVideos() {
   videos.forEach((video) => watcher!.observe(video));
 }
 
-// Before/after sliders sweep from side to side while in view, until someone drags them
-let sweeper: IntersectionObserver | undefined;
+// The stage on screen, and how to stop it before the page changes
+let activeStage: { go: (index: number) => void; stop: () => void } | undefined;
 
-function sweepCompares() {
-  sweeper?.disconnect();
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  main.querySelectorAll<HTMLElement>(".compare").forEach((box) => {
-    const input = box.querySelector("input")!;
-    let frame = 0;
-    let elapsed = 0;
-    let last = 0;
-    let stopped = false;
-    const PERIOD = 6000;
-    const step = (now: number) => {
-      if (last) elapsed += now - last;
-      last = now;
-      const value = 50 + 42 * Math.sin((elapsed / PERIOD) * 2 * Math.PI);
-      input.value = String(value);
-      box.style.setProperty("--split", `${value}%`);
-      frame = requestAnimationFrame(step);
-    };
-    const pause = () => {
-      cancelAnimationFrame(frame);
-      last = 0;
-    };
-    const stop = () => {
-      stopped = true;
-      pause();
-    };
-    ["pointerdown", "keydown", "input"].forEach((type) => box.addEventListener(type, stop, { once: true }));
-    (box as HTMLElement & { _sweep?: (on: boolean) => void })._sweep = (on) => {
-      if (stopped) return;
-      pause();
-      if (on) frame = requestAnimationFrame(step);
-    };
+function mountSplit() {
+  const root = main.querySelector<HTMLElement>("[data-stage]");
+  if (!root) return;
+  if (root.dataset.stage === "scroll") {
+    activeStage = mountStage(root, { mode: "scroll" });
+    return;
+  }
+  // The bar over the slide and the thumbnails follow the project in front
+  const info = root.querySelector<HTMLElement>(".stage__info")!;
+  const details = root.querySelector<HTMLAnchorElement>("[data-details]")!;
+  const thumbs = main.querySelectorAll<HTMLElement>("[data-goto]");
+  let first = true;
+  activeStage = mountStage(root, {
+    mode: "timer",
+    start: Number(root.dataset.start),
+    onChange(index) {
+      const slide = root.querySelectorAll<HTMLElement>(".stage__slide")[index];
+      featured = slide.dataset.slug!;
+      details.href = `/work/${featured}/`;
+      thumbs.forEach((thumb, i) => thumb.setAttribute("aria-pressed", String(i === index)));
+      info.querySelector(".stage__tags")!.innerHTML = slide.dataset.tags!.split("|").map((t) => `<span>${esc(t)}</span>`).join("");
+      info.querySelector(".stage__headline")!.textContent = slide.dataset.headline!;
+      if (!first) settle(info.children);
+      first = false;
+    },
   });
-  // Starts once the slider is well into view, so the reader sees it begin
-  sweeper = new IntersectionObserver(
-    (entries) => entries.forEach(({ target, isIntersecting }) => (target as HTMLElement & { _sweep?: (on: boolean) => void })._sweep?.(isIntersecting)),
-    { threshold: 0.6 },
-  );
-  main.querySelectorAll(".compare").forEach((box) => sweeper!.observe(box));
 }
 
 function render() {
+  activeStage?.stop();
+  activeStage = undefined;
   const path = location.pathname.replace(/\/+$/, "") || "/";
   const slug = path.match(/^\/work\/([^/]+)$/)?.[1];
   const project = slug ? list.find((p) => p.slug === slug) : undefined;
@@ -319,8 +365,10 @@ function render() {
     else link.removeAttribute("aria-current");
   });
   setMenu(false);
+  // The landing page and the case studies bring their own header
+  document.body.classList.toggle("is-split", Boolean(main.querySelector(".split")));
   playVideos();
-  sweepCompares();
+  mountSplit();
   shownSlug = currentSlug();
 }
 
@@ -332,14 +380,28 @@ function setMenu(open: boolean) {
 
 navToggle.addEventListener("click", () => setMenu(navToggle.getAttribute("aria-expanded") !== "true"));
 
-// The project media that carries across pages: a card or tile's, or the case study's own
+// The project media that carries across pages: a card or tile's, or the stage
 const PAGE_MEDIA = ".media-stage, .cover, video, img";
-const caseMedia = () => main.querySelector(".case-cover");
+const stageFrame = () => main.querySelector(".stage__frame");
 const cardMedia = (slug: string) => main.querySelector(`a[href="/work/${slug}/"]`)?.querySelector(PAGE_MEDIA) ?? null;
 const currentSlug = () => location.pathname.match(/^\/work\/([^/]+)\/?$/)?.[1];
 
 document.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
+
+  // The avatar opens a short About, grown out of it
+  const avatar = target.closest<HTMLElement>("[data-about]");
+  if (avatar) {
+    openPopover(about, avatar);
+    return;
+  }
+
+  // A thumbnail brings its project onto the stage
+  const thumb = target.closest<HTMLElement>("[data-goto]");
+  if (thumb) {
+    activeStage?.go(Number(thumb.dataset.goto));
+    return;
+  }
 
   const zoom = target.closest<HTMLElement>("[data-zoom]");
   if (zoom) {
@@ -366,31 +428,34 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
   const href = link.getAttribute("href")!;
   const toCase = /^\/work\/[^/]+\/?$/.test(href);
+  // Between the landing page and the case studies the stage carries over, moving
+  // across the screen with the same image in it
+  const before = stageFrame() ?? (toCase ? link.querySelector(PAGE_MEDIA) : null);
   transitionPage(
     () => {
       history.pushState(null, "", href);
       render();
       window.scrollTo({ top: 0, behavior: "instant" });
     },
-    toCase ? link.querySelector(PAGE_MEDIA) : null,
-    () => (toCase ? caseMedia() : null),
+    before,
+    () => stageFrame(),
   );
 });
 
-document.addEventListener("input", (e) => {
-  const input = e.target as HTMLInputElement;
-  if (input.matches(".compare input")) input.parentElement!.style.setProperty("--split", `${input.value}%`);
-});
 
 animateDialog(lightbox);
+animateDialog(about);
+about.addEventListener("click", (e) => {
+  if (e.target === about || (e.target as HTMLElement).closest(".contact__close")) closePopover(about);
+});
 lightbox.addEventListener("click", () => closePopover(lightbox));
 
-// Going back from a case study, its media returns to the card it came from
+// Going back, the stage moves back too, or a case study's media returns to its card
 let shownSlug = currentSlug();
 addEventListener("popstate", () => {
   const from = shownSlug;
-  const before = from ? caseMedia() : null;
-  transitionPage(render, before, () => (from && !currentSlug() ? cardMedia(from) : null));
+  const before = stageFrame();
+  transitionPage(render, before, () => stageFrame() ?? (from && !currentSlug() ? cardMedia(from) : null));
 });
 
 render();
