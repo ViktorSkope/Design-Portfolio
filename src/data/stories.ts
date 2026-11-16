@@ -110,19 +110,13 @@ export const STORIES: Record<string, Story> = {
         headline: "Have a consistent way to keep collaborators' skills updated and in one place.",
         text: "The challenge was to deliver a process that would not only engage ateliware's collaborators, but also become the source of truth for the bi-annual meetings.",
         split: true,
-        media: [rec("watchson", "watchson-profile", "watchson-profile-poster.webp", 1556, 986, "Watchson in use: a collaborator's profile with their level, current quest and skills radar, the courses to learn next, and the people list with star skills")],
+        media: [rec("watchson", "watchson-emails", "watchson-emails-poster.webp", 1048, 908, "Watchson emails: a point gained, a course finished, a manager confirming a level, reaching the top of the scale, and the monthly recap of star points")],
       },
       {
         label: "Solution",
         headline: "Every collaborator got a character sheet worth keeping up to date",
         text: "Skills became levels, XP and a five-point star scored against what their project expects. Collaborators see how they help their party and where it needs a hand, and leaders plan the next six months with the same numbers.",
-        media: [
-          {
-            src: "/watchson/player-profile.webp",
-            alt: "A collaborator's Watchson profile: level and XP, their current project and party, how they help the team, and a star chart against the project baseline",
-            backdrop: "/images/work/field-backdrop.webp",
-          },
-        ],
+        media: [rec("watchson", "watchson-profile", "watchson-profile-poster.webp", 1556, 986, "Watchson in use: a collaborator's profile with their level, current quest and skills radar, the courses to learn next, and the people list with star skills")],
       },
       {
         label: "Planning",
