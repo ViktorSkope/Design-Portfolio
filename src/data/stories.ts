@@ -103,14 +103,14 @@ export const STORIES: Record<string, Story> = {
         headline: "Every six months, ateliware's leaders decided who works where",
         text: "They managed collaborators' skills and positions with a form. Less than 10% of their 75 collaborators kept it updated, so team leaders did a lot of guesswork during those meetings.",
         split: true,
-        media: [{ src: "/watchson/form-illustration.png", alt: "", plain: true }],
+        media: [{ src: "/watchson/costs-table.webp", alt: "Watchson costs: total, billable, non-billable and bench totals per month, then each project's budget used, with three projects over budget." }],
       },
       {
         label: "Challenge",
         headline: "Have a consistent way to keep collaborators' skills updated and in one place.",
         text: "The challenge was to deliver a process that would not only engage ateliware's collaborators, but also become the source of truth for the bi-annual meetings.",
         split: true,
-        media: [rec("watchson-panel", "watchson-panel", "watchson-panel-poster.webp", 650, 582, "Watchson in use: a project's team table beside the star skills panel")],
+        media: [rec("watchson", "watchson-profile", "watchson-profile-poster.webp", 1556, 986, "Watchson in use: a collaborator's profile with their level, current quest and skills radar, the courses to learn next, and the people list with star skills")],
       },
       {
         label: "Solution",

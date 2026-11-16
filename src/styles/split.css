@@ -454,7 +454,7 @@ body.is-split #main {
   min-height: 420px;
   container-type: size;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 16px;
   background: var(--color-surface-paper);
   isolation: isolate;
 }
@@ -951,7 +951,7 @@ body.is-split #main {
     height: auto;
     min-height: 0;
     aspect-ratio: 4 / 5;
-    border-radius: 22px;
+    border-radius: 16px;
   }
 
   .split--home .stage__slide .media-stage video {
@@ -1007,7 +1007,7 @@ body.is-split #main {
   .split--case .stage__frame {
     height: min(42svh, 72vw);
     min-height: 0;
-    border-radius: 18px;
+    border-radius: 16px;
   }
 
   .case-side {
