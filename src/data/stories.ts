@@ -78,6 +78,9 @@ const rec = (
   caption?: string,
 ): StoryRecording => ({ stage, video: `/videos/${name}`, poster: poster ? `/images/work/${poster}` : "", width, height, label, caption });
 
+// A recording shown as large as the slide allows
+const large = (r: StoryRecording): StoryRecording => ({ ...r, large: true });
+
 export const STORIES: Record<string, Story> = {
   watchson: {
     title: "Gamifying an HR form into a complete people management system",
@@ -158,7 +161,7 @@ export const STORIES: Record<string, Story> = {
         label: "Overview",
         headline: "Mistakes are costly in the mining industry",
         text: "A 50k USD flat tire in one of these giant haulers is very cheap to fix if you compare with the production time that it costs the company to deal with a non-productive truck.",
-        media: [rec("ingrid", "ingrid-overview", "ingrid-overview-poster.webp", 1562, 992, "Ingrid in use: a truck flagged on the fleet list opens its card on the map, with a brake warning offering to send it to maintenance")],
+        media: [large(rec("ingrid", "ingrid-overview", "ingrid-overview-poster.webp", 1562, 992, "Ingrid in use: a truck flagged on the fleet list opens its card on the map, with a brake warning offering to send it to maintenance"))],
       },
       {
         headline: "Preventive maintenance meant to watch for signals and know when to do pit-stops",
@@ -173,19 +176,19 @@ export const STORIES: Record<string, Story> = {
         label: "Setup",
         headline: "Help technicians react to a problem without decoding it first.",
         text: "We made prototypes in Figma and tested them with their users in a 4-week discovery process, to discover which triggers were important for technicians in the field, and remotely, to verify before making a decision.",
-        media: [rec("ingrid", "ingrid-setup", "ingrid-setup-poster.webp", 1560, 986, "Ingrid's guided tour: step by step through the fleet map, the dashboard and its reports, and what to do after a warning")],
+        media: [large(rec("ingrid", "ingrid-setup", "ingrid-setup-poster.webp", 1560, 986, "Ingrid's guided tour: step by step through the fleet map, the dashboard and its reports, and what to do after a warning"))],
       },
       {
         label: "Hypothesis",
         headline: "The higher the warning, the less required decisions.",
         text: "Emergencies start a countdown to shutdown that the technician can cancel. Major errors can wait until they know more, and recurring ones stay on screen without interrupting work.",
-        media: [rec("ingrid", "ingrid-hypothesis", "ingrid-hypothesis-poster.webp", 1560, 986, "Ingrid in an emergency: a frame crack counts down to shutdown, the technician can send the truck to maintenance or keep it running, and the truck log records what happened")],
+        media: [large(rec("ingrid", "ingrid-hypothesis", "ingrid-hypothesis-poster.webp", 1560, 986, "Ingrid in an emergency: a frame crack counts down to shutdown, the technician can send the truck to maintenance or keep it running, and the truck log records what happened"))],
       },
       {
         label: "Outcome",
         headline: "Onboarding went from an hour-long workshop to eight minutes",
         text: "Controlled studies showed full adoption within two sessions, and the MVP replaced other training and monitoring software.",
-        media: [rec("ingrid", "ingrid-outcome", "ingrid-outcome-poster.webp", 1016, 722, "Ingrid in use: a truck on the mine map opens its card, with the truck drawn in outline")],
+        media: [large(rec("ingrid", "ingrid-outcome", "ingrid-outcome-poster.webp", 1016, 722, "Ingrid in use: a truck on the mine map opens its card, with the truck drawn in outline"))],
       },
       {
         headline: "1.5 M USD each year saved in licensing fees",

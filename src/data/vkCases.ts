@@ -7,6 +7,7 @@ export const VK_CARDS: Record<string, { meta: string; result: string; poster: st
     video: "/videos/ingrid-intro",
     width: 1560,
     height: 986,
+    large: true,
   },
   watchson: {
     meta: "Platform · Internal tooling",
