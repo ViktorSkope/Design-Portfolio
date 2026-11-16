@@ -20,6 +20,8 @@ export interface StoryImage {
 export interface StoryRecording {
   // A product recording on a painted stage (see .media-stage in the styles)
   stage: string;
+  // Shown as large as the slide allows, instead of the usual window size
+  large?: boolean;
   video: string;
   poster: string;
   width: number;
@@ -110,7 +112,7 @@ export const STORIES: Record<string, Story> = {
         headline: "Have a consistent way to keep collaborators' skills updated and in one place.",
         text: "The challenge was to deliver a process that would not only engage ateliware's collaborators, but also become the source of truth for the bi-annual meetings.",
         split: true,
-        media: [rec("watchson", "watchson-emails", "watchson-emails-poster.webp", 1048, 908, "Watchson emails: a point gained, a course finished, a manager confirming a level, reaching the top of the scale, and the monthly recap of star points")],
+        media: [{ ...rec("watchson", "watchson-emails", "watchson-emails-poster.webp", 1048, 908, "Watchson emails: a point gained, a course finished, a manager confirming a level, reaching the top of the scale, and the monthly recap of star points"), large: true }],
       },
       {
         label: "Solution",

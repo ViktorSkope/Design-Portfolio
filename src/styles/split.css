@@ -493,6 +493,12 @@ body.is-split #main {
   border-radius: 6px;
 }
 
+/* A recording marked large fills as much of the slide as its shape allows */
+.stage__slide .media-stage--large video {
+  top: 50%;
+  width: min(92cqw, calc(86cqh * var(--ar, 1.6)));
+}
+
 .stage__slide .cover--video video {
   object-fit: cover;
 }

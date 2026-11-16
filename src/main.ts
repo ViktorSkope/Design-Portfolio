@@ -29,9 +29,10 @@ const cover = (p: Project, className = "") => `
 
 // A project with a panorama shows its screens on the start of it everywhere: the
 // thumbnail, the landing carousel and the case study's first slide all match
-const onPanorama = (slug: string) => {
+const onPanorama = (slug: string, extra = "") => {
   const panorama = STORIES[slug]?.panorama;
-  return panorama ? { cls: " has-panorama", style: ` style="background-image:url('${esc(panorama)}')"` } : { cls: "", style: "" };
+  const css = [panorama ? `background-image:url('${esc(panorama)}')` : "", extra].filter(Boolean).join(";");
+  return { cls: panorama ? " has-panorama" : "", style: css ? ` style="${css}"` : "" };
 };
 
 // A project's recording on its backdrop, where it has one
@@ -121,8 +122,8 @@ const slideMedia = (p: Project) => {
   const card = VK_CARDS[p.slug];
   if (card)
     return `
-    <div class="media-stage media-stage--${p.slug}${onPanorama(p.slug).cls}"${onPanorama(p.slug).style}>
-      <video muted loop playsinline preload="none" poster="${card.poster}" width="1280" height="664" aria-hidden="true">
+    <div class="media-stage media-stage--${p.slug}${card.large ? " media-stage--large" : ""}${onPanorama(p.slug).cls}"${onPanorama(p.slug, `--ar:${(card.width ?? 1280) / (card.height ?? 664)}`).style}>
+      <video muted loop playsinline preload="none" poster="${card.poster}" width="${card.width ?? 1280}" height="${card.height ?? 664}" aria-hidden="true">
         <source src="${card.video}.webm" type="video/webm" />
         <source src="${card.video}.mp4" type="video/mp4" />
       </video>
@@ -244,7 +245,7 @@ const sceneMedia = (m: StoryMedia) => {
         <source src="${m.video}.webm" type="video/webm" />
         <source src="${m.video}.mp4" type="video/mp4" />
       </video>`;
-    return m.stage === "native" ? `<span class="cover cover--scene">${video}</span>` : `<div class="media-stage media-stage--${m.stage}">${video}</div>`;
+    return m.stage === "native" ? `<span class="cover cover--scene">${video}</span>` : `<div class="media-stage media-stage--${m.stage}${m.large ? " media-stage--large" : ""}" style="--ar:${m.width / m.height}">${video}</div>`;
   }
   const backdrop = m.backdrop ? ` style="background-image:url('${esc(m.backdrop)}')"` : "";
   return `<span class="cover cover--scene${m.backdrop ? " cover--backdrop" : ""}${m.full ? " cover--full" : ""}"${backdrop}><img src="${esc(m.src)}" alt="${esc(m.alt)}" loading="lazy"${m.focus ? ` style="object-position:${esc(m.focus)}"` : ""} /></span>`;

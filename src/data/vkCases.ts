@@ -1,5 +1,5 @@
 // Their thumbnails: a recording on a painted backdrop
-export const VK_CARDS: Record<string, { meta: string; result: string; poster: string; video: string; width?: number; height?: number; thumbVideo?: boolean }> = {
+export const VK_CARDS: Record<string, { meta: string; result: string; poster: string; video: string; width?: number; height?: number; thumbVideo?: boolean; large?: boolean }> = {
   ingrid: {
     meta: "Product · Autonomous machinery",
     result: "Onboarding cut from an hour to eight minutes, saving $1.5M a year in licensing fees.",
@@ -15,6 +15,8 @@ export const VK_CARDS: Record<string, { meta: string; result: string; poster: st
     video: "/videos/watchson-intro",
     // Its thumbnail plays the recording too
     thumbVideo: true,
+    // Its slide shows the recording as large as it fits
+    large: true,
     width: 1556,
     height: 986,
   },
